@@ -159,15 +159,15 @@ private suspend fun DescribeSpecContainerContext.runScreen(
         screen.shellBefore.isNotBlank(),
     )
 
+    if (config.clearDataBeforeEachRun || screen.clearDataBeforeRun) {
+        runAction(Action.ClearAppData, actionExecutor, reportScreen, imagePrefix)
+    }
+
     (config.permissions.granted + screen.permissions.granted).forEach {
         runAction(Action.GrandPermission(it), actionExecutor, reportScreen, imagePrefix)
     }
     screen.permissions.revoked.forEach {
         runAction(Action.RevokePermission(it), actionExecutor, reportScreen, imagePrefix)
-    }
-
-    if (config.clearDataBeforeEachRun || screen.clearDataBeforeRun) {
-        runAction(Action.ClearAppData, actionExecutor, reportScreen, imagePrefix)
     }
 
     val fontScale = if (screen.fontScale != FontScale.DEFAULT) {
