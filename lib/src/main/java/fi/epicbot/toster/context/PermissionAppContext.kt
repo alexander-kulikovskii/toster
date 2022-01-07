@@ -6,7 +6,7 @@ import fi.epicbot.toster.TosterDslMarker
 class PermissionAppContext {
     internal val granted: MutableList<String> = mutableListOf()
 
-    fun grand(name: String) {
+    fun grant(name: String) {
         granted.add(name)
     }
 }

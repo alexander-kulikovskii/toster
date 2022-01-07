@@ -7,7 +7,7 @@ class PermissionActivityContext {
     internal val granted: MutableList<String> = mutableListOf()
     internal val revoked: MutableList<String> = mutableListOf()
 
-    fun grand(name: String) {
+    fun grant(name: String) {
         granted.add(name)
     }
 
