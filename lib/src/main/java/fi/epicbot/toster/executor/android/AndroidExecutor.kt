@@ -71,7 +71,7 @@ internal open class AndroidExecutor(
             }
             is Action.SetFontScale -> "settings put system font_scale ${action.fontScale.size}".adbShell()
             Action.DeleteApk -> "pm uninstall -k $apkPackage".adbShell()
-            is Action.InstallApk -> "install -g ${action.apkPath}".adb()
+            is Action.InstallApk -> "adb install -g ${action.apkPath}".shell()
             is Action.CreateDir -> action.dir.makeDir()
             is Action.GrandPermission -> "pm grant $apkPackage ${action.permission}".adbShell()
             is Action.RevokePermission -> "pm revoke $apkPackage ${action.permission}".adbShell()
