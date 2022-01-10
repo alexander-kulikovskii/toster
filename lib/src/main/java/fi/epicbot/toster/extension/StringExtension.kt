@@ -13,8 +13,12 @@ internal fun CharSequence.throwExceptionIfNotEmptyButBlank(message: String = "")
 }
 
 internal fun String.findRow(name: String): List<String> {
-    return split(name)[1].split(" ").filter {
-        it.isNotEmpty()
+    return try {
+        split(name)[1].split(" ").filter {
+            it.isNotEmpty()
+        }
+    } catch (_: Exception) {
+        emptyList()
     }
 }
 
