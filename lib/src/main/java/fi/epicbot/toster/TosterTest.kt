@@ -85,7 +85,12 @@ private suspend fun DescribeSpecContainerContext.runBeforeScreens(
     val beforeScreen = ReportScreen(name = "Before")
     actionExecutor.run {
         prepareEnvironment()
-        runAction(Action.ShellBeforeAllScreens(config.shellBeforeAllScreens), this, beforeScreen)
+        runAction(
+            Action.ShellBeforeAllScreens(config.shellBeforeAllScreens),
+            this,
+            beforeScreen,
+            executeCondition = config.shellBeforeAllScreens.isNotBlank(),
+        )
         runAction(Action.ClearAppData, this, beforeScreen)
         runAction(Action.DeleteApk, this, beforeScreen)
         runAction(Action.InstallApk(config.apkUrl), this, beforeScreen)
@@ -104,7 +109,12 @@ private suspend fun DescribeSpecContainerContext.runAfterScreens(
     val afterScreen = ReportScreen("After")
     actionExecutor.run {
         runAction(Action.HideDemoMode, this, afterScreen)
-        runAction(Action.ShellAfterAllScreens(config.shellAfterAllScreens), this, afterScreen)
+        runAction(
+            Action.ShellAfterAllScreens(config.shellAfterAllScreens),
+            this,
+            afterScreen,
+            executeCondition = config.shellAfterAllScreens.isNotBlank(),
+        )
         finishEnvironment()
     }
     return afterScreen
