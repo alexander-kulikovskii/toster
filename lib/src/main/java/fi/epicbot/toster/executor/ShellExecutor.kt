@@ -24,8 +24,8 @@ class ShellExecutor(projectDir: String) {
 
     fun makeDirForScreen(path: String): String = makeDir(path, screenWorkingDir)
 
-    fun runShellCommand(command: String): String {
-        return shellRun(workingDir) {
+    fun runShellCommand(command: String, fromRootFolder: Boolean = false): String {
+        return shellRun(if (fromRootFolder) ShellLocation.CURRENT_WORKING else workingDir) {
             command("/bin/sh", listOf("-c", command))
         }
     }
@@ -43,7 +43,7 @@ class ShellExecutor(projectDir: String) {
     ): String {
         return shellRun(workingDirectory) {
             if (clearBefore) {
-                command("rm", listOf("-r", path))
+                command("/bin/sh", listOf("-c", "rm -rf $path || true"))
             }
             command("mkdir", listOf("-p", path))
         }
