@@ -1,5 +1,6 @@
 package fi.epicbot.toster.checker
 
+import fi.epicbot.toster.extension.throwExceptionIfAllElementsNotUnique
 import fi.epicbot.toster.extension.throwExceptionIfBlank
 import fi.epicbot.toster.extension.throwExceptionIfNotEmptyButBlank
 import fi.epicbot.toster.extension.throwExceptionIfOneBlank
@@ -8,6 +9,7 @@ import fi.epicbot.toster.model.Screen
 internal class ScreensChecker(private val screens: List<Screen>) : Checker {
 
     override fun check() {
+        screens.map { it.name.trim() }.throwExceptionIfAllElementsNotUnique(ALL_SCREEN_NAME_UNIQUE)
         screens.forEach {
             checkScreen(it)
         }
@@ -39,5 +41,6 @@ internal class ScreensChecker(private val screens: List<Screen>) : Checker {
         private const val DELAY_AFTER_TOO_SMALL = "Delay after too small"
         private const val EMPTY_GRANTED_PERMISSIONS = "All granted permissions shouldn't be empty"
         private const val EMPTY_REVOKED_PERMISSIONS = "All revoked permissions shouldn't be empty"
+        private const val ALL_SCREEN_NAME_UNIQUE = "All screen names should be unique"
     }
 }
