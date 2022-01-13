@@ -7,7 +7,7 @@ import kotlinx.coroutines.delay
 
 internal class EmulatorExecutor(
     private val config: Config,
-    override val serialName: String,
+    private val serialName: String,
     private val startDelayMillis: Long,
     private val shellExecutor: ShellExecutor,
     private val dumpSysParser: DumpSysParser,

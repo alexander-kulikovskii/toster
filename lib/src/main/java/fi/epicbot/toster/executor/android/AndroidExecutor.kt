@@ -18,11 +18,11 @@ import kotlin.math.max
 
 @Suppress("TooManyFunctions")
 internal open class AndroidExecutor(
-    override val serialName: String,
+    private val serialName: String,
     private val config: Config,
     private val shellExecutor: ShellExecutor,
     private val dumpSysParser: DumpSysParser,
-) : ActionExecutor(serialName) {
+) : ActionExecutor() {
 
     private val apkPackage = config.applicationPackageName
     private var actionIndex = 0L

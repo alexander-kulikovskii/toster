@@ -3,7 +3,7 @@ package fi.epicbot.toster.executor
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.report.model.ReportAction
 
-internal abstract class ActionExecutor(open val serialName: String) {
+internal abstract class ActionExecutor {
 
     abstract fun executorName(): String
 
