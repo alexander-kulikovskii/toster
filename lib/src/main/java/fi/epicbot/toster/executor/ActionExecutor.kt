@@ -3,13 +3,13 @@ package fi.epicbot.toster.executor
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.report.model.ReportAction
 
-internal abstract class ActionExecutor {
+internal interface ActionExecutor {
 
-    abstract fun executorName(): String
+    fun executorName(): String
 
-    abstract suspend fun prepareEnvironment()
+    suspend fun prepareEnvironment()
 
-    abstract suspend fun finishEnvironment()
+    suspend fun finishEnvironment()
 
-    abstract suspend fun execute(action: Action, imagePrefix: String): ReportAction
+    suspend fun execute(action: Action, imagePrefix: String): ReportAction
 }

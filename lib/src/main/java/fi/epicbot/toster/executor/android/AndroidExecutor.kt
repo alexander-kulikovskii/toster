@@ -22,7 +22,7 @@ internal open class AndroidExecutor(
     private val config: Config,
     private val shellExecutor: ShellExecutor,
     private val dumpSysParser: DumpSysParser,
-) : ActionExecutor() {
+) : ActionExecutor {
 
     private val apkPackage = config.applicationPackageName
     private var actionIndex = 0L
