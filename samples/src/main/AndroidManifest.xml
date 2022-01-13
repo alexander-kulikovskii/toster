@@ -18,6 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="fi.epicbot.toster.samples.SampleFontSizeActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name="fi.epicbot.toster.samples.SampleLanguageActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
