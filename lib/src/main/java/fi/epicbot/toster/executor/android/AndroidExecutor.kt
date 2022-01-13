@@ -160,7 +160,7 @@ internal open class AndroidExecutor(
 
     private fun String.makeDir(): String = shellExecutor.makeDir(this)
 
-    private fun String.shell(): String = shellExecutor.runShellCommand(this)
+    private fun String.shell(): String = shellExecutor.runShellCommand(this, fromRootFolder = true)
 
     private fun String.adb(): String = shellExecutor.runCommandForScreen("adb", this)
 
