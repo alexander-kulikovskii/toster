@@ -1,6 +1,8 @@
 package fi.epicbot.toster.checker
 
+import fi.epicbot.toster.extension.throwExceptionIfAllBlank
 import fi.epicbot.toster.extension.throwExceptionIfAllElementsNotUnique
+import fi.epicbot.toster.extension.throwExceptionIfAllNotBlank
 import fi.epicbot.toster.extension.throwExceptionIfBlank
 import fi.epicbot.toster.extension.throwExceptionIfNotEmptyButBlank
 import fi.epicbot.toster.extension.throwExceptionIfOneBlank
@@ -18,7 +20,10 @@ internal class ScreensChecker(private val screens: List<Screen>) : Checker {
     private fun checkScreen(screen: Screen) {
         screen.run {
             name.throwExceptionIfBlank(EMPTY_SCREEN_NAME)
-            url.throwExceptionIfBlank(EMPTY_URL_NAME)
+            listOf(url, shortUrl).run {
+                throwExceptionIfAllBlank(EMPTY_URL_NAME)
+                throwExceptionIfAllNotBlank(URL_AND_SHORT_URL_ARE_SET)
+            }
             shellBefore.throwExceptionIfNotEmptyButBlank(
                 BLANK_SHELL_BEFORE_SCREEN
             )
@@ -36,6 +41,7 @@ internal class ScreensChecker(private val screens: List<Screen>) : Checker {
     private companion object {
         private const val EMPTY_SCREEN_NAME = "Screen name shouldn't be empty"
         private const val EMPTY_URL_NAME = "Screen url shouldn't be empty"
+        private const val URL_AND_SHORT_URL_ARE_SET = "Choose only <url> or <shortUrl>"
         private const val BLANK_SHELL_BEFORE_SCREEN = "Set non empty shell before"
         private const val BLANK_SHELL_AFTER_SCREEN = "Set non empty shell after"
         private const val DELAY_AFTER_TOO_SMALL = "Delay after too small"

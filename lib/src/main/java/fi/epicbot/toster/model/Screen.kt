@@ -4,6 +4,7 @@ package fi.epicbot.toster.model
 class Screen(
     var name: String = "",
     var url: String = "",
+    var shortUrl: String = "",
     var delayAfterOpenMillis: Long = 2000L,
     var fontScale: FontScale = FontScale.DEFAULT,
     val activityParams: MutableList<ActivityParam> = mutableListOf(),

@@ -56,7 +56,9 @@ internal open class AndroidExecutor(
             Action.HideDemoMode -> "am broadcast -a com.android.systemui.demo -e command exit".adbShell()
             is Action.OpenScreen -> {
                 shellExecutor.setScreenDirAndMakeIt(action.screen.name)
-                "am start -n $apkPackage/${action.screen.url}${action.params}".adbShell()
+                val screenUrl = if (action.screen.url.isNotBlank()) action.screen.url else
+                    "${config.applicationPackageName}.${action.screen.shortUrl}"
+                "am start -n $apkPackage/$screenUrl${action.params}".adbShell()
                 delay(action.screen.delayAfterOpenMillis)
             }
             Action.ShowGpuOverdraw -> {

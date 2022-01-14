@@ -19,6 +19,10 @@ class ScreenContext {
         screen.url = value
     }
 
+    fun shortUrl(value: String) {
+        screen.shortUrl = value
+    }
+
     fun delayAfterOpenMillis(value: Long) {
         screen.delayAfterOpenMillis = value
     }
