@@ -199,7 +199,7 @@ private suspend fun DescribeSpecContainerContext.runScreen(
         runAction(action, actionExecutor, reportScreen, imagePrefix)
     }
 
-    if (screen.actions.count { it is Action.TakeScreenshot } == 0) {
+    if (screen.screenshotAsLastAction && screen.actions.count { it is Action.TakeScreenshot } == 0) {
         runAction(Action.TakeScreenshot(""), actionExecutor, reportScreen, imagePrefix)
     }
 

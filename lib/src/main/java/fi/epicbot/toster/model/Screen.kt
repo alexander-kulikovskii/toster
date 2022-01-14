@@ -12,4 +12,5 @@ class Screen(
     var shellBefore: String = "",
     var shellAfter: String = "",
     var permissions: Permissions = Permissions(),
+    var screenshotAsLastAction: Boolean = true,
 )

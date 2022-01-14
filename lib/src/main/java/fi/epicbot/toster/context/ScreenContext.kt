@@ -6,6 +6,7 @@ import fi.epicbot.toster.model.Permissions
 import fi.epicbot.toster.model.Screen
 
 @TosterDslMarker
+@Suppress("TooManyFunctions")
 class ScreenContext {
 
     internal val screen = Screen()
@@ -51,5 +52,9 @@ class ScreenContext {
 
     fun fontScale(scale: FontScale) {
         screen.fontScale = scale
+    }
+
+    fun disableScreenshotAsLastAction() {
+        screen.screenshotAsLastAction = false
     }
 }
