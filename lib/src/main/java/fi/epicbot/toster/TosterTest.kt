@@ -91,9 +91,11 @@ private suspend fun DescribeSpecContainerContext.runBeforeScreens(
             beforeScreen,
             executeCondition = config.shellBeforeAllScreens.isNotBlank(),
         )
-        runAction(Action.ClearAppData, this, beforeScreen)
-        runAction(Action.DeleteApk, this, beforeScreen)
-        runAction(Action.InstallApk(config.apkUrl), this, beforeScreen)
+        if (config.deleteAndInstallApk) {
+            runAction(Action.ClearAppData, this, beforeScreen)
+            runAction(Action.DeleteApk, this, beforeScreen)
+            runAction(Action.InstallApk(config.apkUrl), this, beforeScreen)
+        }
         runAction(Action.HideDemoMode, this, beforeScreen)
         runAction(Action.SetDemoModeEnable, this, beforeScreen)
         runAction(Action.ShowDemoMode, this, beforeScreen)

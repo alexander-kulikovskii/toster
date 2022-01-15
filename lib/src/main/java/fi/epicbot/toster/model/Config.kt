@@ -21,6 +21,7 @@ class Config(
     var shellAfterAllScreens: String = "",
     var permissions: Permissions = Permissions(),
     var testTimeoutMillis: Long = 600 * 1000L,
+    var deleteAndInstallApk: Boolean = true,
 )
 
 data class Overdraw(

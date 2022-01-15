@@ -74,4 +74,8 @@ class ConfigContext {
     fun testTimeout(timeoutMillis: Long) {
         config.testTimeoutMillis = timeoutMillis
     }
+
+    fun doNotDeleteAndInstallApk() {
+        config.deleteAndInstallApk = false
+    }
 }
