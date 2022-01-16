@@ -30,6 +30,11 @@ android {
     }
 }
 
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 fun getVersionName(): String {
     return "0.1.0"
 }
