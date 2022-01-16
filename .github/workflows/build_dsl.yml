@@ -3,12 +3,10 @@ name: Build DSL
 on: pull_request
 
 jobs:
-  build:
+  static-analysis:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-
       - uses: actions/cache@v2
         with:
           path: |
@@ -29,11 +27,80 @@ jobs:
       - name: Run Static Analysis
         run: ./gradlew detekt
 
+  unit-tests:
+    needs: [static-analysis]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
       - name: Run Unit Tests
         run: ./gradlew :lib:test
 
+  build-dsl:
+    needs: [unit-tests]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
       - name: Build DSL
         run: ./gradlew :lib:assembleRelease
+
+
+  build-samples:
+    needs: [build-dsl]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
 
       - name: Build Samples
         run: ./gradlew :samples:assembleRelease
