@@ -1,0 +1,30 @@
+name: Build DSL
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      - name: Run Static Analysis
+        run: ./gradlew detekt
+
+      - name: Run Unit Tests
+        run: ./gradlew :lib:test
+
+      - name: Build DSL
+        run: ./gradlew :lib:assembleRelease
+
+      - name: Build Samples
+        run: ./gradlew :samples:assembleRelease
