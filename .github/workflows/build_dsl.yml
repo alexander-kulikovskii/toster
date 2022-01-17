@@ -50,7 +50,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run Unit Tests
-        run: ./gradlew :lib:test
+        run: ./gradlew :lib:testDebugUnitTest
 
   build-dsl:
     needs: [unit-tests]
