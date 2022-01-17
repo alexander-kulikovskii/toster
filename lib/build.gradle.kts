@@ -19,7 +19,7 @@ android {
     compileSdkVersion(31)
 
     defaultConfig {
-        minSdkVersion(24)
+        minSdkVersion(21)
         targetSdkVersion(31)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
