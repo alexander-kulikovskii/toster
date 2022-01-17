@@ -4,6 +4,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.19.0"
     id("kotlinx-serialization")
     id("maven-publish")
+    id ("pl.droidsonroids.pitest")
 }
 
 dependencies {
@@ -13,6 +14,7 @@ dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
 
     implementation("io.kotlintest:kotlintest-runner-junit4:3.4.2")
+    testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.0.1")
 }
 
 android {
@@ -54,4 +56,13 @@ publishing {
             }
         }
     }
+}
+
+project.apply{
+    from("$rootDir/gradle/pitest.gradle")
+}
+
+configure<pl.droidsonroids.gradle.pitest.PitestPluginExtension> {
+    testPlugin.set("Kotest")
+    targetClasses.set(listOf("fi.epicbot.toster.*"))
 }
