@@ -1,12 +1,12 @@
 package fi.epicbot.toster.extension
 
-internal fun CharSequence.throwExceptionIfBlank(message: String = "") {
+internal fun CharSequence.throwExceptionIfBlank(message: String) {
     if (this.isBlank()) {
         throw IllegalArgumentException(message)
     }
 }
 
-internal fun CharSequence.throwExceptionIfNotEmptyButBlank(message: String = "") {
+internal fun CharSequence.throwExceptionIfNotEmptyButBlank(message: String) {
     if (this.isNotEmpty() && this.isBlank()) {
         throw IllegalArgumentException(message)
     }
