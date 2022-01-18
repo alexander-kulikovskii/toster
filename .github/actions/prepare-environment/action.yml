@@ -1,8 +1,4 @@
 name: 'Prepare environment'
-inputs:
-  java-version:
-    required: false
-    default: '11'
 runs:
   using: composite
   steps:
@@ -18,7 +14,7 @@ runs:
     - name: Set Up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: ${{inputs.java-version}}
+          java-version: '11'
 
     - name: Change wrapper permissions
       run: chmod +x ./gradlew
