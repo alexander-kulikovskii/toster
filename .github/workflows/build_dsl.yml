@@ -6,6 +6,7 @@ jobs:
   static-analysis:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
         name: Prepare environment
 
@@ -16,6 +17,7 @@ jobs:
     needs: [static-analysis]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
         name: Prepare environment
 
@@ -27,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
         name: Prepare environment
 
@@ -38,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
         name: Prepare environment
 
@@ -49,6 +53,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
         name: Prepare environment
 
