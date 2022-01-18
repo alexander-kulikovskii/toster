@@ -48,7 +48,7 @@ val rawData = """
 class DumpSysParserTest : BehaviorSpec({
     Given("DumpSysParser") {
         val parser = DumpSysParser()
-        When ("Parse empty memory info"){
+        When("Parse empty memory info") {
             val map = parser.parse("")
             Then("map size should be 0") {
                 map.size shouldBe 0
