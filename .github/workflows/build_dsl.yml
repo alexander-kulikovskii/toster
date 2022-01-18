@@ -54,12 +54,6 @@ jobs:
       - name: Run mutation tests
         run: ./gradlew :lib:pitestDebug
 
-      - name: Publish Pitest Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()
-        with:
-          files: lib/build/reports/pitest/mutations.xml
-
   build-samples:
     needs: [build-dsl]
     runs-on: ubuntu-latest
