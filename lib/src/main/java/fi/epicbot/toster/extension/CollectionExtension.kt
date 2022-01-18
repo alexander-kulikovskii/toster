@@ -1,17 +1,17 @@
 package fi.epicbot.toster.extension
 
 internal fun Collection<String>.throwExceptionIfOneBlank(message: String) {
-    val blankCount = count { it.isBlank() }
+    val blankCount = filter { it.isBlank() }.count() // replace count{} as workaround for pitest
     if (blankCount > 0) {
         throw IllegalArgumentException(message)
     }
 }
 
-internal fun Collection<String>.throwExceptionIfAllBlank(message: String = "") {
+internal fun Collection<String>.throwExceptionIfAllBlank(message: String) {
     throwExceptionIfAll(message) { it.isBlank() }
 }
 
-internal fun Collection<String>.throwExceptionIfAllNotBlank(message: String = "") {
+internal fun Collection<String>.throwExceptionIfAllNotBlank(message: String) {
     throwExceptionIfAll(message) { it.isNotBlank() }
 }
 
@@ -25,7 +25,7 @@ internal fun Collection<String>.throwExceptionIfAllElementsNotUnique(messagePref
 }
 
 private fun <T> Collection<T>.throwExceptionIfAll(
-    message: String = "",
+    message: String,
     predicate: (T) -> Boolean,
 ) {
     if (this.all { predicate(it) }) {
