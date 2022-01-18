@@ -1,0 +1,28 @@
+name: 'Prepare environment'
+description: 'Prepare build environment'
+inputs:
+  java-version:
+    required: false
+    description: 'Java version'
+    default: '11'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Set Up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{inputs.java-version}}
+
+    - name: Change wrapper permissions
+      shell: bash
+      run: chmod +x ./gradlew
