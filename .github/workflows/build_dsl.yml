@@ -24,6 +24,12 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew :lib:testDebugUnitTest
 
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: lib/build/test-results/**/*.xml
+
   build-dsl:
     needs: [unit-tests]
     runs-on: ubuntu-latest
