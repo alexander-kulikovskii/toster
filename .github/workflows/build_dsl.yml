@@ -6,23 +6,8 @@ jobs:
   static-analysis:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Set Up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+      - uses: ./.github/actions/prepare-environment
+        name: Prepare environment
 
       - name: Run Static Analysis
         run: ./gradlew detekt
@@ -31,23 +16,8 @@ jobs:
     needs: [static-analysis]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Set Up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+      - uses: ./.github/actions/prepare-environment
+        name: Prepare environment
 
       - name: Run Unit Tests
         run: ./gradlew :lib:testDebugUnitTest
@@ -57,23 +27,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Set Up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+      - uses: ./.github/actions/prepare-environment
+        name: Prepare environment
 
       - name: Build DSL
         run: ./gradlew :lib:assembleRelease
@@ -83,23 +38,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Set Up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+      - uses: ./.github/actions/prepare-environment
+        name: Prepare environment
 
       - name: Run mutation tests
         run: ./gradlew :lib:pitestDebug
@@ -109,23 +49,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Set Up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
+      - uses: ./.github/actions/prepare-environment
+        name: Prepare environment
 
       - name: Build Samples
         run: ./gradlew :samples:assembleRelease
