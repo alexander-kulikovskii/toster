@@ -20,6 +20,6 @@ allprojects {
 Add the dependency:
 ```groovy
 dependencies {
-    implementation 'by.epicbot:toster:0.1.1'
+    implementation 'by.epicbot:toster:{version}'
 }
 ```
