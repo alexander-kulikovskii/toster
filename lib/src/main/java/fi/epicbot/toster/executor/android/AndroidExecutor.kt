@@ -104,7 +104,7 @@ internal open class AndroidExecutor(
         } else {
             // TODO make measurement only once
             val rawData = "wm size".adbShell()
-            val rawSize = rawData.split(" ")[1].split("x")
+            val rawSize = rawData.replace("Physical size: ", "").split("x")
             swipeMove.toMove(width = rawSize[0].toInt(), height = rawSize[1].toInt())
         }
         "input touchscreen swipe ${move.xFrom} ${move.yFrom} ${move.xTo} ${move.yTo}".adbShell()

@@ -1,6 +1,9 @@
 package fi.epicbot.toster.model
 
-private const val DEFAULT_SWIPE_OFFSET_PX = 20
+import kotlin.math.max
+
+private const val DEFAULT_SWIPE_OFFSET_PX = 220
+private const val MIN_OFFSET_FACTOR = 0.08
 
 data class Move(
     val xFrom: Int,
@@ -40,28 +43,31 @@ internal fun SwipeMove.toMove(width: Int, height: Int): Move {
     return when (this) {
         SwipeMove.BottomToTop -> Move(
             width / 2,
-            height - DEFAULT_SWIPE_OFFSET_PX,
+            height - provideOffset(height),
             width / 2,
-            DEFAULT_SWIPE_OFFSET_PX,
+            provideOffset(height),
         )
         SwipeMove.LeftToRight -> Move(
-            DEFAULT_SWIPE_OFFSET_PX,
+            provideOffset(width),
             height / 2,
-            width - DEFAULT_SWIPE_OFFSET_PX,
+            width - provideOffset(width),
             height / 2,
         )
         SwipeMove.RightToLeft -> Move(
-            width - DEFAULT_SWIPE_OFFSET_PX,
+            width - provideOffset(width),
             height / 2,
-            DEFAULT_SWIPE_OFFSET_PX,
+            provideOffset(width),
             height / 2,
         )
         SwipeMove.TopToBottom -> Move(
             width / 2,
-            DEFAULT_SWIPE_OFFSET_PX,
+            provideOffset(height),
             width / 2,
-            height - DEFAULT_SWIPE_OFFSET_PX,
+            height - provideOffset(height),
         )
         else -> throw UnsupportedOperationException("Unsupported swipe type $this")
     }
 }
+
+private fun provideOffset(value: Int): Int =
+    max((value * MIN_OFFSET_FACTOR).toInt(), DEFAULT_SWIPE_OFFSET_PX)
