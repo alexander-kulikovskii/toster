@@ -75,7 +75,7 @@ internal open class AndroidExecutor(
             Action.DeleteApk -> "pm uninstall -k $apkPackage".adbShell()
             is Action.InstallApk -> "adb install -g ${action.apkPath}".shell()
             is Action.CreateDir -> action.dir.makeDir()
-            is Action.GrandPermission -> "pm grant $apkPackage ${action.permission}".adbShell()
+            is Action.GrantPermission -> "pm grant $apkPackage ${action.permission}".adbShell()
             is Action.RevokePermission -> "pm revoke $apkPackage ${action.permission}".adbShell()
             Action.CloseKeyboard -> "input keyevent 111".adbShell()
             Action.OpenHomeScreen -> "input keyevent 3".adbShell()

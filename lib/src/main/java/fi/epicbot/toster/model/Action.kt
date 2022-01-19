@@ -19,7 +19,7 @@ sealed class Action {
     data class Delay(val delayMillis: Long) : Action()
     object DeleteApk : Action()
     object GetDensity : Action()
-    data class GrandPermission(val permission: String) : Action()
+    data class GrantPermission(val permission: String) : Action()
     object HideDemoMode : Action()
     object HideGpuOverdraw : Action()
     data class InstallApk(val apkPath: String) : Action()
@@ -56,7 +56,7 @@ internal fun Action.title(): String {
         is Action.Delay -> "Delay for <$delayMillis> ms"
         Action.DeleteApk -> "Delete apk"
         Action.GetDensity -> TODO()
-        is Action.GrandPermission -> "Grand permission <$permission>"
+        is Action.GrantPermission -> "Grant permission <$permission>"
         Action.HideDemoMode -> "Hide demo mode"
         Action.HideGpuOverdraw -> "Hide gpu overdraw"
         is Action.InstallApk -> "Install apk"

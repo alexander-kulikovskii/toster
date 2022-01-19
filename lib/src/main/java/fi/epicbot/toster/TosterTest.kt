@@ -176,7 +176,7 @@ private suspend fun DescribeSpecContainerContext.runScreen(
     }
 
     (config.permissions.granted + screen.permissions.granted).forEach {
-        runAction(Action.GrandPermission(it), actionExecutor, reportScreen, imagePrefix)
+        runAction(Action.GrantPermission(it), actionExecutor, reportScreen, imagePrefix)
     }
     screen.permissions.revoked.forEach {
         runAction(Action.RevokePermission(it), actionExecutor, reportScreen, imagePrefix)
