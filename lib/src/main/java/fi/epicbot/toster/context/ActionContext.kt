@@ -14,6 +14,11 @@ class ActionContext {
         delay(delayMillis)
     }
 
+    fun longClick(x: Int, y: Int, clickDelayMs: Long = 200L, delayMillis: Long = 0) {
+        actions.add(Action.LongClick(x = x, y = y, clickDelayMs = clickDelayMs))
+        delay(delayMillis)
+    }
+
     fun delay(delayMillis: Long) {
         actions.add(Action.Delay(delayMillis))
     }
