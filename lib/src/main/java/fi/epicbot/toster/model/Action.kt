@@ -23,6 +23,7 @@ sealed class Action {
     object HideDemoMode : Action()
     object HideGpuOverdraw : Action()
     data class InstallApk(val apkPath: String) : Action()
+    data class LongClick(val x: Int, val y: Int, val clickDelayMillis: Long) : Action()
     object OpenHomeScreen : Action()
     data class OpenScreen(val screen: Screen, val params: String) : Action()
     data class RevokePermission(val permission: String) : Action()
@@ -60,6 +61,7 @@ internal fun Action.title(): String {
         Action.HideDemoMode -> "Hide demo mode"
         Action.HideGpuOverdraw -> "Hide gpu overdraw"
         is Action.InstallApk -> "Install apk"
+        is Action.LongClick -> "Long click to ($x;$y) for $clickDelayMillis ms"
         Action.OpenHomeScreen -> "Open home screen"
         is Action.OpenScreen -> "Start activity" + if (params.isBlank()) "" else " with $params"
         is Action.RevokePermission -> "Revoke permission <$permission>"

@@ -37,7 +37,7 @@ internal open class AndroidExecutor(
         // Do nothing
     }
 
-    @Suppress("ComplexMethod", "ReturnCount")
+    @Suppress("ComplexMethod", "LongMethod", "ReturnCount")
     override suspend fun execute(action: Action, imagePrefix: String): ReportAction {
         if (action is Action.TakeMemoryAllocation) {
             return takeMemoryAllocation(action)
@@ -74,6 +74,9 @@ internal open class AndroidExecutor(
             is Action.SetFontScale -> "settings put system font_scale ${action.fontScale.size}".adbShell()
             Action.DeleteApk -> "pm uninstall -k $apkPackage".adbShell()
             is Action.InstallApk -> "adb install -g ${action.apkPath}".shell()
+            is Action.LongClick ->
+                "input touchscreen swipe ${action.x} ${action.y} ${action.x} ${action.y} ${action.clickDelayMillis}"
+                    .adbShell()
             is Action.CreateDir -> action.dir.makeDir()
             is Action.GrantPermission -> "pm grant $apkPackage ${action.permission}".adbShell()
             is Action.RevokePermission -> "pm revoke $apkPackage ${action.permission}".adbShell()

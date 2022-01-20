@@ -14,6 +14,19 @@ class ActionContext {
         delay(delayMillis)
     }
 
+    /**
+     * Make long click action
+     *
+     * @param x Coordinate X, from 0 to width.
+     * @param y Coordinate Y, from 0 to height.
+     * @param clickDelayMillis How long this action should be. By default 2000 millis.
+     * @param delayMillis Delay after action. By default 0 millis.
+     */
+    fun longClick(x: Int, y: Int, clickDelayMillis: Long = 2000L, delayMillis: Long = 0) {
+        actions.add(Action.LongClick(x = x, y = y, clickDelayMillis = clickDelayMillis))
+        delay(delayMillis)
+    }
+
     fun delay(delayMillis: Long) {
         actions.add(Action.Delay(delayMillis))
     }
