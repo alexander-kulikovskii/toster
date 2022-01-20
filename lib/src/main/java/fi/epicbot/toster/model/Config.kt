@@ -1,6 +1,7 @@
 package fi.epicbot.toster.model
 
 import fi.epicbot.toster.executor.ShellExecutor
+import fi.epicbot.toster.report.Reporter
 import fi.epicbot.toster.report.model.ReportAppInfo
 import fi.epicbot.toster.report.model.ReportDevice
 import fi.epicbot.toster.report.model.ReportOutput
@@ -33,6 +34,7 @@ data class Overdraw(
 internal fun Config.makeReport(
     reportDevices: MutableList<ReportDevice>,
     testTime: Long,
+    defaultReporter: Reporter,
     shellExecutor: ShellExecutor,
 ) {
     if (reportConfig.enable.not()) {
@@ -51,7 +53,7 @@ internal fun Config.makeReport(
         ReportAppInfo(applicationName, testTime),
         reportDevices,
     )
-    reportConfig.reporters.forEach { reporter ->
+    (listOf(defaultReporter) + reportConfig.customReporters).forEach { reporter ->
         reporter.makeReport(reportOutput, shellExecutor)
     }
 }

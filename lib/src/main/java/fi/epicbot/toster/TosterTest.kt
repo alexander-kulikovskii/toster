@@ -17,6 +17,8 @@ import fi.epicbot.toster.model.Screen
 import fi.epicbot.toster.model.makeReport
 import fi.epicbot.toster.model.runAction
 import fi.epicbot.toster.model.toStringParams
+import fi.epicbot.toster.report.DefaultReporter
+import fi.epicbot.toster.report.formatter.JsonFormatter
 import fi.epicbot.toster.report.model.ReportCollage
 import fi.epicbot.toster.report.model.ReportDevice
 import fi.epicbot.toster.report.model.ReportScreen
@@ -74,7 +76,13 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
 
         val endTestTime = System.currentTimeMillis()
 
-        config.makeReport(reportDevices, endTestTime - startTestTime, shellExecutor)
+        val defaultReporter = DefaultReporter(JsonFormatter(prettyPrintJson = true))
+        config.makeReport(
+            reportDevices,
+            endTestTime - startTestTime,
+            defaultReporter,
+            shellExecutor
+        )
     }
 })
 

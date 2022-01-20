@@ -15,6 +15,10 @@ dependencies {
 
     implementation("io.kotlintest:kotlintest-runner-junit4:3.4.2")
     testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.0.1")
+    testImplementation("io.mockk:mockk:1.12.2")
+    testImplementation("io.mockk:mockk-agent-api:1.12.2")
+    testImplementation("io.mockk:mockk-agent-jvm:1.12.2")
+    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }
 
 android {
