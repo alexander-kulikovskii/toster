@@ -13,6 +13,6 @@ class ReportContext {
     }
 
     fun addCustomReporter(reporter: Reporter) {
-        report.reporters.add(reporter)
+        report.customReporters.add(reporter)
     }
 }
