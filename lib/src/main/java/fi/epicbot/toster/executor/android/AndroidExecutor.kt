@@ -75,7 +75,7 @@ internal open class AndroidExecutor(
             Action.DeleteApk -> "pm uninstall -k $apkPackage".adbShell()
             is Action.InstallApk -> "adb install -g ${action.apkPath}".shell()
             is Action.LongClick ->
-                "input touchscreen swipe ${action.x} ${action.y} ${action.x} ${action.y} ${action.clickDelayMs}"
+                "input touchscreen swipe ${action.x} ${action.y} ${action.x} ${action.y} ${action.clickDelayMillis}"
                     .adbShell()
             is Action.CreateDir -> action.dir.makeDir()
             is Action.GrantPermission -> "pm grant $apkPackage ${action.permission}".adbShell()
