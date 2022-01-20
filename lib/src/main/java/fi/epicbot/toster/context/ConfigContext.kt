@@ -6,6 +6,7 @@ import fi.epicbot.toster.model.Devices
 import fi.epicbot.toster.model.FontScale
 import fi.epicbot.toster.model.Overdraw
 import fi.epicbot.toster.model.Permissions
+import fi.epicbot.toster.model.SwipeOffset
 
 @Suppress("TooManyFunctions")
 @TosterDslMarker
@@ -77,5 +78,9 @@ class ConfigContext {
 
     fun doNotDeleteAndInstallApk() {
         config.deleteAndInstallApk = false
+    }
+
+    fun setSwipeOffset(offsetPx: Int, offsetFactor: Double) {
+        config.swipeOffset = SwipeOffset(offsetPx, offsetFactor)
     }
 }
