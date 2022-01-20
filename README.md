@@ -26,19 +26,18 @@ dependencies {
 
 ## Usage
 
-To start using Toster DSL you need to create unit tests extended from the `TosterTest` class and configure `Config` and `Screens`.
+To use Toster DSL you need to create unit tests extended from the `TosterTest` class and configure `Config` and `Screens`.
 
-And just run it as usual unit-test.
+You can run it using console command: 
 
-From console:
 ```
 ./gradlew :project:test
 ```
 
-Or from Android Studio. Don't forgot to install [Kotest plugin](https://plugins.jetbrains.com/plugin/14080-kotest):
+If you want to run it from Android Studio, don't forgot to install [Kotest plugin](https://plugins.jetbrains.com/plugin/14080-kotest):
 
 
-Here's a full list of available functionality written using Toster:
+Here's a full list of available functionality of Toster:
  
 ```kotlin
 class DemoTest : TosterTest(
@@ -47,8 +46,8 @@ class DemoTest : TosterTest(
        applicationPackageName("fi.epicbot.toster.samples")
        apkUrl("build/outputs/apk/debug/samples-debug.apk")
        permissions {
-           grand("PERMISSION")
-           grand("ANOTHER_PERMISSION")
+           grant("PERMISSION")
+           grant("ANOTHER_PERMISSION")
        }
        devices {
            emulator("Pixel_3a_API_31_arm64-v8a")
@@ -67,7 +66,7 @@ class DemoTest : TosterTest(
            shortUrl("SampleFontSizeActivity") // optional
            delayAfterOpenMillis(4500L)
            runShellBefore("SOME_COMMAND")
-           runShellAfter("SOME_COOMAND")
+           runShellAfter("SOME_COMMAND")
            clearDataBeforeRun()
            activityParams {
                integer("int_value", 42)
@@ -105,11 +104,11 @@ Package name that you can find in manifest file.
 
 ### Apk url
 
-Path to your apk file
+Path to your apk file.
 
 ### Permissions
 
-You can grant some permission for the application. Toster doesn't install apk with flag `-p` and set them all because for some screens you can revoke them or call clear data.
+Toster doesn't install apk with flag `-p` and set them all because for some screens you can revoke them or call clear data.
 
 In the block `Config` you can only grant permissions:
 
@@ -134,6 +133,10 @@ permissions {
 
 ### Devices
 
+Specify all devices, including their IDs, on which the tests will be performed.
+
+To find ID for specific device you can use adb command `adb devices`.
+
 ```kotlin
 devices {
    emulator("Pixel_3a_API_31_arm64-v8a")
@@ -142,17 +145,12 @@ devices {
    ...
 }
 ```
-List of all devices that will be used on testing your app.
 
-Id for the physical devices or emulator which can be find using adb command `adb devices`
-
-Each test at the moment uses one device. No multi test run for now.
-
-Note: You can use `UUID` If you have only one device.
+Note: You can use `UUID` if you have only one device.
 
 ### Font scale for all
 
-You can set up the font scale for the whole screen using the fontScale command.
+To set up the font scale for the whole screen you can use fontScale(value) command.
 
 Available font scales:
 - SMALL (0.85)
@@ -161,13 +159,11 @@ Available font scales:
 - LARGEST (1.3)
 
 ### Emulator path
-Path to emulator in your sdk folder
-
-For example, if my sdk folder
+Path to emulator in your sdk folder.
 
 ### Clear data before each run
 
-Clear application data before each run. Node that permissions also removed.
+Clear application data before each run. All permissions will be removed.
 
 ### Run shell before all screens
 
@@ -185,11 +181,11 @@ Unique name for the screen.
 
 ### Url
 
-Full url for your activity including package name. Note, that `aplicationPackageName` can be deference
+Full url for your activity including package name.
 
 ### Delay after open
 
-Set some timeout before next actions. Because the whole test system doesn't know about some callback, it's very important to set some delays between actions.
+It's very important to set delays between actions, because the whole test system doesn't know about callbacks. 
 
 ### Run shell before
 
