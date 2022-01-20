@@ -96,9 +96,14 @@ private suspend fun DescribeSpecContainerContext.runBeforeScreens(
             runAction(Action.DeleteApk, this, beforeScreen)
             runAction(Action.InstallApk(config.apkUrl), this, beforeScreen)
         }
+
         runAction(Action.HideDemoMode, this, beforeScreen)
-        runAction(Action.SetDemoModeEnable, this, beforeScreen)
-        runAction(Action.ShowDemoMode, this, beforeScreen)
+
+        if (config.useDemoMode) {
+            runAction(Action.SetDemoModeEnable, this, beforeScreen)
+            runAction(Action.ShowDemoMode, this, beforeScreen)
+        }
+
         runAction(Action.HideGpuOverdraw, this, beforeScreen)
     }
     return beforeScreen
@@ -110,7 +115,10 @@ private suspend fun DescribeSpecContainerContext.runAfterScreens(
 ): ReportScreen {
     val afterScreen = ReportScreen("After")
     actionExecutor.run {
-        runAction(Action.HideDemoMode, this, afterScreen)
+        if (config.useDemoMode) {
+            runAction(Action.HideDemoMode, this, afterScreen)
+        }
+
         runAction(
             Action.ShellAfterAllScreens(config.shellAfterAllScreens),
             this,
