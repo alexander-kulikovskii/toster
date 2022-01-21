@@ -83,4 +83,11 @@ class ConfigContext {
     fun setSwipeOffset(offsetPx: Int, offsetFactor: Double) {
         config.swipeOffset = SwipeOffset(offsetPx, offsetFactor)
     }
+
+    /**
+     * If you want to disable demo mode for tests use this function.
+     */
+    fun disableDemoMode() {
+        config.useDemoMode = false
+    }
 }
