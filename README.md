@@ -6,7 +6,7 @@
 
 Small test dsl based on adb commands that allows you to test the mobile application close to user actions
 
-![Toster](../add-logo-to-readme/docs/images/logo.png)
+![Toster](../docs/images/logo.png)
 
 ## How to install
 
