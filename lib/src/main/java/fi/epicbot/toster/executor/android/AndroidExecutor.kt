@@ -109,7 +109,8 @@ internal open class AndroidExecutor(
             val rawData = "wm size".adbShell()
             val rawSize = rawData.replace("Physical size: ", "").split("x")
             swipeMove.toMove(
-                swipeOffset = config.swipeOffset,
+                horizontalSwipeOffset = config.horizontalSwipeOffset,
+                verticalSwipeOffset = config.verticalSwipeOffset,
                 width = rawSize[0].toInt(),
                 height = rawSize[1].toInt()
             )
