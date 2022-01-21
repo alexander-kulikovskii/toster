@@ -1,6 +1,7 @@
 package fi.epicbot.toster.model
 
 import fi.epicbot.toster.executor.ShellExecutor
+import fi.epicbot.toster.logger.ShellLogger
 import fi.epicbot.toster.report.Reporter
 import fi.epicbot.toster.report.model.ReportAppInfo
 import fi.epicbot.toster.report.model.ReportDevice
@@ -37,6 +38,7 @@ internal fun Config.makeReport(
     testTime: Long,
     defaultReporter: Reporter,
     shellExecutor: ShellExecutor,
+    shellLogger: ShellLogger,
 ) {
     if (reportConfig.enable.not()) {
         return
@@ -55,6 +57,6 @@ internal fun Config.makeReport(
         reportDevices,
     )
     (listOf(defaultReporter) + reportConfig.customReporters).forEach { reporter ->
-        reporter.makeReport(reportOutput, shellExecutor)
+        reporter.makeReport(reportOutput, shellExecutor, shellLogger)
     }
 }
