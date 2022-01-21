@@ -27,6 +27,10 @@
             android:name="fi.epicbot.toster.samples.SampleLanguageActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name="fi.epicbot.toster.samples.SampleOverdrawActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
