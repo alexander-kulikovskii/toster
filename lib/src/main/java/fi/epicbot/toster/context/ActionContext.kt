@@ -59,4 +59,9 @@ class ActionContext {
     fun runShell(shell: String, name: String = "") {
         actions.add(Action.Shell(shell, name))
     }
+
+    fun openHomeScreen(delayMillis: Long = 0){
+        actions.add(Action.OpenHomeScreen)
+        delay(delayMillis)
+    }
 }
