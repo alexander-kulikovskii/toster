@@ -3,9 +3,10 @@ package fi.epicbot.toster.executor
 import com.lordcodes.turtle.ShellLocation
 import com.lordcodes.turtle.shellRun
 import fi.epicbot.toster.extension.saveForPath
+import fi.epicbot.toster.logger.ShellLogger
 import java.io.File
 
-class ShellExecutor(projectDir: String) {
+class ShellExecutor(projectDir: String, private val logger: ShellLogger) {
 
     internal var workingDir = ShellLocation.CURRENT_WORKING + projectDir.saveForPath()
     private var screenWorkingDir = workingDir
@@ -26,12 +27,14 @@ class ShellExecutor(projectDir: String) {
 
     fun runShellCommand(command: String, fromRootFolder: Boolean = false): String {
         return shellRun(if (fromRootFolder) ShellLocation.CURRENT_WORKING else workingDir) {
-            command("/bin/sh", listOf("-c", command))
+            logger.logCommand("$SH_COMMAND ${listOf("-c", command).joinToString(" ")}")
+            command(SH_COMMAND, listOf("-c", command))
         }
     }
 
     fun runCommandForScreen(command: String, arguments: String): String {
         return shellRun(screenWorkingDir) {
+            logger.logCommand("$command $arguments")
             command(command, arguments.split(" "))
         }
     }
@@ -43,10 +46,19 @@ class ShellExecutor(projectDir: String) {
     ): String {
         return shellRun(workingDirectory) {
             if (clearBefore) {
-                command("/bin/sh", listOf("-c", "rm -rf $path || true"))
+                logger.logCommand(
+                    "$SH_COMMAND ${listOf("-c", "rm -rf $path || true").joinToString(" ")}"
+                )
+                command(SH_COMMAND, listOf("-c", "rm -rf $path || true"))
             }
-            command("mkdir", listOf("-p", path))
+            logger.logCommand("$MKDIR_COMMAND ${listOf("-p", path).joinToString(" ")}")
+            command(MKDIR_COMMAND, listOf("-p", path))
         }
+    }
+
+    private companion object {
+        private const val SH_COMMAND = "/bin/sh"
+        private const val MKDIR_COMMAND = "mkdir"
     }
 }
 

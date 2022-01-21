@@ -9,6 +9,7 @@ import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.executor.android.AndroidExecutor
 import fi.epicbot.toster.executor.android.EmulatorExecutor
 import fi.epicbot.toster.extension.saveForPath
+import fi.epicbot.toster.logger.DefaultLogger
 import fi.epicbot.toster.memory.DumpSysParser
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.Config
@@ -51,7 +52,9 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
 
         val startTestTime = System.currentTimeMillis()
         val reportDevices = mutableListOf<ReportDevice>()
-        val shellExecutor = ShellExecutor("/build/toster/${config.applicationName.saveForPath()}")
+        val shellLogger = DefaultLogger()
+        val shellExecutor =
+            ShellExecutor("/build/toster/${config.applicationName.saveForPath()}", shellLogger)
         val dumpSysParser = DumpSysParser()
 
         config.devices.emulators.forEach { emulator ->
@@ -81,7 +84,8 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
             reportDevices,
             endTestTime - startTestTime,
             defaultReporter,
-            shellExecutor
+            shellExecutor,
+            shellLogger,
         )
     }
 })
