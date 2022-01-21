@@ -175,6 +175,16 @@ Run shell script before all screens. For example, you can build a special flavor
 
 Run shell script after all screens. For example, you can send some analytics to the backend or make work on CI.
 
+### Overdraw
+
+To set up overdraw mode for the all screens you can use ` checkOverdraw()` function.
+
+Sample output for this mode:
+
+| Normal                                                   | Overdraw                                                   |
+|----------------------------------------------------------|------------------------------------------------------------|
+| <img src="docs/images/overdraw/normal.png" width = 250/> | <img src="docs/images/overdraw/overdraw.png" width = 250/> |
+
 ## Screen
 
 ### Name
