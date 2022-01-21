@@ -80,8 +80,12 @@ class ConfigContext {
         config.deleteAndInstallApk = false
     }
 
-    fun setSwipeOffset(offsetPx: Int, offsetFactor: Double) {
-        config.swipeOffset = SwipeOffset(offsetPx, offsetFactor)
+    fun setHorizontalSwipeOffset(offsetPx: Int, offsetFactor: Double) {
+        config.horizontalSwipeOffset = SwipeOffset.HorizontalSwipeOffset(offsetPx, offsetFactor)
+    }
+
+    fun setVerticalSwipeOffset(offsetPx: Int, offsetFactor: Double) {
+        config.verticalSwipeOffset = SwipeOffset.VerticalSwipeOffset(offsetPx, offsetFactor)
     }
 
     /**

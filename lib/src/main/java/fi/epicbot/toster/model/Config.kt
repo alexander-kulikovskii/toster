@@ -24,7 +24,14 @@ class Config(
     var permissions: Permissions = Permissions(),
     var testTimeoutMillis: Long = 600 * 1000L,
     var deleteAndInstallApk: Boolean = true,
-    var swipeOffset: SwipeOffset = SwipeOffset(offsetPx = 220, offsetFactor = 0.08),
+    var horizontalSwipeOffset: SwipeOffset.HorizontalSwipeOffset = SwipeOffset.HorizontalSwipeOffset(
+        offsetPx = 160,
+        offsetFactor = 0.05
+    ),
+    var verticalSwipeOffset: SwipeOffset.VerticalSwipeOffset = SwipeOffset.VerticalSwipeOffset(
+        offsetPx = 220,
+        offsetFactor = 0.08
+    ),
     var useDemoMode: Boolean = true
 )
 
