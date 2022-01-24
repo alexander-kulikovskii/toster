@@ -3,6 +3,7 @@ package fi.epicbot.toster.model
 import fi.epicbot.toster.executor.ActionExecutor
 import fi.epicbot.toster.extension.saveForPath
 import fi.epicbot.toster.report.model.Common
+import fi.epicbot.toster.report.model.GfxInfo
 import fi.epicbot.toster.report.model.Memory
 import fi.epicbot.toster.report.model.ReportScreen
 import fi.epicbot.toster.report.model.Screenshot
@@ -26,6 +27,7 @@ sealed class Action {
     data class LongClick(val x: Int, val y: Int, val clickDelayMillis: Long) : Action()
     object OpenHomeScreen : Action()
     data class OpenScreen(val screen: Screen, val params: String) : Action()
+    object ResetGfxInfo : Action()
     data class RevokePermission(val permission: String) : Action()
     data class SendKeyEvent(val keyEvent: String) : Action()
     object SetDemoModeEnable : Action()
@@ -38,6 +40,7 @@ sealed class Action {
     object ShowDemoMode : Action()
     object ShowGpuOverdraw : Action()
     data class Swipe(val swipeMove: SwipeMove) : Action()
+    object TakeGfxInfo : Action()
     object TakeMemoryAllocation : Action()
     data class TakeMemoryHeap(val index: Int) : Action()
     data class TakeScreenshot(val name: String) : Action()
@@ -64,6 +67,7 @@ internal fun Action.title(): String {
         is Action.LongClick -> "Long click to ($x;$y) for $clickDelayMillis ms"
         Action.OpenHomeScreen -> "Open home screen"
         is Action.OpenScreen -> "Start activity" + if (params.isBlank()) "" else " with $params"
+        is Action.ResetGfxInfo -> "Reset gfxinfo"
         is Action.RevokePermission -> "Revoke permission <$permission>"
         is Action.SendKeyEvent -> "Send key event <$keyEvent>"
         Action.SetDemoModeEnable -> "Set demo mode enable"
@@ -76,6 +80,7 @@ internal fun Action.title(): String {
         Action.ShowDemoMode -> "Show demo mode"
         Action.ShowGpuOverdraw -> "Show gpu overdraw"
         is Action.Swipe -> swipeMove.toString()
+        is Action.TakeGfxInfo -> "Take gfxinfo"
         Action.TakeMemoryAllocation -> "Take memory allocation"
         is Action.TakeMemoryHeap -> "Take memory heap <$index>"
         is Action.TakeScreenshot -> "Take screenshot"
@@ -95,6 +100,7 @@ internal suspend fun DescribeSpecContainerContext.runAction(
             when (val reportAction = actionExecutor.execute(action, imagePrefix)) {
                 is Common -> reportScreen.common.add(reportAction)
                 is Memory -> reportScreen.memory.add(reportAction)
+                is GfxInfo -> reportScreen.gfxInfo.add(reportAction)
                 is Screenshot -> reportScreen.screenshots.add(
                     reportAction.copy(pathUrl = "${reportScreen.name.saveForPath()}/${reportAction.pathUrl}")
                 )

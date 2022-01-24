@@ -2,6 +2,7 @@ package fi.epicbot.toster.executor.android
 
 import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.memory.DumpSysParser
+import fi.epicbot.toster.memory.GfxInfoParser
 import fi.epicbot.toster.model.Config
 import kotlinx.coroutines.delay
 
@@ -11,7 +12,8 @@ internal class EmulatorExecutor(
     private val startDelayMillis: Long,
     private val shellExecutor: ShellExecutor,
     private val dumpSysParser: DumpSysParser,
-) : AndroidExecutor(serialName, config = config, shellExecutor, dumpSysParser) {
+    private val gfxInfoParser: GfxInfoParser,
+) : AndroidExecutor(serialName, config = config, shellExecutor, dumpSysParser, gfxInfoParser) {
 
     private val emulatorPath = config.emulatorPath
 

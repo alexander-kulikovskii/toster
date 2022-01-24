@@ -14,4 +14,5 @@ class Screen(
     var shellAfter: String = "",
     var permissions: Permissions = Permissions(),
     var screenshotAsLastAction: Boolean = true,
+    var resetGfxInfoBeforeStart: Boolean = false,
 )

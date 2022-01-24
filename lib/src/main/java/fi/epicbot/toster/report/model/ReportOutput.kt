@@ -22,6 +22,7 @@ class ReportCollage
 class ReportScreen(
     val name: String,
     val common: MutableList<Common> = mutableListOf(),
+    val gfxInfo: MutableList<GfxInfo> = mutableListOf(),
     val memory: MutableList<Memory> = mutableListOf(),
     val screenshots: MutableList<Screenshot> = mutableListOf(),
 )
@@ -49,6 +50,15 @@ data class Memory(
     override val startTime: Long,
     override val endTime: Long,
     val measurements: Map<String, MemoryCell>,
+) : ReportAction()
+
+@Serializable
+data class GfxInfo(
+    override val index: Long,
+    override val name: String,
+    override val startTime: Long,
+    override val endTime: Long,
+    val measurements: Map<String, Double>,
 ) : ReportAction()
 
 @Serializable

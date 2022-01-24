@@ -4,12 +4,14 @@ import fi.epicbot.toster.executor.ActionExecutor
 import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.extension.saveForPath
 import fi.epicbot.toster.memory.DumpSysParser
+import fi.epicbot.toster.memory.GfxInfoParser
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.SwipeMove
 import fi.epicbot.toster.model.title
 import fi.epicbot.toster.model.toMove
 import fi.epicbot.toster.report.model.Common
+import fi.epicbot.toster.report.model.GfxInfo
 import fi.epicbot.toster.report.model.Memory
 import fi.epicbot.toster.report.model.ReportAction
 import fi.epicbot.toster.report.model.Screenshot
@@ -22,6 +24,7 @@ internal open class AndroidExecutor(
     private val config: Config,
     private val shellExecutor: ShellExecutor,
     private val dumpSysParser: DumpSysParser,
+    private val gfxInfoParser: GfxInfoParser,
 ) : ActionExecutor {
 
     private val apkPackage = config.applicationPackageName
@@ -44,6 +47,9 @@ internal open class AndroidExecutor(
         }
         if (action is Action.TakeScreenshot) {
             return takeScreenshot(action, imagePrefix)
+        }
+        if (action is Action.TakeGfxInfo) {
+            return takeGfxInfo(action)
         }
 
         val startTime = System.currentTimeMillis()
@@ -94,6 +100,7 @@ internal open class AndroidExecutor(
             is Action.ShellBeforeAllScreens -> action.shell.shell()
             is Action.ShellBeforeScreen -> action.shell.shell()
             is Action.Swipe -> swipe(action.swipeMove)
+            Action.ResetGfxInfo -> "dumpsys gfxinfo $apkPackage --reset"
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
         val endTime = System.currentTimeMillis()
@@ -126,6 +133,22 @@ internal open class AndroidExecutor(
 
         val endTime = System.currentTimeMillis()
         return Memory(
+            index = actionIndex++,
+            name = action.title(),
+            measurements = measurements,
+            startTime = startTime,
+            endTime = endTime,
+        )
+    }
+
+    private fun takeGfxInfo(action: Action.TakeGfxInfo): GfxInfo {
+        val startTime = System.currentTimeMillis()
+
+        val rawMemInfo = "dumpsys gfxinfo $apkPackage".adbShell()
+        val measurements = gfxInfoParser.parse(rawMemInfo)
+
+        val endTime = System.currentTimeMillis()
+        return GfxInfo(
             index = actionIndex++,
             name = action.title(),
             measurements = measurements,

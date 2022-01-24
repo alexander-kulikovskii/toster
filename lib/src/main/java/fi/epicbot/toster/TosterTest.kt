@@ -11,6 +11,7 @@ import fi.epicbot.toster.executor.android.EmulatorExecutor
 import fi.epicbot.toster.extension.saveForPath
 import fi.epicbot.toster.logger.DefaultLogger
 import fi.epicbot.toster.memory.DumpSysParser
+import fi.epicbot.toster.memory.GfxInfoParser
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.FontScale
@@ -56,6 +57,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
         val shellExecutor =
             ShellExecutor("/build/toster/${config.applicationName.saveForPath()}", shellLogger)
         val dumpSysParser = DumpSysParser()
+        val gfxInfoParser = GfxInfoParser()
 
         config.devices.emulators.forEach { emulator ->
             val actionExecutor = EmulatorExecutor(
@@ -64,6 +66,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                 startDelayMillis = emulator.startDelayMillis,
                 shellExecutor = shellExecutor,
                 dumpSysParser = dumpSysParser,
+                gfxInfoParser = gfxInfoParser,
             )
             runScreens(actionExecutor, config, screens, reportDevices)
         }
@@ -73,6 +76,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                 config = config,
                 shellExecutor = shellExecutor,
                 dumpSysParser = dumpSysParser,
+                gfxInfoParser = gfxInfoParser,
             )
             runScreens(actionExecutor, config, screens, reportDevices)
         }
@@ -208,6 +212,13 @@ private suspend fun DescribeSpecContainerContext.runScreen(
         config.fontScale
     }
     runAction(Action.SetFontScale(fontScale), actionExecutor, reportScreen, imagePrefix)
+    runAction(
+        Action.ResetGfxInfo,
+        actionExecutor,
+        reportScreen,
+        imagePrefix,
+        screen.resetGfxInfoBeforeStart,
+    )
 
     val activityParamsAsString = screen.activityParams.toStringParams()
     runAction(

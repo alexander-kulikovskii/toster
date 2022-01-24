@@ -48,6 +48,14 @@ class ActionContext {
         actions.add(Action.TakeMemoryAllocation)
     }
 
+    fun resetGfxInfo() {
+        actions.add(Action.ResetGfxInfo)
+    }
+
+    fun takeGfxInfo() {
+        actions.add(Action.TakeGfxInfo)
+    }
+
     fun runShell(shell: String, name: String = "") {
         actions.add(Action.Shell(shell, name))
     }
