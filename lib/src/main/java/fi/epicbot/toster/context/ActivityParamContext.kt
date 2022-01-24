@@ -7,6 +7,14 @@ import fi.epicbot.toster.model.ActivityParam
 class ActivityParamContext {
     internal val activityParams: MutableList<ActivityParam> = mutableListOf()
 
+    fun boolean(name: String, value: Boolean) {
+        activityParams.add(ActivityParam.BooleanActivityParam(name, value))
+    }
+
+    fun float(name: String, value: Float) {
+        activityParams.add(ActivityParam.FloatActivityParam(name, value))
+    }
+
     fun integer(name: String, value: Int) {
         activityParams.add(ActivityParam.IntegerActivityParam(name, value))
     }
