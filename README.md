@@ -82,6 +82,7 @@ class DemoTest : TosterTest(
                grand("PERMISSION_2")
            }
            fontScale(FontScale.SMALL)
+           resetGfxInfoBeforeStart()
            actions {
                delay(1000L)
                click(x, y)
@@ -89,6 +90,7 @@ class DemoTest : TosterTest(
                takeMemoryAllocation()
                takeScreenshot("name")
                runShell("COMMAND")
+               takeGfxInfo()
            }
        }
    }

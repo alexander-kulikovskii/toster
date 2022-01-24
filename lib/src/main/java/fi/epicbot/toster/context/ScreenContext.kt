@@ -61,4 +61,8 @@ class ScreenContext {
     fun disableScreenshotAsLastAction() {
         screen.screenshotAsLastAction = false
     }
+
+    fun resetGfxInfoBeforeStart() {
+        screen.resetGfxInfoBeforeStart = true
+    }
 }
