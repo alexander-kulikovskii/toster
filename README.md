@@ -74,6 +74,8 @@ class DemoTest : TosterTest(
                integer("int_value", 42)
                string("string_value", "42")
                long("long_value", 42L)
+               boolean("boolean_value", true)
+               float("float_value", 42.0f)
            }
            permissions {
                revoke("PERMISSION_1")
