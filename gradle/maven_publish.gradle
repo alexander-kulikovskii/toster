@@ -1,0 +1,70 @@
+apply plugin: 'maven-publish'
+
+final LIB_RELEASE_PATH = '/outputs/aar/lib-release.aar'
+final UNSPECIFIED = 'unspecified'
+final ARTIFACT_ID = 'artifactId'
+final GROUP_ID = 'groupId'
+final EXCLUSIONS = 'exclusions'
+final EXCLUSION = 'exclusion'
+
+ext {
+    groupId = 'fi.epicbot'
+    artifactId = 'toster'
+    version = '0.2.0'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId project.ext.groupId
+            artifactId project.ext.artifactId
+            version project.ext.version
+            artifact("$buildDir$LIB_RELEASE_PATH")
+
+            pom.withXml {
+                final dependenciesNode = asNode().appendNode('dependencies')
+
+                ext.invalidDependency = { Dependency dep ->
+                    return dep.group == null || dep.version == null || dep.name == null || dep.name == UNSPECIFIED
+                }
+
+                ext.addDependency = { Dependency dep, String scope ->
+                    if (invalidDependency(dep))
+                        return
+
+                    final dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode(ARTIFACT_ID, dep.name)
+
+                    final depGroupId = (dep.version == UNSPECIFIED) ? project.ext.pomGroupID : dep.group
+                    final depVersion = (dep.version == UNSPECIFIED) ? project.ext.pomVersion : dep.version
+
+                    dependencyNode.appendNode(GROUP_ID, depGroupId)
+                    dependencyNode.appendNode('version', depVersion)
+                    dependencyNode.appendNode('scope', scope)
+
+                    def artifactsList = dep.properties['artifacts']
+                    if (artifactsList != null && artifactsList.size() > 0) {
+                        final artifact = artifactsList[0]
+                        dependencyNode.appendNode('type', artifact.getType())
+                    }
+
+                    if (!dep.transitive) {
+                        final exclusionNode = dependencyNode.appendNode(EXCLUSIONS).appendNode(EXCLUSION)
+                        exclusionNode.appendNode(GROUP_ID, '*')
+                        exclusionNode.appendNode(ARTIFACT_ID, '*')
+                    } else if (!dep.properties.excludeRules.empty) {
+                        final exclusions = dependencyNode.appendNode(EXCLUSIONS)
+                        dep.properties.excludeRules.each { ExcludeRule rule ->
+                            final exclusionNode = exclusions.appendNode(EXCLUSION)
+                            exclusionNode.appendNode(GROUP_ID, rule.group ?: '*')
+                            exclusionNode.appendNode(ARTIFACT_ID, rule.module ?: '*')
+                        }
+                    }
+                }
+
+                configurations.api.getDependencies().each { addDependency(it, "compile") }
+                configurations.implementation.getDependencies().each { addDependency(it, "runtime") }
+            }
+        }
+    }
+}
