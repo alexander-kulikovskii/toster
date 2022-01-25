@@ -35,7 +35,7 @@ class Config(
     var useDemoMode: Boolean = true
 )
 
-data class Overdraw(
+class Overdraw(
     val check: Boolean = false,
     val threshold: Double = 0.0,
 )

@@ -17,7 +17,7 @@ sealed class SwipeOffset(
     ) : SwipeOffset(offsetPx, offsetFactor)
 }
 
-data class Move(
+class Move(
     val xFrom: Int,
     val yFrom: Int,
     val xTo: Int,
@@ -29,7 +29,7 @@ sealed class SwipeMove {
     object RightToLeft : SwipeMove()
     object TopToBottom : SwipeMove()
     object BottomToTop : SwipeMove()
-    data class Custom(val move: Move) : SwipeMove()
+    class Custom(val move: Move) : SwipeMove()
 
     override fun toString(): String {
         return when (this) {

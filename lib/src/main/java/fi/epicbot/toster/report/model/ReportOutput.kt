@@ -36,7 +36,7 @@ sealed class ReportAction {
 }
 
 @Serializable
-data class Common(
+class Common(
     override val index: Long,
     override val name: String,
     override val startTime: Long,
@@ -44,7 +44,7 @@ data class Common(
 ) : ReportAction()
 
 @Serializable
-data class Memory(
+class Memory(
     override val index: Long,
     override val name: String,
     override val startTime: Long,
@@ -53,7 +53,7 @@ data class Memory(
 ) : ReportAction()
 
 @Serializable
-data class GfxInfo(
+class GfxInfo(
     override val index: Long,
     override val name: String,
     override val startTime: Long,
@@ -72,7 +72,7 @@ data class Screenshot(
 ) : ReportAction()
 
 @Serializable
-data class MemoryCell(
+class MemoryCell(
     val memory: Long,
     val heapSize: Long,
     val heapAlloc: Long,

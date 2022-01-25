@@ -60,7 +60,7 @@ class DumpSysParserTest : BehaviorSpec({
                 map.size shouldBe 3
             }
             Then("Check Native Heap") {
-                map["Native Heap"] shouldBe MemoryCell(
+                map["Native Heap"] cellShouldBe MemoryCell(
                     memory = 10468,
                     heapSize = 20480,
                     heapAlloc = 14462,
@@ -68,7 +68,7 @@ class DumpSysParserTest : BehaviorSpec({
                 )
             }
             Then("Check Dalvik Heap") {
-                map["Dalvik Heap"] shouldBe MemoryCell(
+                map["Dalvik Heap"] cellShouldBe MemoryCell(
                     memory = 34340,
                     heapSize = 62436,
                     heapAlloc = 53883,
@@ -76,7 +76,7 @@ class DumpSysParserTest : BehaviorSpec({
                 )
             }
             Then("Check TOTAL") {
-                map["TOTAL"] shouldBe MemoryCell(
+                map["TOTAL"] cellShouldBe MemoryCell(
                     memory = 216524,
                     heapSize = 82916,
                     heapAlloc = 68345,
