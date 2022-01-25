@@ -25,6 +25,7 @@ sealed class Action {
     object HideGpuOverdraw : Action()
     class InstallApk(val apkPath: String) : Action()
     class LongClick(val x: Int, val y: Int, val clickDelayMillis: Long) : Action()
+    object OpenAppAgain : Action()
     object OpenHomeScreen : Action()
     class OpenScreen(val screen: Screen, val params: String) : Action()
     object ResetGfxInfo : Action()
@@ -65,6 +66,7 @@ internal fun Action.title(): String {
         Action.HideGpuOverdraw -> "Hide gpu overdraw"
         is Action.InstallApk -> "Install apk"
         is Action.LongClick -> "Long click to ($x;$y) for $clickDelayMillis ms"
+        Action.OpenAppAgain -> "Open app again"
         Action.OpenHomeScreen -> "Open home screen"
         is Action.OpenScreen -> "Start activity" + if (params.isBlank()) "" else " with $params"
         is Action.ResetGfxInfo -> "Reset gfxinfo"

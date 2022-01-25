@@ -101,6 +101,7 @@ internal open class AndroidExecutor(
             is Action.ShellBeforeScreen -> action.shell.shell()
             is Action.Swipe -> swipe(action.swipeMove)
             Action.ResetGfxInfo -> "dumpsys gfxinfo $apkPackage --reset"
+            is Action.OpenAppAgain -> "monkey -p $apkPackage -c android.intent.category.LAUNCHER 1".adbShell()
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
         val endTime = System.currentTimeMillis()

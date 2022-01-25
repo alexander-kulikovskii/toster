@@ -60,8 +60,13 @@ class ActionContext {
         actions.add(Action.Shell(shell, name))
     }
 
-    fun openHomeScreen(delayMillis: Long = 0){
+    fun openHomeScreen(delayMillis: Long = 0) {
         actions.add(Action.OpenHomeScreen)
+        delay(delayMillis)
+    }
+
+    fun openAppAgain(delayMillis: Long = 0) {
+        actions.add(Action.OpenAppAgain)
         delay(delayMillis)
     }
 }
