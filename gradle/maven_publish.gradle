@@ -10,7 +10,7 @@ final EXCLUSION = 'exclusion'
 ext {
     groupId = 'fi.epicbot'
     artifactId = 'toster'
-    version = '0.2.0'
+    version = '0.2.1'
 }
 
 publishing {
