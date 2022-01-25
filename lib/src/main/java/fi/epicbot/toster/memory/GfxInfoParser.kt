@@ -7,19 +7,21 @@ internal class GfxInfoParser {
         val result: HashMap<String, Double> = hashMapOf()
         findParams.forEach { paramToFind ->
             val line = rawMemoryInfo.findLine(paramToFind)
-            val infoName = paramToFind.prepareName()
+            line?.let {
+                val infoName = paramToFind.prepareName()
 
-            if (paramToFind in GFX_PARAM_LIST_WITH_PERCENT) {
-                val combinedData = line.second.split(" (")
-                result[infoName] = combinedData[0].toDouble()
-                result[infoName + PERCENT_TITLE] = combinedData[1].replace("%)", "").toDouble()
-            } else {
-                val (key, value) = if (MS_TITLE in line.second) {
-                    infoName + MS_UPPER_TITLE to line.second.replace(MS_TITLE, "")
+                if (paramToFind in GFX_PARAM_LIST_WITH_PERCENT) {
+                    val combinedData = line.second.split(" (")
+                    result[infoName] = combinedData[0].toDouble()
+                    result[infoName + PERCENT_TITLE] = combinedData[1].replace("%)", "").toDouble()
                 } else {
-                    infoName to line.second
+                    val (key, value) = if (MS_TITLE in line.second) {
+                        infoName + MS_UPPER_TITLE to line.second.replace(MS_TITLE, "")
+                    } else {
+                        infoName to line.second
+                    }
+                    result[key] = value.toDouble()
                 }
-                result[key] = value.toDouble()
             }
         }
         return result
@@ -33,11 +35,15 @@ internal class GfxInfoParser {
         return rawInfoName[0].toLowerCase() + rawInfoName.substring(1)
     }
 
-    private fun String.findLine(name: String): Pair<String, String> {
-        val start = this.indexOf(name)
-        val end = this.indexOf("\n", start + 1)
-        val line = this.substring(start, end).split(": ")
-        return line[0] to line[1]
+    private fun String.findLine(name: String): Pair<String, String>? {
+        return try {
+            val start = this.indexOf(name)
+            val end = this.indexOf("\n", start + 1)
+            val line = this.substring(start, end).split(": ")
+            line[0] to line[1]
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun String.capitalizeWords() =
