@@ -3,6 +3,7 @@ package fi.epicbot.toster.memory
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 
+@Suppress("MaxLineLength")
 private val rawData = """
 Applications Graphics Acceleration Info:
 Uptime: 314436624 Realtime: 1105003132
