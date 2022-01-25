@@ -1,5 +1,5 @@
 package fi.epicbot.toster.model
 
-data class Phone(
+class Phone(
     val uuid: String,
 )

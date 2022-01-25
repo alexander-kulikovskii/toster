@@ -1,6 +1,6 @@
 package fi.epicbot.toster.model
 
-data class Devices(
+class Devices(
     val emulators: List<Emulator> = emptyList(),
     val phones: List<Phone> = emptyList(),
 )
