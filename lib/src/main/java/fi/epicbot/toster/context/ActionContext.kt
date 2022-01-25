@@ -6,6 +6,7 @@ import fi.epicbot.toster.model.Move
 import fi.epicbot.toster.model.SwipeMove
 
 @TosterDslMarker
+@Suppress("TooManyFunctions")
 class ActionContext {
     internal val actions: MutableList<Action> = mutableListOf()
 
