@@ -4,7 +4,7 @@ import fi.epicbot.toster.report.model.MemoryCell
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 
-val rawData = """
+private val rawData = """
 ** MEMINFO in pid 18227 [com.google.android.apps.maps] **
                    Pss  Private  Private  Swapped     Heap     Heap     Heap
                  Total    Dirty    Clean    Dirty     Size    Alloc     Free
