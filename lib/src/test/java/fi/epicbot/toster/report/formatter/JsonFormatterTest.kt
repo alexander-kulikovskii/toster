@@ -134,6 +134,8 @@ private val REPORT_FULL_PRETTY = """
                             "endTime": 1
                         }
                     ],
+                    "gfxInfo": [
+                    ],
                     "memory": [
                         {
                             "index": 1,
@@ -205,6 +207,12 @@ private val REPORT_FULL_PRETTY = """
                             "startTime": 24,
                             "endTime": 100
                         }
+                    ],
+                    "gfxInfo": [
+                    ],
+                    "memory": [
+                    ],
+                    "screenshots": [
                     ]
                 }
             ],

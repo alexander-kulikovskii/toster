@@ -7,7 +7,10 @@ import kotlinx.serialization.json.Json
 class JsonFormatter(private val prettyPrintJson: Boolean) : ReportFormatter {
 
     override fun format(reportOutput: ReportOutput): String {
-        val formatter = Json { prettyPrint = prettyPrintJson }
+        val formatter = Json {
+            prettyPrint = prettyPrintJson
+            encodeDefaults = true
+        }
         return formatter.encodeToString(reportOutput)
     }
 }
