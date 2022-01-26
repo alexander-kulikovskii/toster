@@ -16,6 +16,7 @@ class Config(
     var fontScale: FontScale = FontScale.DEFAULT,
     var checkOverdraw: Overdraw = Overdraw(),
     var reportConfig: ReportConfig = ReportConfig(),
+    var shellLoggerConfig: ShellLoggerConfig = ShellLoggerConfig(),
     var collage: Collage = Collage(),
     var clearDataBeforeEachRun: Boolean = false,
     var devices: Devices = Devices(),

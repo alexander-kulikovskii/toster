@@ -83,7 +83,10 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
 
         val endTestTime = System.currentTimeMillis()
 
-        val defaultReporter = DefaultReporter(JsonFormatter(prettyPrintJson = true))
+        val defaultReporter = DefaultReporter(
+            JsonFormatter(prettyPrintJson = true),
+            config.shellLoggerConfig,
+        )
         config.makeReport(
             reportDevices,
             endTestTime - startTestTime,
