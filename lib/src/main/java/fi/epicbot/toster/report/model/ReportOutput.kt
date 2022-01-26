@@ -9,8 +9,16 @@ class ReportOutput(
 )
 
 @Serializable
+class Device(
+    val type: String,
+    val name: String,
+) {
+    override fun toString(): String = "$type <$name>"
+}
+
+@Serializable
 class ReportDevice(
-    val deviceName: String,
+    val device: Device,
     val reportScreens: List<ReportScreen>,
     val collage: ReportCollage,
 )

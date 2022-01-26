@@ -11,6 +11,7 @@ import fi.epicbot.toster.model.SwipeMove
 import fi.epicbot.toster.model.title
 import fi.epicbot.toster.model.toMove
 import fi.epicbot.toster.report.model.Common
+import fi.epicbot.toster.report.model.Device
 import fi.epicbot.toster.report.model.GfxInfo
 import fi.epicbot.toster.report.model.Memory
 import fi.epicbot.toster.report.model.ReportAction
@@ -30,7 +31,7 @@ internal open class AndroidExecutor(
     private val apkPackage = config.applicationPackageName
     private var actionIndex = 0L
 
-    override fun executorName(): String = "Phone <$serialName>"
+    override fun executor() = Device(type = "Phone", name = serialName)
 
     override suspend fun prepareEnvironment() {
         // Do nothing
@@ -61,7 +62,7 @@ internal open class AndroidExecutor(
             Action.ShowDemoMode -> showDemoMode()
             Action.HideDemoMode -> "am broadcast -a com.android.systemui.demo -e command exit".adbShell()
             is Action.OpenScreen -> {
-                shellExecutor.setScreenDirAndMakeIt(action.screen.name)
+                shellExecutor.setScreenDirAndMakeIt(serialName.saveForPath() + "/" + action.screen.name)
                 val screenUrl = if (action.screen.url.isNotBlank()) action.screen.url else
                     "${config.applicationPackageName}.${action.screen.shortUrl}"
                 "am start -n $apkPackage/$screenUrl${action.params}".adbShell()

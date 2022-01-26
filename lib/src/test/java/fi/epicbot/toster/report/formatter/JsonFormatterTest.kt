@@ -1,6 +1,7 @@
 package fi.epicbot.toster.report.formatter
 
 import fi.epicbot.toster.report.model.Common
+import fi.epicbot.toster.report.model.Device
 import fi.epicbot.toster.report.model.Memory
 import fi.epicbot.toster.report.model.MemoryCell
 import fi.epicbot.toster.report.model.ReportAppInfo
@@ -35,7 +36,7 @@ private val reportFull = ReportOutput(
     ReportAppInfo(appName = "Test", testTime = 10L),
     devices = mutableListOf(
         ReportDevice(
-            deviceName = "device",
+            device = Device(type = "type", name = "name"),
             reportScreens = listOf(
                 ReportScreen(
                     name = "screen",
@@ -86,7 +87,7 @@ private val reportFull = ReportOutput(
             collage = ReportCollage()
         ),
         ReportDevice(
-            deviceName = "device 2",
+            device = Device(type = "type", name = "name 2"),
             reportScreens = listOf(
                 ReportScreen(
                     name = "screen 2",
@@ -122,7 +123,10 @@ private val REPORT_FULL_PRETTY = """
     },
     "devices": [
         {
-            "deviceName": "device",
+            "device": {
+                "type": "type",
+                "name": "name"
+            },
             "reportScreens": [
                 {
                     "name": "screen",
@@ -196,7 +200,10 @@ private val REPORT_FULL_PRETTY = """
             }
         },
         {
-            "deviceName": "device 2",
+            "device": {
+                "type": "type",
+                "name": "name 2"
+            },
             "reportScreens": [
                 {
                     "name": "screen 2",

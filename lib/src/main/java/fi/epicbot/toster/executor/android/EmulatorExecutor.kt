@@ -4,6 +4,7 @@ import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.memory.DumpSysParser
 import fi.epicbot.toster.memory.GfxInfoParser
 import fi.epicbot.toster.model.Config
+import fi.epicbot.toster.report.model.Device
 import kotlinx.coroutines.delay
 
 internal class EmulatorExecutor(
@@ -17,7 +18,7 @@ internal class EmulatorExecutor(
 
     private val emulatorPath = config.emulatorPath
 
-    override fun executorName(): String = "Emulator <$serialName>"
+    override fun executor() = Device(type = "Emulator", name = serialName)
 
     override suspend fun prepareEnvironment() {
         startEmulator(serialName, EMULATOR_PORT)
