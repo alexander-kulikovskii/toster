@@ -102,6 +102,7 @@ internal open class AndroidExecutor(
             is Action.Swipe -> swipe(action.swipeMove)
             Action.ResetGfxInfo -> "dumpsys gfxinfo $apkPackage --reset".adbShell()
             is Action.OpenAppAgain -> "monkey -p $apkPackage -c android.intent.category.LAUNCHER 1".adbShell()
+            Action.CloseAppsInTray -> closeAppsInTray()
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
         val endTime = System.currentTimeMillis()
@@ -177,6 +178,14 @@ internal open class AndroidExecutor(
             prefix = imagePrefix,
             pathUrl = "$imagePrefix/$screenshotFileName.png"
         )
+    }
+
+    private fun closeAppsInTray() {
+        val appList =
+            "dumpsys window a | grep \"/\" | cut -d \"{\" -f2 | cut -d \"/\" -f1 | cut -d \" \" -f2".adbShell()
+        appList.split("\n").forEach { app ->
+            "am force-stop $app".adbShell()
+        }
     }
 
     private fun showDemoMode() {

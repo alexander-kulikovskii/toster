@@ -15,6 +15,7 @@ sealed class Action {
     class Click(val x: Int, val y: Int) : Action()
     object ClickBack : Action()
     object CloseApp : Action()
+    object CloseAppsInTray : Action()
     object CloseKeyboard : Action()
     class CreateDir(val dir: String) : Action()
     class Delay(val delayMillis: Long) : Action()
@@ -56,6 +57,7 @@ internal fun Action.title(): String {
         is Action.Click -> "Click to ($x;$y)"
         Action.ClickBack -> TODO()
         Action.CloseApp -> "Close app"
+        Action.CloseAppsInTray -> "Close apps in tray"
         Action.CloseKeyboard -> "Close keyboard"
         is Action.CreateDir -> "Create dir"
         is Action.Delay -> "Delay for <$delayMillis> ms"
