@@ -2,6 +2,7 @@ package fi.epicbot.toster.report
 
 import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.logger.ShellLogger
+import fi.epicbot.toster.model.ShellLoggerConfig
 import fi.epicbot.toster.report.formatter.ReportFormatter
 import fi.epicbot.toster.report.model.ReportAppInfo
 import fi.epicbot.toster.report.model.ReportOutput
@@ -14,7 +15,10 @@ class DefaultReporterTest : BehaviorSpec({
     Given("Default reporter") {
         val mockedReporter = mockk<ReportFormatter>(relaxed = true)
         every { mockedReporter.format(reportOutput) } returns REPORT_OUTPUT
-        val defaultReporter = DefaultReporter(mockedReporter)
+        val mockedShellLoggerConfig = mockk<ShellLoggerConfig>(relaxed = true)
+        every { mockedShellLoggerConfig.enable } returns true
+        every { mockedShellLoggerConfig.enableTimestamp } returns true
+        val defaultReporter = DefaultReporter(mockedReporter, mockedShellLoggerConfig)
         val mockedShellExecutor = mockk<ShellExecutor>(relaxed = true)
         val mockedShellLogger = mockk<ShellLogger>(relaxed = true)
         When("make report") {
@@ -35,7 +39,7 @@ class DefaultReporterTest : BehaviorSpec({
             }
             Then("shell logger should be called") {
                 verify {
-                    mockedShellLogger.getAllCommands()
+                    mockedShellLogger.getAllCommands(true)
                 }
             }
         }

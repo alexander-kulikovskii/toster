@@ -45,6 +45,12 @@ class ConfigContext {
         config.reportConfig = report
     }
 
+    fun shellLogger(init: ShellLoggerContext.() -> Unit) {
+        val context = ShellLoggerContext().apply(init)
+        val shellLoggerConfig = context.shellLogger
+        config.shellLoggerConfig = shellLoggerConfig
+    }
+
     fun fontScaleForAll(scale: FontScale) {
         config.fontScale = scale
     }
