@@ -6,6 +6,7 @@ import fi.epicbot.toster.model.Move
 import fi.epicbot.toster.model.SwipeMove
 
 @TosterDslMarker
+@Suppress("TooManyFunctions")
 class ActionContext {
     internal val actions: MutableList<Action> = mutableListOf()
 
@@ -58,5 +59,15 @@ class ActionContext {
 
     fun runShell(shell: String, name: String = "") {
         actions.add(Action.Shell(shell, name))
+    }
+
+    fun openHomeScreen(delayMillis: Long = 0) {
+        actions.add(Action.OpenHomeScreen)
+        delay(delayMillis)
+    }
+
+    fun openAppAgain(delayMillis: Long = 0) {
+        actions.add(Action.OpenAppAgain)
+        delay(delayMillis)
     }
 }
