@@ -65,4 +65,8 @@ class ScreenContext {
     fun resetGfxInfoBeforeStart() {
         screen.resetGfxInfoBeforeStart = true
     }
+
+    fun closeAppsInTrayBeforeStart() {
+        screen.closeAppsInTrayBeforeStart = true
+    }
 }

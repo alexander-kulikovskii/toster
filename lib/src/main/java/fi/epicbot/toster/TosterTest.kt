@@ -179,6 +179,7 @@ private suspend fun DescribeSpecContainerContext.runScreens(
     )
 }
 
+@Suppress("LongMethod")
 private suspend fun DescribeSpecContainerContext.runScreen(
     config: Config,
     actionExecutor: ActionExecutor,
@@ -212,6 +213,13 @@ private suspend fun DescribeSpecContainerContext.runScreen(
         config.fontScale
     }
     runAction(Action.SetFontScale(fontScale), actionExecutor, reportScreen, imagePrefix)
+    runAction(
+        Action.CloseAppsInTray,
+        actionExecutor,
+        reportScreen,
+        imagePrefix,
+        screen.closeAppsInTrayBeforeStart,
+    )
     runAction(
         Action.ResetGfxInfo,
         actionExecutor,

@@ -215,6 +215,10 @@ Same as above. Runs after this screen.
 
 Clear application data only before this screen.
 
+### Clear apps in tray
+
+Clear all apps in tray before this screen
+
 ###
 
 ## Output reports

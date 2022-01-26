@@ -15,4 +15,5 @@ class Screen(
     var permissions: Permissions = Permissions(),
     var screenshotAsLastAction: Boolean = true,
     var resetGfxInfoBeforeStart: Boolean = false,
+    var closeAppsInTrayBeforeStart: Boolean = false,
 )
