@@ -1,6 +1,7 @@
 package fi.epicbot.toster.model
 
 import fi.epicbot.toster.executor.ShellExecutor
+import fi.epicbot.toster.extension.saveForPath
 import fi.epicbot.toster.logger.ShellLogger
 import fi.epicbot.toster.report.Reporter
 import fi.epicbot.toster.report.model.ReportAppInfo
@@ -52,9 +53,10 @@ internal fun Config.makeReport(
         return
     }
     reportDevices.forEach { reportDevice ->
+        val deviceName = reportDevice.device.name.saveForPath()
         reportDevice.reportScreens.forEach { reportScreen ->
             val tmp = reportScreen.screenshots.map { screenshot ->
-                screenshot.copy(pathUrl = "${shellExecutor.workingDir}/${screenshot.pathUrl}")
+                screenshot.copy(pathUrl = "${shellExecutor.workingDir}/$deviceName/${screenshot.pathUrl}")
             }
             reportScreen.screenshots.clear()
             reportScreen.screenshots.addAll(tmp)

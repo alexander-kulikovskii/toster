@@ -154,7 +154,7 @@ private suspend fun DescribeSpecContainerContext.runScreens(
     config: Config,
     screens: List<Screen>,
     reportDevices: MutableList<ReportDevice>,
-) = describe(actionExecutor.executorName()) {
+) = describe(actionExecutor.executor().toString()) {
 
     val reportScreens: MutableList<ReportScreen> = mutableListOf()
     val beforeScreenReport = runBeforeScreens(actionExecutor, config)
@@ -175,7 +175,7 @@ private suspend fun DescribeSpecContainerContext.runScreens(
 
     reportDevices.add(
         ReportDevice(
-            deviceName = actionExecutor.executorName(),
+            device = actionExecutor.executor(),
             reportScreens = listOf(beforeScreenReport) + reportScreens + listOf(afterScreenReport),
             collage = ReportCollage(),
         )
