@@ -1,10 +1,12 @@
 package fi.epicbot.toster.logger
 
-internal class DefaultLogger : ShellLogger {
+import fi.epicbot.toster.time.TimeProvider
+
+internal class DefaultLogger(private val timeProvider: TimeProvider) : ShellLogger {
     private val commands = mutableListOf<CommandRecord>()
 
     override fun logCommand(command: String) {
-        commands.add(CommandRecord(System.currentTimeMillis(), command))
+        commands.add(CommandRecord(timeProvider.getTimeMillis(), command))
     }
 
     override fun getAllCommands(timestampEnabled: Boolean): String {
