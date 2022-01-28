@@ -30,6 +30,14 @@ jobs:
         with:
           files: lib/build/test-results/**/*.xml
 
+      - name: Run Coverage task
+        run: ./gradlew koverReport
+
+      - name: Public Coverage reports
+        uses: codecov/codecov-action@v2
+        with:
+          files: build/reports/kover/report.xml
+
   build-dsl:
     needs: [unit-tests]
     runs-on: ubuntu-latest
