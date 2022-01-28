@@ -4,6 +4,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.19.0"
     id("kotlinx-serialization")
     id ("pl.droidsonroids.pitest")
+    id("org.jetbrains.kotlinx.kover") version "0.4.2"
 }
 
 dependencies {
