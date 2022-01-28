@@ -1,6 +1,7 @@
 [![](https://jitpack.io/v/by.epicbot/toster.svg)](https://jitpack.io/#by.epicbot/toster)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build](https://github.com/alexander-kulikovskii/toster/actions/workflows/build_dsl.yml/badge.svg)](https://github.com/alexander-kulikovskii/toster/actions/workflows/build_dsl.yml)
+[![codecov.io](https://codecov.io/github/alexander-kulikovskii/toster/coverage.svg?branch=main)](https://codecov.io/github/alexander-kulikovskii/toster?branch=main)
 
 # toster
 
