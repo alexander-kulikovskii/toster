@@ -24,6 +24,7 @@ import fi.epicbot.toster.report.formatter.JsonFormatter
 import fi.epicbot.toster.report.model.ReportCollage
 import fi.epicbot.toster.report.model.ReportDevice
 import fi.epicbot.toster.report.model.ReportScreen
+import fi.epicbot.toster.time.DefaultTimeProvider
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.core.spec.style.scopes.DescribeSpecContainerContext
 
@@ -50,10 +51,10 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
     timeout = config.testTimeoutMillis
 
     describe(config.applicationName) {
-
-        val startTestTime = System.currentTimeMillis()
+        val timeProvider = DefaultTimeProvider()
+        val startTestTime = timeProvider.getTimeMillis()
         val reportDevices = mutableListOf<ReportDevice>()
-        val shellLogger = DefaultLogger()
+        val shellLogger = DefaultLogger(timeProvider)
         val shellExecutor =
             ShellExecutor("/build/toster/${config.applicationName.saveForPath()}", shellLogger)
         val dumpSysParser = DumpSysParser()
@@ -67,6 +68,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                 shellExecutor = shellExecutor,
                 dumpSysParser = dumpSysParser,
                 gfxInfoParser = gfxInfoParser,
+                timeProvider = timeProvider,
             )
             runScreens(actionExecutor, config, screens, reportDevices)
         }
@@ -77,11 +79,12 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                 shellExecutor = shellExecutor,
                 dumpSysParser = dumpSysParser,
                 gfxInfoParser = gfxInfoParser,
+                timeProvider = timeProvider,
             )
             runScreens(actionExecutor, config, screens, reportDevices)
         }
 
-        val endTestTime = System.currentTimeMillis()
+        val endTestTime = timeProvider.getTimeMillis()
 
         val defaultReporter = DefaultReporter(
             JsonFormatter(prettyPrintJson = true),

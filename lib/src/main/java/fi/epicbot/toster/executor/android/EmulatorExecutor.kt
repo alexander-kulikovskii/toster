@@ -5,8 +5,10 @@ import fi.epicbot.toster.memory.DumpSysParser
 import fi.epicbot.toster.memory.GfxInfoParser
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.report.model.Device
+import fi.epicbot.toster.time.TimeProvider
 import kotlinx.coroutines.delay
 
+@Suppress("LongParameterList")
 internal class EmulatorExecutor(
     private val config: Config,
     private val serialName: String,
@@ -14,7 +16,8 @@ internal class EmulatorExecutor(
     private val shellExecutor: ShellExecutor,
     private val dumpSysParser: DumpSysParser,
     private val gfxInfoParser: GfxInfoParser,
-) : AndroidExecutor(serialName, config = config, shellExecutor, dumpSysParser, gfxInfoParser) {
+    private val timeProvider: TimeProvider,
+) : AndroidExecutor(serialName, config = config, shellExecutor, dumpSysParser, gfxInfoParser, timeProvider) {
 
     private val emulatorPath = config.emulatorPath
 

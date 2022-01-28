@@ -16,6 +16,7 @@ import fi.epicbot.toster.report.model.GfxInfo
 import fi.epicbot.toster.report.model.Memory
 import fi.epicbot.toster.report.model.ReportAction
 import fi.epicbot.toster.report.model.Screenshot
+import fi.epicbot.toster.time.TimeProvider
 import kotlinx.coroutines.delay
 import kotlin.math.max
 
@@ -26,6 +27,7 @@ internal open class AndroidExecutor(
     private val shellExecutor: ShellExecutor,
     private val dumpSysParser: DumpSysParser,
     private val gfxInfoParser: GfxInfoParser,
+    private val timeProvider: TimeProvider,
 ) : ActionExecutor {
 
     private val apkPackage = config.applicationPackageName
@@ -53,7 +55,7 @@ internal open class AndroidExecutor(
             return takeGfxInfo(action)
         }
 
-        val startTime = System.currentTimeMillis()
+        val startTime = timeProvider.getTimeMillis()
         when (action) {
             Action.ClearAppData -> "pm clear -t $apkPackage".adbShell()
             is Action.Click -> "input tap ${action.x} ${action.y}".adbShell()
@@ -106,7 +108,7 @@ internal open class AndroidExecutor(
             Action.CloseAppsInTray -> closeAppsInTray()
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
-        val endTime = System.currentTimeMillis()
+        val endTime = timeProvider.getTimeMillis()
 
         return Common(actionIndex++, action.title(), startTime, endTime)
     }
@@ -129,12 +131,12 @@ internal open class AndroidExecutor(
     }
 
     private fun takeMemoryAllocation(action: Action.TakeMemoryAllocation): Memory {
-        val startTime = System.currentTimeMillis()
+        val startTime = timeProvider.getTimeMillis()
 
         val rawMemInfo = "dumpsys meminfo $apkPackage -d".adbShell()
         val measurements = dumpSysParser.parse(rawMemInfo)
 
-        val endTime = System.currentTimeMillis()
+        val endTime = timeProvider.getTimeMillis()
         return Memory(
             index = actionIndex++,
             name = action.title(),
@@ -145,12 +147,12 @@ internal open class AndroidExecutor(
     }
 
     private fun takeGfxInfo(action: Action.TakeGfxInfo): GfxInfo {
-        val startTime = System.currentTimeMillis()
+        val startTime = timeProvider.getTimeMillis()
 
         val rawMemInfo = "dumpsys gfxinfo $apkPackage".adbShell()
         val measurements = gfxInfoParser.parse(rawMemInfo)
 
-        val endTime = System.currentTimeMillis()
+        val endTime = timeProvider.getTimeMillis()
         return GfxInfo(
             index = actionIndex++,
             name = action.title(),
@@ -161,7 +163,7 @@ internal open class AndroidExecutor(
     }
 
     private fun takeScreenshot(action: Action.TakeScreenshot, imagePrefix: String): Screenshot {
-        val startTime = System.currentTimeMillis()
+        val startTime = timeProvider.getTimeMillis()
 
         shellExecutor.makeDirForScreen("$imagePrefix/")
         "/system/bin/screencap -p $DEVICE_SCREENSHOT_PATH".adbShell()
@@ -170,7 +172,7 @@ internal open class AndroidExecutor(
             if (action.name.saveForPath().isNotBlank()) action.name.saveForPath() else index
         "pull $DEVICE_SCREENSHOT_PATH $imagePrefix/$screenshotFileName.png".adb()
 
-        val endTime = System.currentTimeMillis()
+        val endTime = timeProvider.getTimeMillis()
         return Screenshot(
             index = index,
             name = action.title(),
