@@ -1,6 +1,6 @@
 package fi.epicbot.toster.model
 
-import kotlin.math.max
+import kotlin.math.min
 
 sealed class SwipeOffset(
     val offsetPx: Int,
@@ -87,4 +87,4 @@ internal fun SwipeMove.toMove(
 }
 
 private fun provideOffset(swipeOffset: SwipeOffset, totalValue: Int): Int =
-    max((totalValue * swipeOffset.offsetFactor).toInt(), swipeOffset.offsetPx)
+    min((totalValue * swipeOffset.offsetFactor).toInt(), swipeOffset.offsetPx)

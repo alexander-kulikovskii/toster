@@ -55,7 +55,7 @@ internal fun Action.title(): String {
         Action.ClearAppData -> "Clear app data"
         Action.ClearText -> TODO()
         is Action.Click -> "Click to ($x;$y)"
-        Action.ClickBack -> TODO()
+        Action.ClickBack -> "Click back"
         Action.CloseApp -> "Close app"
         Action.CloseAppsInTray -> "Close apps in tray"
         Action.CloseKeyboard -> "Close keyboard"
