@@ -62,7 +62,7 @@ internal open class AndroidExecutor(
             Action.CloseApp -> "am force-stop $apkPackage".adbShell()
             Action.SetDemoModeEnable -> "settings put global sysui_demo_allowed 1".adbShell()
             Action.ShowDemoMode -> showDemoMode()
-            Action.HideDemoMode -> "am broadcast -a com.android.systemui.demo -e command exit".adbShell()
+            Action.HideDemoMode -> "$SYSTEM_UI_COMMAND exit".adbShell()
             is Action.OpenScreen -> {
                 shellExecutor.setScreenDirAndMakeIt(serialName.saveForPath() + "/" + action.screen.name)
                 val screenUrl = if (action.screen.url.isNotBlank()) action.screen.url else
@@ -104,7 +104,7 @@ internal open class AndroidExecutor(
             is Action.ShellBeforeScreen -> action.shell.shell()
             is Action.Swipe -> swipe(action.swipeMove)
             Action.ResetGfxInfo -> "dumpsys gfxinfo $apkPackage --reset".adbShell()
-            is Action.OpenAppAgain -> "monkey -p $apkPackage -c android.intent.category.LAUNCHER 1".adbShell()
+            Action.OpenAppAgain -> "monkey -p $apkPackage -c android.intent.category.LAUNCHER 1".adbShell()
             Action.CloseAppsInTray -> closeAppsInTray()
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
@@ -193,15 +193,15 @@ internal open class AndroidExecutor(
 
     private fun showDemoMode() {
         // Set the clock to 12:00
-        "am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1200".adbShell()
+        "$SYSTEM_UI_COMMAND clock -e hhmm 1200".adbShell()
         // Set the wifi level to max
-        "am broadcast -a com.android.systemui.demo -e command network -e wifi show -e level 4".adbShell()
+        "$SYSTEM_UI_COMMAND network -e wifi show -e level 4".adbShell()
         // Show the silent volume icon
-        "am broadcast -a com.android.systemui.demo -e command status -e volume vibrate".adbShell()
+        "$SYSTEM_UI_COMMAND status -e volume vibrate".adbShell()
         // Full battery
-        "am broadcast -a com.android.systemui.demo -e command battery -e level 100 -e plugged false".adbShell()
+        "$SYSTEM_UI_COMMAND battery -e level 100 -e plugged false".adbShell()
         // Hide the notification icons
-        "am broadcast -a com.android.systemui.demo -e command notifications -e visible false".adbShell()
+        "$SYSTEM_UI_COMMAND notifications -e visible false".adbShell()
     }
 
     private fun String.makeDir(): String = shellExecutor.makeDir(this)
@@ -214,5 +214,6 @@ internal open class AndroidExecutor(
 
     private companion object {
         private const val DEVICE_SCREENSHOT_PATH = "/sdcard/toster_screenshot_image.png"
+        private const val SYSTEM_UI_COMMAND = "am broadcast -a com.android.systemui.demo -e command"
     }
 }
