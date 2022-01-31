@@ -9,7 +9,7 @@ plugins {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    api("io.kotest:kotest-runner-junit5:4.6.2")
+    api("io.kotest:kotest-runner-junit5:5.1.0")
     implementation("com.lordcodes.turtle:turtle:0.6.0")
     implementation("io.kotlintest:kotlintest-runner-junit4:3.4.2")
 
