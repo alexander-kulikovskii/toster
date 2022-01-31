@@ -50,6 +50,8 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
 
     timeout = config.testTimeoutMillis
 
+    failfast = config.failFast
+
     describe(config.applicationName) {
         val timeProvider = DefaultTimeProvider()
         val startTestTime = timeProvider.getTimeMillis()

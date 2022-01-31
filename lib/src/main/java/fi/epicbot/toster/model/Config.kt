@@ -34,7 +34,8 @@ class Config(
         offsetPx = 220,
         offsetFactor = 0.08
     ),
-    var useDemoMode: Boolean = true
+    var useDemoMode: Boolean = true,
+    var failFast: Boolean = true,
 )
 
 class Overdraw(

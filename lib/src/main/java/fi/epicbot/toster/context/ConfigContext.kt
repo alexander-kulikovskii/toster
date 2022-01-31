@@ -100,4 +100,8 @@ class ConfigContext {
     fun disableDemoMode() {
         config.useDemoMode = false
     }
+
+    fun disableFailFast() {
+        config.failFast = false
+    }
 }
