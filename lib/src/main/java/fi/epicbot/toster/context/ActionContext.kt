@@ -4,6 +4,7 @@ import fi.epicbot.toster.TosterDslMarker
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.Move
 import fi.epicbot.toster.model.SwipeMove
+import fi.epicbot.toster.model.TrimMemoryLevel
 
 @TosterDslMarker
 @Suppress("TooManyFunctions")
@@ -69,5 +70,9 @@ class ActionContext {
     fun openAppAgain(delayMillis: Long = 0) {
         actions.add(Action.OpenAppAgain)
         delay(delayMillis)
+    }
+
+    fun trimMemory(trimMemoryLevel: TrimMemoryLevel) {
+        actions.add(Action.TrimMemory(trimMemoryLevel))
     }
 }

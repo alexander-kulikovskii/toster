@@ -4,6 +4,7 @@ import fi.epicbot.toster.Then
 import fi.epicbot.toster.Verify
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.FontScale
+import fi.epicbot.toster.model.TrimMemoryLevel
 import fi.epicbot.toster.model.title
 import io.kotest.core.spec.style.BehaviorSpec
 
@@ -74,6 +75,11 @@ private val COMMON_ACTIONS = listOf(
         "Open app again",
         "monkey -p $PACKAGE_NAME -c android.intent.category.LAUNCHER 1"
     ),
+    CommonActionTest(
+        Action.TrimMemory(TrimMemoryLevel.RUNNING_CRITICAL),
+        "Send trim memory <RUNNING_CRITICAL>",
+        "am send-trim-memory $PACKAGE_NAME RUNNING_CRITICAL"
+    )
 )
 
 class SingleCommandsTest : BehaviorSpec({
