@@ -46,6 +46,7 @@ sealed class Action {
     object TakeMemoryAllocation : Action()
     class TakeMemoryHeap(val index: Int) : Action()
     class TakeScreenshot(val name: String) : Action()
+    class TrimMemory(val trimMemoryLevel: TrimMemoryLevel) : Action()
     class TypeText(val text: String) : Action()
 }
 
@@ -88,6 +89,7 @@ internal fun Action.title(): String {
         Action.TakeMemoryAllocation -> "Take memory allocation"
         is Action.TakeMemoryHeap -> "Take memory heap <$index>"
         is Action.TakeScreenshot -> "Take screenshot"
+        is Action.TrimMemory -> "Send trim memory <${trimMemoryLevel.level}>"
         is Action.TypeText -> "Type text <$text>"
     }
 }
