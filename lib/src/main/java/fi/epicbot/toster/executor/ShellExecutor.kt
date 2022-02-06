@@ -15,7 +15,7 @@ class ShellExecutor(projectDir: String, private val logger: ShellLogger) {
         makeDir(workingDir.toString(), clearBefore = true)
     }
 
-    suspend fun delay(delayMillis:Long){
+    suspend fun delay(delayMillis: Long) {
         kotlinx.coroutines.delay(delayMillis)
     }
 
