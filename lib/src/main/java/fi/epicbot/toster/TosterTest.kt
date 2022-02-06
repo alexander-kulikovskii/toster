@@ -108,6 +108,12 @@ private suspend fun DescribeSpecContainerContext.runBeforeScreens(
 ): ReportScreen {
     val beforeScreen = ReportScreen(name = "Before")
     actionExecutor.run {
+        runAction(
+            Action.RestartAdbService,
+            this,
+            beforeScreen,
+            executeCondition = config.restartAdbServiceBeforeEachDevice,
+        )
         prepareEnvironment()
         runAction(
             Action.ShellBeforeAllScreens(config.shellBeforeAllScreens),

@@ -107,6 +107,10 @@ internal open class AndroidExecutor(
             Action.OpenAppAgain -> "monkey -p $apkPackage -c android.intent.category.LAUNCHER 1".adbShell()
             Action.CloseAppsInTray -> closeAppsInTray()
             is Action.TrimMemory -> "am send-trim-memory $apkPackage ${action.trimMemoryLevel.level}".adbShell()
+            Action.RestartAdbService -> {
+                "kill-server".adb()
+                "start-server".adb()
+            }
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
         val endTime = timeProvider.getTimeMillis()

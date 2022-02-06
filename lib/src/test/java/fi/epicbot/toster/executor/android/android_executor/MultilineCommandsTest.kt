@@ -11,6 +11,7 @@ private class MultilineActionTest(
     val action: Action,
     val expectedTitle: String,
     val expectedCommands: List<String>,
+    val shellCommand: Boolean = true,
 )
 
 private val MULTILINE_ACTIONS = listOf(
@@ -52,6 +53,15 @@ private val MULTILINE_ACTIONS = listOf(
             "$SYSTEM_UI_COMMAND notifications -e visible false",
         )
     ),
+    MultilineActionTest(
+        Action.RestartAdbService,
+        "Restart adb service",
+        listOf(
+            "kill-server",
+            "start-server",
+        ),
+        shellCommand = false,
+    )
 )
 
 class MultilineCommandsTest : BehaviorSpec({
@@ -69,7 +79,11 @@ class MultilineCommandsTest : BehaviorSpec({
                 )
                 Verify("check shell ", ordering = Ordering.SEQUENCE) {
                     multilineActionTest.expectedCommands.forEachIndexed { index, command ->
-                        facade.adbShell(command)
+                        if (multilineActionTest.shellCommand) {
+                            facade.adbShell(command)
+                        } else {
+                            facade.adb(command)
+                        }
                     }
                 }
             }

@@ -30,6 +30,7 @@ sealed class Action {
     object OpenHomeScreen : Action()
     class OpenScreen(val screen: Screen, val params: String) : Action()
     object ResetGfxInfo : Action()
+    object RestartAdbService : Action()
     class RevokePermission(val permission: String) : Action()
     class SendKeyEvent(val keyEvent: String) : Action()
     object SetDemoModeEnable : Action()
@@ -73,6 +74,7 @@ internal fun Action.title(): String {
         Action.OpenHomeScreen -> "Open home screen"
         is Action.OpenScreen -> "Start activity" + if (params.isBlank()) "" else " with $params"
         is Action.ResetGfxInfo -> "Reset gfxinfo"
+        Action.RestartAdbService -> "Restart adb service"
         is Action.RevokePermission -> "Revoke permission <$permission>"
         is Action.SendKeyEvent -> "Send key event <$keyEvent>"
         Action.SetDemoModeEnable -> "Set demo mode enable"

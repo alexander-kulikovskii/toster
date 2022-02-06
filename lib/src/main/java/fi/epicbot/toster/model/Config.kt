@@ -36,6 +36,7 @@ class Config(
     ),
     var useDemoMode: Boolean = true,
     var failFast: Boolean = true,
+    var restartAdbServiceBeforeEachDevice: Boolean = false,
 )
 
 class Overdraw(
