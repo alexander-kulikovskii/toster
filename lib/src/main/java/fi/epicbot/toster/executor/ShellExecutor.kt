@@ -15,6 +15,10 @@ class ShellExecutor(projectDir: String, private val logger: ShellLogger) {
         makeDir(workingDir.toString(), clearBefore = true)
     }
 
+    suspend fun delay(delayMillis:Long){
+        kotlinx.coroutines.delay(delayMillis)
+    }
+
     fun setScreenDirAndMakeIt(screenName: String) {
         screenWorkingDir = workingDir + "/${screenName.saveForPath()}"
         makeDir(screenWorkingDir.toString())

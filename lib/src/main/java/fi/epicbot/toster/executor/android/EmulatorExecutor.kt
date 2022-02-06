@@ -6,7 +6,6 @@ import fi.epicbot.toster.memory.GfxInfoParser
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.report.model.Device
 import fi.epicbot.toster.time.TimeProvider
-import kotlinx.coroutines.delay
 
 @Suppress("LongParameterList")
 internal class EmulatorExecutor(
@@ -33,7 +32,7 @@ internal class EmulatorExecutor(
 
     private suspend fun startEmulator(name: String, port: String) {
         runShellCommand("$emulatorPath/emulator -avd $name -port $port & adb wait-for-device")
-        delay(startDelayMillis)
+        shellExecutor.delay(startDelayMillis)
     }
 
     private fun stopEmulator(port: String) {
