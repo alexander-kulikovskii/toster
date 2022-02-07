@@ -104,4 +104,8 @@ class ConfigContext {
     fun disableFailFast() {
         config.failFast = false
     }
+
+    fun restartAdbServiceBeforeEachDevice() {
+        config.restartAdbServiceBeforeEachDevice = true
+    }
 }
