@@ -62,14 +62,18 @@ jobs:
       - name: Run mutation tests
         run: ./gradlew :lib:pitestDebug
 
-  build-samples:
+  test-samples:
     needs: [build-dsl]
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
         name: Prepare environment
 
-      - name: Build Samples
-        run: ./gradlew :samples:assembleRelease
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          script: ./gradlew :samples:testDebug --tests  "fi.epicbot.toster.samples.SampleParamsTest"
