@@ -76,4 +76,5 @@ jobs:
         with:
           api-level: 30
           arch: x86_64
-          script: ./gradlew :samples:testDebug --tests  "fi.epicbot.toster.samples.SampleParamsTest"
+          script: |
+            adb devices & ./gradlew :samples:testDebug --tests  "fi.epicbot.toster.samples.SampleParamsTest"
