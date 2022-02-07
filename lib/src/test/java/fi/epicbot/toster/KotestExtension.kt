@@ -8,6 +8,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import io.kotlintest.shouldBe
 import io.mockk.MockKVerificationScope
 import io.mockk.Ordering
+import io.mockk.coVerify
 import io.mockk.verify
 
 @Suppress("FunctionName")
@@ -63,6 +64,28 @@ suspend fun BehaviorSpecWhenContainerContext.Verify(
     verifyBlock: MockKVerificationScope.() -> Unit,
 ) = Then(name) {
     verify(
+        ordering = ordering,
+        inverse = inverse,
+        atLeast = atLeast,
+        atMost = atMost,
+        exactly = exactly,
+        timeout = timeoutMillis,
+        verifyBlock = verifyBlock,
+    )
+}
+
+@Suppress("LongParameterList")
+suspend fun BehaviorSpecWhenContainerContext.CoVerify(
+    name: String,
+    ordering: Ordering = Ordering.UNORDERED,
+    inverse: Boolean = false,
+    atLeast: Int = 1,
+    atMost: Int = Int.MAX_VALUE,
+    exactly: Int = -1,
+    timeoutMillis: Long = 0,
+    verifyBlock: suspend MockKVerificationScope.() -> Unit,
+) = Then(name) {
+    coVerify(
         ordering = ordering,
         inverse = inverse,
         atLeast = atLeast,

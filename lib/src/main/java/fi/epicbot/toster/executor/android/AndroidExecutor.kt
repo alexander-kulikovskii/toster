@@ -17,7 +17,6 @@ import fi.epicbot.toster.report.model.Memory
 import fi.epicbot.toster.report.model.ReportAction
 import fi.epicbot.toster.report.model.Screenshot
 import fi.epicbot.toster.time.TimeProvider
-import kotlinx.coroutines.delay
 import kotlin.math.max
 
 @Suppress("TooManyFunctions")
@@ -68,7 +67,7 @@ internal open class AndroidExecutor(
                 val screenUrl = if (action.screen.url.isNotBlank()) action.screen.url else
                     "${config.applicationPackageName}.${action.screen.shortUrl}"
                 "am start -n $apkPackage/$screenUrl${action.params}".adbShell()
-                delay(action.screen.delayAfterOpenMillis)
+                shellExecutor.delay(action.screen.delayAfterOpenMillis)
             }
             Action.ShowGpuOverdraw -> {
                 "setprop debug.hwui.overdraw show".adbShell()
@@ -96,7 +95,7 @@ internal open class AndroidExecutor(
             Action.ClearText -> TODO()
             Action.GetDensity -> TODO()
             is Action.TypeText -> TODO()
-            is Action.Delay -> delay(max(0L, action.delayMillis))
+            is Action.Delay -> shellExecutor.delay(max(0L, action.delayMillis))
             is Action.Shell -> action.shell.shell()
             is Action.ShellAfterAllScreens -> action.shell.shell()
             is Action.ShellAfterScreen -> action.shell.shell()

@@ -1,7 +1,7 @@
 package fi.epicbot.toster.executor.android.android_executor
 
+import fi.epicbot.toster.CoVerify
 import fi.epicbot.toster.Then
-import fi.epicbot.toster.Verify
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.Screen
 import fi.epicbot.toster.model.title
@@ -50,9 +50,10 @@ class OpenActivityTest : BehaviorSpec({
                     res.name,
                     activityOpenActionTest.expectedTitle
                 )
-                Verify("check shell", ordering = Ordering.SEQUENCE) {
+                CoVerify("check shell", ordering = Ordering.SEQUENCE) {
                     facade.shellExecutor.setScreenDirAndMakeIt("$SERIAL_NAME/${activityOpenActionTest.activityName}")
                     facade.adbShell(activityOpenActionTest.expectedCommand)
+                    facade.shellExecutor.delay(2000L)
                 }
             }
         }
