@@ -15,7 +15,6 @@ private class CommonActionTest(
 )
 
 private val COMMON_ACTIONS = listOf(
-    CommonActionTest(Action.ClearAppData, "Clear app data", "pm clear -t $PACKAGE_NAME"),
     CommonActionTest(Action.Click(x = 3, y = 2), "Click to (3;2)", "input tap 3 2"),
     CommonActionTest(Action.CloseApp, "Close app", "am force-stop $PACKAGE_NAME"),
     CommonActionTest(
@@ -44,7 +43,7 @@ private val COMMON_ACTIONS = listOf(
         "Set font scale <Largest>",
         "settings put system font_scale 1.3"
     ),
-    CommonActionTest(Action.DeleteApk, "Delete apk", "pm uninstall -k $PACKAGE_NAME"),
+    CommonActionTest(Action.DeleteApk, "Delete apk", "pm uninstall $PACKAGE_NAME"),
 //    CommonActionTestObject(Action.InstallApk("/test/app.apk"), "Install apk", "install -g /test/app.apk"),
     CommonActionTest(
         Action.LongClick(x = 6, y = 100, clickDelayMillis = 200),

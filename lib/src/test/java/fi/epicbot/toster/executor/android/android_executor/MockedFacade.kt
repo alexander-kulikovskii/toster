@@ -36,6 +36,11 @@ internal class MockedFacade {
         command
     )
 
+    fun shell(command: String): String = shellExecutor.runShellCommand(
+        command,
+        true
+    )
+
     fun adbShell(command: String): String = shellExecutor.runCommandForScreen(
         "adb",
         "shell $command"
