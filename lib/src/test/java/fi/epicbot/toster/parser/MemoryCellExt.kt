@@ -1,4 +1,4 @@
-package fi.epicbot.toster.memory
+package fi.epicbot.toster.parser
 
 import fi.epicbot.toster.report.model.MemoryCell
 import io.kotest.assertions.collectOrThrow

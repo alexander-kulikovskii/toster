@@ -10,8 +10,6 @@ import fi.epicbot.toster.executor.android.AndroidExecutor
 import fi.epicbot.toster.executor.android.EmulatorExecutor
 import fi.epicbot.toster.extension.saveForPath
 import fi.epicbot.toster.logger.DefaultLogger
-import fi.epicbot.toster.memory.DumpSysParser
-import fi.epicbot.toster.memory.GfxInfoParser
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.FontScale
@@ -19,6 +17,8 @@ import fi.epicbot.toster.model.Screen
 import fi.epicbot.toster.model.makeReport
 import fi.epicbot.toster.model.runAction
 import fi.epicbot.toster.model.toStringParams
+import fi.epicbot.toster.parser.DumpSysParser
+import fi.epicbot.toster.parser.GfxInfoParser
 import fi.epicbot.toster.report.DefaultReporter
 import fi.epicbot.toster.report.formatter.JsonFormatter
 import fi.epicbot.toster.report.model.ReportCollage
