@@ -1,4 +1,4 @@
-package fi.epicbot.toster.memory
+package fi.epicbot.toster.parser
 
 internal class GfxInfoParser {
 

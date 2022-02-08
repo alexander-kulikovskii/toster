@@ -1,9 +1,9 @@
 package fi.epicbot.toster.executor.android
 
 import fi.epicbot.toster.executor.ShellExecutor
-import fi.epicbot.toster.memory.DumpSysParser
-import fi.epicbot.toster.memory.GfxInfoParser
 import fi.epicbot.toster.model.Config
+import fi.epicbot.toster.parser.DumpSysParser
+import fi.epicbot.toster.parser.GfxInfoParser
 import fi.epicbot.toster.report.model.Device
 import fi.epicbot.toster.time.TimeProvider
 
