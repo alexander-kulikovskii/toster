@@ -43,7 +43,7 @@ private val COMMON_ACTIONS = listOf(
         "Set font scale <Largest>",
         "settings put system font_scale 1.3"
     ),
-    CommonActionTest(Action.DeleteApk, "Delete apk", "pm uninstall -k $PACKAGE_NAME"),
+    CommonActionTest(Action.DeleteApk, "Delete apk", "pm uninstall $PACKAGE_NAME"),
 //    CommonActionTestObject(Action.InstallApk("/test/app.apk"), "Install apk", "install -g /test/app.apk"),
     CommonActionTest(
         Action.LongClick(x = 6, y = 100, clickDelayMillis = 200),
