@@ -78,3 +78,9 @@ jobs:
           arch: x86_64
           script: |
             adb devices & ./gradlew :samples:testDebug --tests  "fi.epicbot.toster.samples.SampleParamsTest"
+
+      - name: publish screenshot
+        uses: actions/upload-artifact@v2
+        with:
+          name: SampleParamsTest
+          path: samples/build/toster/Samples/UUID/Set_Params/normal/*.png
