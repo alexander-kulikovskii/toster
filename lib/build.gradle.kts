@@ -15,7 +15,7 @@ dependencies {
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
 
-    testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.0.1")
+    testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.1.0")
     testImplementation("io.mockk:mockk:1.12.2")
     testImplementation("io.mockk:mockk-agent-api:1.12.2")
     testImplementation("io.mockk:mockk-agent-jvm:1.12.2")
