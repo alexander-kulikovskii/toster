@@ -56,7 +56,12 @@ internal open class AndroidExecutor(
 
         val startTime = timeProvider.getTimeMillis()
         when (action) {
-            Action.ClearAppData -> "pm clear -t $apkPackage".adbShell()
+            Action.ClearAppData -> {
+                val exists = "adb shell pm list packages | grep $apkPackage".shell()
+                if (exists == "package:$apkPackage") {
+                    "pm clear -t $apkPackage".adbShell()
+                }
+            }
             is Action.Click -> "input tap ${action.x} ${action.y}".adbShell()
             Action.CloseApp -> "am force-stop $apkPackage".adbShell()
             Action.SetDemoModeEnable -> "settings put global sysui_demo_allowed 1".adbShell()
@@ -80,7 +85,7 @@ internal open class AndroidExecutor(
                 "service call activity 1599295570".adbShell()
             }
             is Action.SetFontScale -> "settings put system font_scale ${action.fontScale.size}".adbShell()
-            Action.DeleteApk -> "pm uninstall -k $apkPackage".adbShell()
+            Action.DeleteApk -> "pm uninstall $apkPackage".adbShell()
             is Action.InstallApk -> "adb install -g ${action.apkPath}".shell()
             is Action.LongClick ->
                 "input touchscreen swipe ${action.x} ${action.y} ${action.x} ${action.y} ${action.clickDelayMillis}"
