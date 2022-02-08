@@ -15,7 +15,6 @@ private class CommonActionTest(
 )
 
 private val COMMON_ACTIONS = listOf(
-    CommonActionTest(Action.ClearAppData, "Clear app data", "pm clear -t $PACKAGE_NAME"),
     CommonActionTest(Action.Click(x = 3, y = 2), "Click to (3;2)", "input tap 3 2"),
     CommonActionTest(Action.CloseApp, "Close app", "am force-stop $PACKAGE_NAME"),
     CommonActionTest(
