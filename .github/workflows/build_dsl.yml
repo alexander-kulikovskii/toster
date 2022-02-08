@@ -52,7 +52,6 @@ jobs:
 
   mutation-tests:
     needs: [ unit-tests ]
-    if: ${{ false }} # TODO [77]
     runs-on: ubuntu-latest
 
     steps:
