@@ -65,10 +65,14 @@ jobs:
           api-level: 30
           arch: x86_64
           script: |
-            adb devices & ./gradlew :samples:testDebug --tests  "fi.epicbot.toster.samples.SampleParamsTest"
+            adb devices
+            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest"
+            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest"
+            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest"
+            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest"
 
       - name: publish screenshot
         uses: actions/upload-artifact@v2
         with:
-          name: SampleParamsTest
-          path: samples/build/toster/Samples/UUID/Set_Params/normal/*.png
+          name: SampleTestOutput
+          path: samples/build/toster/Samples/UUID/*/*/*.png
