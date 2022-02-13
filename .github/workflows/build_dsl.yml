@@ -50,17 +50,26 @@ jobs:
       - name: Build DSL
         run: ./gradlew :lib:assembleRelease
 
+      - name: Build samples
+        run: ./gradlew :samples:assembleDebug
+
+      - uses: ./.github/actions/cache-builds
+        name: Save cache builds
+
   test-samples:
+    needs: [build-dsl]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [ 28, 21, 23, 26, 30 ]
-
+        api-level: [ 21, 23, 26, 30 ]
 
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
         name: Prepare environment
+
+      - uses: ./.github/actions/cache-builds
+        name: Restore cache builds
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -74,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: SampleTestOutput_api${{ matrix.api-level }}
-          path: samples/build/toster/Samples/UUID/
+          path: samples/build/toster/Samples/UUID
 
       - name: publish log files
         uses: actions/upload-artifact@v2
