@@ -51,7 +51,6 @@ jobs:
         run: ./gradlew :lib:assembleRelease
 
   test-samples:
-    needs: [build-dsl]
     runs-on: macos-latest
     strategy:
       matrix:
@@ -69,7 +68,7 @@ jobs:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
           script: |
-            adb devices & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest" --stacktrace
+            adb devices & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest" --stacktrace
 
       - name: publish screenshot
         uses: actions/upload-artifact@v2
