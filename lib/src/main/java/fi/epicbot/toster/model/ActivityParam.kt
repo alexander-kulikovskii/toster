@@ -17,7 +17,7 @@ sealed class ActivityParam(open val name: String, open val paramValue: String) {
         ActivityParam(name, value)
 }
 
-internal fun MutableList<ActivityParam>.toStringParams(): String {
+internal fun List<ActivityParam>.toStringParams(): String {
     return this.joinToString(separator = "") { param ->
         val type = when (param) {
             is ActivityParam.BooleanActivityParam -> "ez"

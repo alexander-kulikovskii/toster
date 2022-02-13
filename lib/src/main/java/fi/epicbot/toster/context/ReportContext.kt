@@ -8,8 +8,8 @@ import fi.epicbot.toster.report.Reporter
 class ReportContext {
     internal val report = ReportConfig()
 
-    fun enable(value: Boolean) {
-        report.enable = value
+    fun disable() {
+        report.enable = false
     }
 
     fun addCustomReporter(reporter: Reporter) {
