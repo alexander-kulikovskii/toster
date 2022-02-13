@@ -7,8 +7,8 @@ import fi.epicbot.toster.model.Collage
 class CollageContext {
     internal val collage = Collage()
 
-    fun enabled(enabled: Boolean = true) {
-        collage.enabled = enabled
+    fun enable() {
+        collage.enabled = true
     }
 
     fun rows(rows: Int) {
