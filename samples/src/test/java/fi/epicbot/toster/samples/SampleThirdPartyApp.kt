@@ -11,7 +11,6 @@ class SampleThirdPartyApp : TosterTest(
         applicationPackageName("com.instagram.android")
         doNotDeleteAndInstallApk()
         report {
-            enable(true)
         }
         devices {
             phone("UUID") // get from `adb devices`

@@ -12,7 +12,6 @@ class SampleFontSizeTest : TosterTest(
         applicationPackageName("fi.epicbot.toster.samples")
         apkUrl("build/outputs/apk/debug/samples-debug.apk")
         report {
-            enable(true)
         }
 
         devices {
