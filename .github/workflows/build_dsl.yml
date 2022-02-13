@@ -69,10 +69,10 @@ jobs:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
           script: |
-            adb devices
-            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest"
-            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest"
-            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest"
+            adb devices \
+            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest" \
+            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest" \
+            & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest" \
             & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest"
 
       - name: publish screenshot
