@@ -53,6 +53,10 @@ jobs:
   test-samples:
     needs: [build-dsl]
     runs-on: macos-latest
+    strategy:
+      matrix:
+        api-level: [ 21, 23, 26, 28, 30 ]
+
 
     steps:
       - uses: actions/checkout@v2
@@ -62,7 +66,7 @@ jobs:
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: ${{ matrix.api-level }}
           arch: x86_64
           script: |
             adb devices
@@ -74,5 +78,5 @@ jobs:
       - name: publish screenshot
         uses: actions/upload-artifact@v2
         with:
-          name: SampleTestOutput
+          name: SampleTestOutput_api${{ matrix.api-level }}
           path: samples/build/toster/Samples/UUID/*/*/*.png
