@@ -4,7 +4,7 @@ on: pull_request
 
 jobs:
   static-analysis:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
@@ -15,7 +15,7 @@ jobs:
 
   unit-tests:
     needs: [static-analysis]
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
@@ -40,7 +40,7 @@ jobs:
 
   build-dsl:
     needs: [unit-tests]
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -49,12 +49,6 @@ jobs:
 
       - name: Build DSL
         run: ./gradlew :lib:assembleRelease
-
-      - name: Build samples
-        run: ./gradlew :samples:assembleDebug
-
-      - uses: ./.github/actions/cache-builds
-        name: Save cache builds
 
   test-samples:
     needs: [build-dsl]
@@ -67,9 +61,6 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
         name: Prepare environment
-
-      - uses: ./.github/actions/cache-builds
-        name: Restore cache builds
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
