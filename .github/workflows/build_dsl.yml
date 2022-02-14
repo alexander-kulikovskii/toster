@@ -53,6 +53,9 @@ jobs:
   test-samples:
     needs: [build-dsl]
     runs-on: macos-latest
+    strategy:
+      matrix:
+        api-level: [ 23, 26, 30 ]
 
     steps:
       - uses: actions/checkout@v2
@@ -62,13 +65,23 @@ jobs:
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: ${{ matrix.api-level }}
           arch: x86_64
           script: |
-            adb devices & ./gradlew :samples:testDebug --tests  "fi.epicbot.toster.samples.SampleParamsTest"
+            adb devices
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest" --stacktrace
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest" --stacktrace
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest" --stacktrace
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest" --stacktrace
 
       - name: publish screenshot
         uses: actions/upload-artifact@v2
         with:
-          name: SampleParamsTest
-          path: samples/build/toster/Samples/UUID/Set_Params/normal/*.png
+          name: SampleTestOutput_api${{ matrix.api-level }}
+          path: samples/build/toster/
+
+      - name: publish log files
+        uses: actions/upload-artifact@v2
+        with:
+          name: SampleTestLog_api${{ matrix.api-level }}
+          path: samples/build/toster/*/log.txt

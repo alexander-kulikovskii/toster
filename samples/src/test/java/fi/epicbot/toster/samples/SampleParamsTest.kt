@@ -7,7 +7,7 @@ import fi.epicbot.toster.Screens
 class SampleParamsTest : TosterTest(
     Config {
         runShellBeforeAllScreens("../gradlew :samples:assembleDebug")
-        applicationName("Samples")
+        applicationName("SampleParams")
         applicationPackageName("fi.epicbot.toster.samples")
         apkUrl("build/outputs/apk/debug/samples-debug.apk")
         report {
