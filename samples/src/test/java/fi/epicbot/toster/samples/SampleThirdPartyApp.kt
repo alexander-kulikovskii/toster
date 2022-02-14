@@ -7,7 +7,7 @@ import fi.epicbot.toster.model.SwipeMove
 
 class SampleThirdPartyApp : TosterTest(
     Config {
-        applicationName("Instagram")
+        applicationName("SampleThirdPartyApp")
         applicationPackageName("com.instagram.android")
         doNotDeleteAndInstallApk()
         report {

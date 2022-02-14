@@ -7,7 +7,7 @@ import fi.epicbot.toster.Screens
 class SampleLanguageTest : TosterTest(
     Config {
         runShellBeforeAllScreens("../gradlew :samples:assembleDebug")
-        applicationName("Samples")
+        applicationName("SampleLanguage")
         applicationPackageName("fi.epicbot.toster.samples")
         apkUrl("build/outputs/apk/debug/samples-debug.apk")
         report {

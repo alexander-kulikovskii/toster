@@ -68,16 +68,20 @@ jobs:
           api-level: ${{ matrix.api-level }}
           arch: x86_64
           script: |
-            adb devices & ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest" --stacktrace
+            adb devices
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest" --stacktrace
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest" --stacktrace
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest" --stacktrace
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest" --stacktrace
 
       - name: publish screenshot
         uses: actions/upload-artifact@v2
         with:
           name: SampleTestOutput_api${{ matrix.api-level }}
-          path: samples/build/toster/Samples/UUID
+          path: samples/build/toster/
 
       - name: publish log files
         uses: actions/upload-artifact@v2
         with:
           name: SampleTestLog_api${{ matrix.api-level }}
-          path: samples/build/toster/Samples/log.txt
+          path: samples/build/toster/*/log.txt

@@ -8,7 +8,7 @@ import fi.epicbot.toster.model.Overdraw
 class SampleOverdrawTest : TosterTest(
     Config {
         runShellBeforeAllScreens("../gradlew :samples:assembleDebug")
-        applicationName("Samples")
+        applicationName("SampleOverdraw")
         applicationPackageName("fi.epicbot.toster.samples")
         apkUrl("build/outputs/apk/debug/samples-debug.apk")
         report {
