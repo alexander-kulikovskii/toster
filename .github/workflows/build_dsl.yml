@@ -51,8 +51,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/prepare-environment
-        name: Prepare environment
+      - name: Setup Gradle Dependencies Cache
+        uses: actions/cache@v2.1.7
+        with:
+          path: ~/.gradle/caches
+          key: macos-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
+
+      - name: Setup Gradle Wrapper Cache
+        uses: actions/cache@v2.1.7
+        with:
+          path: ~/.gradle/wrapper
+          key: macos-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Change wrapper permissions
+        shell: bash
+        run: chmod +x ./gradlew
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
