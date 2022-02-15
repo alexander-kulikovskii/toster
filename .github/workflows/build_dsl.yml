@@ -4,7 +4,7 @@ on: pull_request
 
 jobs:
   static-analysis:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
@@ -15,7 +15,7 @@ jobs:
 
   unit-tests:
     needs: [static-analysis]
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
@@ -24,15 +24,9 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew :lib:testDebugUnitTest
 
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()
-        with:
-          files: lib/build/test-results/**/*.xml
-
   build-dsl:
     needs: [unit-tests]
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
