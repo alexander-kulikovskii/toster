@@ -17,6 +17,9 @@ jobs:
       - name: Run mutation tests
         run: ./gradlew :lib:pitestDebug
 
+      - name: Publish results
+        run: python3 scripts/report_parser.py -i=${{ secrets.BADGE_PROJECT_ID }} -t=${{ secrets.BADGE_PROJECT_TOKEN }} -k=pitestCoverage
+
       - name: publish artifacts
         uses: actions/upload-artifact@v2
         with:
