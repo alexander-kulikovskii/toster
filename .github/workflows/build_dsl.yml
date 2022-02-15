@@ -45,35 +45,23 @@ jobs:
   test-samples:
     needs: [static-analysis]
     runs-on: macos-latest
-    strategy:
-      matrix:
-        api-level: [ 23, 26, 30 ]
 
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/prepare-environment
         name: Prepare environment
 
-      - name: run tests
-        uses: reactivecircus/android-emulator-runner@v2
+      - uses: ./.github/actions/run-sample-tests
+        name: Run 23
         with:
-          api-level: ${{ matrix.api-level }}
-          arch: x86_64
-          script: |
-            adb devices
-            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest" --stacktrace
-            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest" --stacktrace
-            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest" --stacktrace
-            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest" --stacktrace
+          api-level: '23'
 
-      - name: publish screenshot
-        uses: actions/upload-artifact@v2
+      - uses: ./.github/actions/run-sample-tests
+        name: Run 26
         with:
-          name: SampleTestOutput_api${{ matrix.api-level }}
-          path: samples/build/toster/
+          api-level: '26'
 
-      - name: publish log files
-        uses: actions/upload-artifact@v2
+      - uses: ./.github/actions/run-sample-tests
+        name: Run 30
         with:
-          name: SampleTestLog_api${{ matrix.api-level }}
-          path: samples/build/toster/*/log.txt
+          api-level: '30'
