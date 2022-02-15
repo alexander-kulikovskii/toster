@@ -10,13 +10,13 @@ runs:
   using: composite
   steps:
     - name: Setup dsl Cache
-      uses: actions/cache@v2
+      uses: actions/cache@v2.1.7
       with:
         path: lib/build/
         key: ${{ runner.os }}-dsl-caches-${{ github.run_number }}
 
     - name: Setup samples Cache
-      uses: actions/cache@v2
+      uses: actions/cache@v2.1.7
       with:
         path: samples/build/
         key: ${{ runner.os }}-samples-caches-${{ github.run_number }}
