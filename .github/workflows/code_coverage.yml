@@ -1,0 +1,22 @@
+name: Code coverage
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  build-on-merge:
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/prepare-environment
+        name: Prepare environment
+
+      - name: Run Coverage task
+        run: ./gradlew koverReport
+
+      - name: Publish results
+        run: python3 scripts/report_parser.py -i=${{ secrets.BADGE_PROJECT_ID }} -t=${{ secrets.BADGE_PROJECT_TOKEN }} -k=codeCoverage
