@@ -51,7 +51,7 @@ jobs:
         run: ./gradlew :lib:assembleRelease
 
   test-samples:
-    needs: [build-dsl]
+    needs: [static-analysis]
     runs-on: macos-latest
     strategy:
       matrix:
