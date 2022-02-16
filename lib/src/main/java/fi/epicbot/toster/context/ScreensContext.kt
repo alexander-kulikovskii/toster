@@ -6,7 +6,7 @@ import fi.epicbot.toster.model.Screen
 @TosterDslMarker
 class ScreensContext {
 
-    internal val screens = ArrayList<Screen>()
+    internal val screens = mutableListOf<Screen>()
 
     fun screen(init: ScreenContext.() -> Unit) {
         val context = ScreenContext().apply(init)

@@ -14,7 +14,7 @@ pitest {
     mutators = ['DEFAULTS', 'CONSTRUCTOR_CALLS', 'EMPTY_RETURNS', 'FALSE_RETURNS',
                 'NULL_RETURNS', 'REMOVE_CONDITIONALS', 'REMOVE_INCREMENTS', 'EXPERIMENTAL_SWITCH']
 
-    excludedClasses = []
+    excludedClasses = ['fi.epicbot.toster.report.model.**']
 //     Use feature EXPORT for debug
 //     features = ["+EXPORT"]
 }
