@@ -32,9 +32,11 @@ if __name__ == '__main__':
     parser.add_argument("-v", "--version", dest="version", required=True)
     parser.add_argument("-p", "--plugin", dest="gradle_plugin", required=True)
     parser.add_argument("-t", "--tools", dest="gradle_tools", required=True)
+    parser.add_argument("-k", "--kotlin", dest="kotlin_version", required=True)
     args = parser.parse_args()
 
     _copy_tmp_project()
     _replace_variables(APP_GRADLE_PATH, '$$VERSION$$', args.version)
     _replace_variables(GRADLE_WRAPPER_PROPERTIES_PATH, '$$GRADLE_PLUGIN$$', args.gradle_plugin)
     _replace_variables(GENERAL_GRADLE_PATH, '$$GRADLE_TOOLS$$', args.gradle_tools)
+    _replace_variables(GENERAL_GRADLE_PATH, '$$KOTLIN_VERSION$$', args.kotlin_version)
