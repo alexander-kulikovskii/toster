@@ -1,0 +1,32 @@
+name: Library availability
+
+on:
+  schedule:
+    - cron: '30 * * * *'
+
+jobs:
+  check-libs:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        lib-versions: [ "0.2.6", "0.2.5", "0.2.4", "0.2.3", "0.2.2", "0.2.1", "0.2.0" ]
+        gradle-plugins: [ "7.3.3", "7.4" ]
+        gradle-tools: [ "7.1.0", "7.1.1" ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: "11"
+
+      - name: Change wrapper permissions
+        shell: bash
+        run: chmod +x ./gradlew
+
+      - name: Prepare tmp project
+        run: python3 scripts/check_lib_availability.py -v=${{ matrix.lib-versions }} -p=${{ matrix.gradle-plugins }} -t=${{ matrix.gradle-tools }}
+
+      - name: Download deps
+        run: sh scripts/check_deps.sh
