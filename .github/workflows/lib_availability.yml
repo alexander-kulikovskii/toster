@@ -2,7 +2,7 @@ name: Library availability
 
 on:
   schedule:
-    - cron: '30 * * * *'
+    - cron: '10 * * * *'
 
 jobs:
   check-libs:
