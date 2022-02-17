@@ -1,8 +1,10 @@
 name: Library availability
 
 on:
-  schedule:
-    - cron: '10 * * * *'
+  pull_request:
+    branches:
+      - main
+    types: [closed]
 
 jobs:
   check-libs:
