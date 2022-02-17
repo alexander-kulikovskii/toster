@@ -1,13 +1,15 @@
 name: Library availability
 
-on: pull_request
+on:
+  schedule:
+    - cron: '0 2 * * *'
 
 jobs:
   check-libs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        lib-versions: [ "0.2.6", "0.2.5", "0.2.4", "0.2.3" ]
+        lib-versions: [ "0.2.6", "0.2.5", "0.2.4", "0.2.3", "0.2.2" ]
         gradle-plugins: [ "7.4" ]
         gradle-tools: [ "7.1.1" ]
         kotlin-version: [ "1.6.10" ]
