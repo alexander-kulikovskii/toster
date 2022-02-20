@@ -1,10 +1,9 @@
-package fi.epicbot.toster.executor.android
+package fi.epicbot.toster.executor
 
 import com.lordcodes.turtle.ShellLocation
 import com.lordcodes.turtle.shellRun
 import fi.epicbot.toster.CoVerify
 import fi.epicbot.toster.Verify
-import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.logger.ShellLogger
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
