@@ -42,7 +42,7 @@ class OpenActivityTest : BehaviorSpec({
 
         OPEN_ACTIVITY_ACTIONS.forEach { activityOpenActionTest ->
             val facade = MockedFacade()
-            val androidExecutor = provideExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade)
             When("Execute action ${activityOpenActionTest.action.title()}") {
                 val res = androidExecutor.execute(activityOpenActionTest.action, IMAGE_PREFIX)
                 Then(

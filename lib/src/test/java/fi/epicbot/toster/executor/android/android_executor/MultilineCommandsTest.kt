@@ -69,7 +69,7 @@ class MultilineCommandsTest : BehaviorSpec({
 
         MULTILINE_ACTIONS.forEach { multilineActionTest ->
             val facade = MockedFacade()
-            val androidExecutor = provideExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade)
             When("Execute action ${multilineActionTest.action.title()}") {
                 val res = androidExecutor.execute(multilineActionTest.action, IMAGE_PREFIX)
                 Then(

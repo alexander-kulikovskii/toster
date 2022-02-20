@@ -18,7 +18,7 @@ class AndroidExecutorTest : BehaviorSpec({
         SCREENSHOT_NAME_MAP.forEach { (name_title, name_value) ->
             val facade = MockedFacade()
             every { facade.timeProvider.getTimeMillis() }.returnsMany(1L, 42L)
-            val androidExecutor = provideExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade)
 
             When("Execute action TakeScreenshot with <$name_title> name") {
                 val res = androidExecutor.execute(Action.TakeScreenshot(name_title), IMAGE_PREFIX)

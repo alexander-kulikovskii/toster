@@ -85,7 +85,7 @@ class SingleCommandsTest : BehaviorSpec({
     Given("AndroidExecutor") {
         COMMON_ACTIONS.forEach { commonActionTestObject ->
             val facade = MockedFacade()
-            val androidExecutor = provideExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade)
             When("Execute action ${commonActionTestObject.action.title()}") {
                 val res = androidExecutor.execute(commonActionTestObject.action, IMAGE_PREFIX)
                 Then(

@@ -40,7 +40,7 @@ internal class EmulatorExecutor(
     }
 
     private fun runShellCommand(command: String) {
-        shellExecutor.runShellCommand(command)
+        shellExecutor.runShellCommand(command, fromRootFolder = true)
     }
 
     private companion object {

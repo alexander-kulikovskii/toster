@@ -21,7 +21,7 @@ class ClearAppDataTest : BehaviorSpec({
             every {
                 facade.shell("adb shell pm list packages | grep $PACKAGE_NAME")
             }.returns(packageOutput)
-            val androidExecutor = provideExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade)
 
             When("Execute action TakeGfxInfo") {
                 val res = androidExecutor.execute(Action.ClearAppData, IMAGE_PREFIX)

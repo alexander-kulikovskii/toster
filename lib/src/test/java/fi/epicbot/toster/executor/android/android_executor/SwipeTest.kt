@@ -73,7 +73,7 @@ class SwipeTest : BehaviorSpec({
                     offsetFactor = 0.05,
                 )
             )
-            val androidExecutor = provideExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade)
 
             When("Execute action TakeGfxInfo") {
                 val res = androidExecutor.execute(it.action, IMAGE_PREFIX)
