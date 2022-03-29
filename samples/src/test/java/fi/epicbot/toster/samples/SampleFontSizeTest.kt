@@ -7,7 +7,7 @@ import fi.epicbot.toster.model.FontScale
 
 class SampleFontSizeTest : TosterTest(
     Config {
-        runShellBeforeAllScreens("../gradlew :samples:assembleDebug")
+        runShellsBeforeAllScreens("../gradlew :samples:assembleDebug")
         applicationName("SampleFontSize")
         applicationPackageName("fi.epicbot.toster.samples")
         apkUrl("build/outputs/apk/debug/samples-debug.apk")
