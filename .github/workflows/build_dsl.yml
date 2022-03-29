@@ -1,6 +1,10 @@
 name: Build DSL
 
-on: pull_request
+on:
+  pull_request:
+    paths-ignore:
+      - "**.md"
+      - docs
 
 jobs:
   static-analysis:
