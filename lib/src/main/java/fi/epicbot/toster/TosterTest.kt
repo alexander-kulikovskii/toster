@@ -121,6 +121,17 @@ private suspend fun DescribeSpecContainerContext.runBeforeScreens(
             beforeScreen,
             executeCondition = config.shellBeforeAllScreens.isNotBlank(),
         )
+        config.globalScreenDensity?.let { screenDensity ->
+            runAction(
+                Action.SetScreenDensity(screenDensity), this, beforeScreen
+            )
+        }
+        config.globalScreenSize?.let { screenSize ->
+            runAction(
+                Action.SetScreenSize(screenSize), this, beforeScreen
+            )
+        }
+
         if (config.deleteAndInstallApk) {
             runAction(Action.ClearAppData, this, beforeScreen)
             runAction(Action.DeleteApk, this, beforeScreen)
@@ -154,6 +165,18 @@ private suspend fun DescribeSpecContainerContext.runAfterScreens(
             this,
             afterScreen,
             executeCondition = config.shellAfterAllScreens.isNotBlank(),
+        )
+        runAction(
+            Action.ResetScreenSize,
+            this,
+            afterScreen,
+            executeCondition = config.globalScreenSize != null
+        )
+        runAction(
+            Action.ResetScreenDensity,
+            this,
+            afterScreen,
+            executeCondition = config.globalScreenDensity != null
         )
         finishEnvironment()
     }
@@ -210,6 +233,24 @@ private suspend fun DescribeSpecContainerContext.runScreen(
         screen.shellBefore.isNotBlank(),
     )
 
+    screen.screenDensity?.let { screenDensity ->
+        runAction(
+            Action.SetScreenDensity(screenDensity),
+            actionExecutor,
+            reportScreen,
+            imagePrefix,
+        )
+    }
+
+    screen.screenSize?.let { screenSize ->
+        runAction(
+            Action.SetScreenSize(screenSize),
+            actionExecutor,
+            reportScreen,
+            imagePrefix,
+        )
+    }
+
     if (config.clearDataBeforeEachRun || screen.clearDataBeforeRun) {
         runAction(Action.ClearAppData, actionExecutor, reportScreen, imagePrefix)
     }
@@ -261,6 +302,42 @@ private suspend fun DescribeSpecContainerContext.runScreen(
     runAction(Action.SetFontScale(FontScale.DEFAULT), actionExecutor, reportScreen, imagePrefix)
 
     runAction(Action.CloseApp, actionExecutor, reportScreen, imagePrefix)
+
+    runAction(
+        Action.ResetScreenSize,
+        actionExecutor,
+        reportScreen,
+        imagePrefix,
+        screen.screenSize != null
+    )
+
+    runAction(
+        Action.ResetScreenDensity,
+        actionExecutor,
+        reportScreen,
+        imagePrefix,
+        screen.screenDensity != null
+    )
+
+    config.globalScreenDensity?.let { screenDensity ->
+        runAction(
+            Action.SetScreenDensity(screenDensity),
+            actionExecutor,
+            reportScreen,
+            imagePrefix,
+            screen.screenDensity != null,
+        )
+    }
+
+    config.globalScreenSize?.let { screenSize ->
+        runAction(
+            Action.SetScreenSize(screenSize),
+            actionExecutor,
+            reportScreen,
+            imagePrefix,
+            screen.screenSize != null,
+        )
+    }
 
     runAction(
         Action.ShellAfterScreen(screen.shellAfter),

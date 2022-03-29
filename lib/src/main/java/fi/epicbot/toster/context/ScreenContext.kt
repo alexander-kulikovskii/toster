@@ -1,9 +1,11 @@
 package fi.epicbot.toster.context
 
 import fi.epicbot.toster.TosterDslMarker
+import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.FontScale
 import fi.epicbot.toster.model.Permissions
 import fi.epicbot.toster.model.Screen
+import fi.epicbot.toster.model.ScreenSize
 
 @TosterDslMarker
 @Suppress("TooManyFunctions")
@@ -68,5 +70,13 @@ class ScreenContext {
 
     fun closeAppsInTrayBeforeStart() {
         screen.closeAppsInTrayBeforeStart = true
+    }
+
+    fun setScreenDensity(density: Density) {
+        screen.screenDensity = density
+    }
+
+    fun setScreenSize(width: Int, height: Int) {
+        screen.screenSize = ScreenSize(width = width, height = height)
     }
 }

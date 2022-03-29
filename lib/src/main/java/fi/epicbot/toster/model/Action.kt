@@ -29,12 +29,16 @@ sealed class Action {
     object OpenAppAgain : Action()
     object OpenHomeScreen : Action()
     class OpenScreen(val screen: Screen, val params: String) : Action()
+    object ResetScreenDensity : Action()
+    object ResetScreenSize : Action()
     object ResetGfxInfo : Action()
     object RestartAdbService : Action()
     class RevokePermission(val permission: String) : Action()
     class SendKeyEvent(val keyEvent: String) : Action()
     object SetDemoModeEnable : Action()
     class SetFontScale(val fontScale: FontScale) : Action()
+    class SetScreenDensity(val density: Density) : Action()
+    class SetScreenSize(val screenSize: ScreenSize) : Action()
     class Shell(val shell: String, val name: String) : Action()
     class ShellAfterAllScreens(val shell: String) : Action()
     class ShellAfterScreen(val shell: String) : Action()
@@ -74,11 +78,15 @@ internal fun Action.title(): String {
         Action.OpenHomeScreen -> "Open home screen"
         is Action.OpenScreen -> "Start activity" + if (params.isBlank()) "" else " with $params"
         is Action.ResetGfxInfo -> "Reset gfxinfo"
+        is Action.ResetScreenDensity -> "Reset screen density"
+        is Action.ResetScreenSize -> "Reset screen size"
         Action.RestartAdbService -> "Restart adb service"
         is Action.RevokePermission -> "Revoke permission <$permission>"
         is Action.SendKeyEvent -> "Send key event <$keyEvent>"
         Action.SetDemoModeEnable -> "Set demo mode enable"
         is Action.SetFontScale -> "Set font scale <$fontScale>"
+        is Action.SetScreenDensity -> "Set screen density <${density.dpi}>"
+        is Action.SetScreenSize -> "Set screen size <${screenSize.width}x${screenSize.height}>"
         is Action.Shell -> if (name.isBlank()) "Run shell" else "Run $name"
         is Action.ShellAfterAllScreens -> "Run shell after all screens"
         is Action.ShellAfterScreen -> "Run shell after screen"

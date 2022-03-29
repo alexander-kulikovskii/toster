@@ -115,6 +115,10 @@ internal open class AndroidExecutor(
                 "kill-server".adb()
                 "start-server".adb()
             }
+            is Action.SetScreenSize -> "wm size ${action.screenSize.width}x${action.screenSize.height}".adbShell()
+            Action.ResetScreenSize -> "wm size reset".adbShell()
+            is Action.SetScreenDensity -> "wm density ${action.density.dpi}".adbShell()
+            Action.ResetScreenDensity -> "wm density reset".adbShell()
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
         val endTime = timeProvider.getTimeMillis()
