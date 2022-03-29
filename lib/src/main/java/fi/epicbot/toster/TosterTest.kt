@@ -115,12 +115,14 @@ private suspend fun DescribeSpecContainerContext.runBeforeScreens(
             executeCondition = config.restartAdbServiceBeforeEachDevice,
         )
         prepareEnvironment()
-        runAction(
-            Action.ShellBeforeAllScreens(config.shellBeforeAllScreens),
-            this,
-            beforeScreen,
-            executeCondition = config.shellBeforeAllScreens.isNotBlank(),
-        )
+        config.shellsBeforeAllScreens.forEach { shellBeforeAllScreens ->
+            runAction(
+                Action.ShellBeforeAllScreens(shellBeforeAllScreens),
+                this,
+                beforeScreen,
+                executeCondition = shellBeforeAllScreens.isNotBlank(),
+            )
+        }
         config.globalScreenDensity?.let { screenDensity ->
             runAction(
                 Action.SetScreenDensity(screenDensity), this, beforeScreen
@@ -159,13 +161,14 @@ private suspend fun DescribeSpecContainerContext.runAfterScreens(
         if (config.useDemoMode) {
             runAction(Action.HideDemoMode, this, afterScreen)
         }
-
-        runAction(
-            Action.ShellAfterAllScreens(config.shellAfterAllScreens),
-            this,
-            afterScreen,
-            executeCondition = config.shellAfterAllScreens.isNotBlank(),
-        )
+        config.shellsAfterAllScreens.forEach { shellAfterAllScreens ->
+            runAction(
+                Action.ShellAfterAllScreens(shellAfterAllScreens),
+                this,
+                afterScreen,
+                executeCondition = shellAfterAllScreens.isNotBlank(),
+            )
+        }
         runAction(
             Action.ResetScreenSize,
             this,
@@ -216,7 +219,7 @@ private suspend fun DescribeSpecContainerContext.runScreens(
     )
 }
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "ComplexMethod")
 private suspend fun DescribeSpecContainerContext.runScreen(
     config: Config,
     actionExecutor: ActionExecutor,
@@ -225,13 +228,15 @@ private suspend fun DescribeSpecContainerContext.runScreen(
     imagePrefix: String,
 ) = describe("Screen: ${screen.name}; $imagePrefix") {
 
-    runAction(
-        Action.ShellBeforeScreen(screen.shellBefore),
-        actionExecutor,
-        reportScreen,
-        imagePrefix,
-        screen.shellBefore.isNotBlank(),
-    )
+    screen.shellsBefore.forEach { shellBefore ->
+        runAction(
+            Action.ShellBeforeScreen(shellBefore),
+            actionExecutor,
+            reportScreen,
+            imagePrefix,
+            shellBefore.isNotBlank(),
+        )
+    }
 
     screen.screenDensity?.let { screenDensity ->
         runAction(
@@ -339,11 +344,13 @@ private suspend fun DescribeSpecContainerContext.runScreen(
         )
     }
 
-    runAction(
-        Action.ShellAfterScreen(screen.shellAfter),
-        actionExecutor,
-        reportScreen,
-        imagePrefix,
-        screen.shellAfter.isNotBlank(),
-    )
+    screen.shellsAfter.forEach { shellAfter ->
+        runAction(
+            Action.ShellAfterScreen(shellAfter),
+            actionExecutor,
+            reportScreen,
+            imagePrefix,
+            shellAfter.isNotBlank(),
+        )
+    }
 }

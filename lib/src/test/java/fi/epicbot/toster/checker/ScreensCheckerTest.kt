@@ -93,21 +93,21 @@ private val exceptionData = mapOf(
         Screen(
             name = NOT_EMPTY_FIELD,
             url = NOT_EMPTY_FIELD,
-            shellBefore = " ",
+            shellsBefore = arrayOf(" "),
         ),
     ) to BLANK_SHELL_BEFORE_SCREEN,
     listOf(
         Screen(
             name = NOT_EMPTY_FIELD,
             url = NOT_EMPTY_FIELD,
-            shellAfter = " ",
+            shellsAfter = arrayOf(" "),
         ),
     ) to BLANK_SHELL_AFTER_SCREEN,
     listOf(
         Screen(
             name = NOT_EMPTY_FIELD,
             url = NOT_EMPTY_FIELD,
-            shellAfter = NOT_EMPTY_FIELD,
+            shellsAfter = arrayOf(NOT_EMPTY_FIELD),
             permissions = Permissions(granted = listOf(NOT_EMPTY_FIELD, " "))
         ),
     ) to EMPTY_GRANTED_PERMISSIONS,
@@ -115,7 +115,7 @@ private val exceptionData = mapOf(
         Screen(
             name = NOT_EMPTY_FIELD,
             url = NOT_EMPTY_FIELD,
-            shellAfter = NOT_EMPTY_FIELD,
+            shellsAfter = arrayOf(NOT_EMPTY_FIELD),
             permissions = Permissions(revoked = listOf(NOT_EMPTY_FIELD, " "))
         ),
     ) to EMPTY_REVOKED_PERMISSIONS,
@@ -141,7 +141,7 @@ private val exceptionData = mapOf(
         Screen(
             name = NOT_EMPTY_FIELD,
             url = NOT_EMPTY_FIELD,
-            shellAfter = " ",
+            shellsAfter = arrayOf(" "),
         ),
     ) to BLANK_SHELL_AFTER_SCREEN,
 )

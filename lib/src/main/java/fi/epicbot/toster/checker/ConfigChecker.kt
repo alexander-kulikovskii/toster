@@ -36,12 +36,16 @@ internal class ConfigChecker(private val config: Config) : Checker {
             devices.phones.forEach { phone ->
                 phone.uuid.throwExceptionIfBlank(EMPTY_PHONE_UUID)
             }
-            shellBeforeAllScreens.throwExceptionIfNotEmptyButBlank(
-                BLANK_SHELL_BEFORE_ALL_SCREENS
-            )
-            shellAfterAllScreens.throwExceptionIfNotEmptyButBlank(
-                BLANK_SHELL_AFTER_ALL_SCREENS
-            )
+            shellsBeforeAllScreens.forEach {
+                it.throwExceptionIfNotEmptyButBlank(
+                    BLANK_SHELL_BEFORE_ALL_SCREENS
+                )
+            }
+            shellsAfterAllScreens.forEach {
+                it.throwExceptionIfNotEmptyButBlank(
+                    BLANK_SHELL_AFTER_ALL_SCREENS
+                )
+            }
             if (testTimeoutMillis <= 0) {
                 throw IllegalArgumentException(TIMEOUT_TOO_SMALL)
             }

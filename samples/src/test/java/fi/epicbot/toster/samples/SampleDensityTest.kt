@@ -8,7 +8,7 @@ import fi.epicbot.toster.model.FontScale
 
 class SampleDensityTest : TosterTest(
     Config {
-        runShellBeforeAllScreens("../gradlew :samples:assembleDebug")
+        runShellsBeforeAllScreens("../gradlew :samples:assembleDebug")
         applicationName("SampleDensity")
         applicationPackageName("fi.epicbot.toster.samples")
         apkUrl("build/outputs/apk/debug/samples-debug.apk")

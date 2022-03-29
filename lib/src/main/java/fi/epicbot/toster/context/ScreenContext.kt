@@ -44,12 +44,12 @@ class ScreenContext {
         screen.actions.addAll(context.actions)
     }
 
-    fun runShellBefore(shell: String) {
-        screen.shellBefore = shell
+    fun runShellsBefore(vararg shell: String) {
+        screen.shellsBefore = shell
     }
 
-    fun runShellAfter(shell: String) {
-        screen.shellAfter = shell
+    fun runShellsAfter(vararg shell: String) {
+        screen.shellsAfter = shell
     }
 
     fun clearDataBeforeRun() {
