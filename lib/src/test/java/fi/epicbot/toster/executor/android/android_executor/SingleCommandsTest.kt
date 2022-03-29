@@ -3,7 +3,9 @@ package fi.epicbot.toster.executor.android.android_executor
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.Verify
 import fi.epicbot.toster.model.Action
+import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.FontScale
+import fi.epicbot.toster.model.ScreenSize
 import fi.epicbot.toster.model.TrimMemoryLevel
 import fi.epicbot.toster.model.title
 import io.kotest.core.spec.style.BehaviorSpec
@@ -78,7 +80,32 @@ private val COMMON_ACTIONS = listOf(
         Action.TrimMemory(TrimMemoryLevel.RUNNING_CRITICAL),
         "Send trim memory <RUNNING_CRITICAL>",
         "am send-trim-memory $PACKAGE_NAME RUNNING_CRITICAL"
-    )
+    ),
+    CommonActionTest(
+        Action.SetScreenDensity(Density.TVDPI),
+        "Set screen density <213>",
+        "wm density 213"
+    ),
+    CommonActionTest(
+        Action.SetScreenDensity(Density.CUSTOM(42)),
+        "Set screen density <42>",
+        "wm density 42"
+    ),
+    CommonActionTest(
+        Action.SetScreenSize(ScreenSize(width = 24, height = 42)),
+        "Set screen size <24x42>",
+        "wm size 24x42"
+    ),
+    CommonActionTest(
+        Action.ResetScreenDensity,
+        "Reset screen density",
+        "wm density reset"
+    ),
+    CommonActionTest(
+        Action.ResetScreenSize,
+        "Reset screen size",
+        "wm size reset"
+    ),
 )
 
 class SingleCommandsTest : BehaviorSpec({

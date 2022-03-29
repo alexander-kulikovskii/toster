@@ -3,9 +3,11 @@ package fi.epicbot.toster.context
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.ActivityParam
+import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.FontScale
 import fi.epicbot.toster.model.Permissions
 import fi.epicbot.toster.model.Screen
+import fi.epicbot.toster.model.ScreenSize
 import fi.epicbot.toster.model.title
 import fi.epicbot.toster.model.toStringParams
 import io.kotest.core.spec.style.BehaviorSpec
@@ -36,6 +38,8 @@ private val screenList = listOf(
             screenshotAsLastAction = true,
             resetGfxInfoBeforeStart = false,
             closeAppsInTrayBeforeStart = false,
+            screenDensity = null,
+            screenSize = null,
         )
     ),
     ScreenContextData(
@@ -178,6 +182,24 @@ private val screenList = listOf(
             closeAppsInTrayBeforeStart = true,
         )
     ),
+    ScreenContextData(
+        "set screenDensity",
+        {
+            setScreenDensity(Density.HDPI)
+        },
+        Screen(
+            screenDensity = Density.HDPI,
+        )
+    ),
+    ScreenContextData(
+        "set screenSize",
+        {
+            setScreenSize(24, 42)
+        },
+        Screen(
+            screenSize = ScreenSize(24, 42)
+        )
+    ),
 )
 
 internal class ScreenContextTest : BehaviorSpec({
@@ -250,6 +272,16 @@ internal class ScreenContextTest : BehaviorSpec({
                     "closeAppsInTrayBeforeStart should be ${expected.closeAppsInTrayBeforeStart}",
                     actual.closeAppsInTrayBeforeStart,
                     expected.closeAppsInTrayBeforeStart
+                )
+                Then(
+                    "screenDensity should be ${expected.screenDensity}",
+                    actual.screenDensity?.dpi ?: 0,
+                    expected.screenDensity?.dpi ?: 0
+                )
+                Then(
+                    "screenSize should be ${expected.screenSize}",
+                    "${actual.screenSize?.width ?: 0}x${actual.screenSize?.height ?: 0}",
+                    "${expected.screenSize?.width ?: 0}x${expected.screenSize?.height ?: 0}",
                 )
             }
         }

@@ -16,4 +16,6 @@ class Screen(
     var screenshotAsLastAction: Boolean = true,
     var resetGfxInfoBeforeStart: Boolean = false,
     var closeAppsInTrayBeforeStart: Boolean = false,
+    var screenDensity: Density? = null,
+    var screenSize: ScreenSize? = null,
 )

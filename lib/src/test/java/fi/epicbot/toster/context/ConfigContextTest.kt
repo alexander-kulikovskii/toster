@@ -3,6 +3,7 @@ package fi.epicbot.toster.context
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.model.Collage
 import fi.epicbot.toster.model.Config
+import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.Devices
 import fi.epicbot.toster.model.Emulator
 import fi.epicbot.toster.model.FontScale
@@ -10,6 +11,7 @@ import fi.epicbot.toster.model.Overdraw
 import fi.epicbot.toster.model.Permissions
 import fi.epicbot.toster.model.Phone
 import fi.epicbot.toster.model.ReportConfig
+import fi.epicbot.toster.model.ScreenSize
 import fi.epicbot.toster.model.ShellLoggerConfig
 import fi.epicbot.toster.model.SwipeOffset
 import io.kotest.core.spec.style.BehaviorSpec
@@ -221,6 +223,20 @@ private val configList = listOf(
         },
         Config(restartAdbServiceBeforeEachDevice = true)
     ),
+    ConfigContextData(
+        "set screenDensity",
+        {
+            setScreenDensity(Density.HDPI)
+        },
+        Config(globalScreenDensity = Density.HDPI)
+    ),
+    ConfigContextData(
+        "set screenSize",
+        {
+            setScreenSize(24, 42)
+        },
+        Config(globalScreenSize = ScreenSize(24, 42))
+    ),
 )
 
 internal class ConfigContextTest : BehaviorSpec({
@@ -384,6 +400,16 @@ internal class ConfigContextTest : BehaviorSpec({
                     "restartAdbServiceBeforeEachDevice should be ${expected.restartAdbServiceBeforeEachDevice}",
                     actual.restartAdbServiceBeforeEachDevice,
                     expected.restartAdbServiceBeforeEachDevice
+                )
+                Then(
+                    "globalScreenDensity should be ${expected.globalScreenDensity}",
+                    actual.globalScreenDensity?.dpi ?: 0,
+                    expected.globalScreenDensity?.dpi ?: 0
+                )
+                Then(
+                    "globalScreenSize should be ${expected.globalScreenSize}",
+                    "${actual.globalScreenSize?.width ?: 0}x${actual.globalScreenSize?.height ?: 0}",
+                    "${expected.globalScreenSize?.width ?: 0}x${expected.globalScreenSize?.height ?: 0}",
                 )
             }
         }

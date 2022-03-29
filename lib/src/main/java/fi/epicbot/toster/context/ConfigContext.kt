@@ -2,10 +2,12 @@ package fi.epicbot.toster.context
 
 import fi.epicbot.toster.TosterDslMarker
 import fi.epicbot.toster.model.Config
+import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.Devices
 import fi.epicbot.toster.model.FontScale
 import fi.epicbot.toster.model.Overdraw
 import fi.epicbot.toster.model.Permissions
+import fi.epicbot.toster.model.ScreenSize
 import fi.epicbot.toster.model.SwipeOffset
 
 @Suppress("TooManyFunctions")
@@ -107,5 +109,13 @@ class ConfigContext {
 
     fun restartAdbServiceBeforeEachDevice() {
         config.restartAdbServiceBeforeEachDevice = true
+    }
+
+    fun setScreenDensity(density: Density) {
+        config.globalScreenDensity = density
+    }
+
+    fun setScreenSize(width: Int, height: Int) {
+        config.globalScreenSize = ScreenSize(width = width, height = height)
     }
 }
