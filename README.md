@@ -60,8 +60,8 @@ class DemoTest : TosterTest(
        fontScaleForAll(FontScale.LARGE)
        emulatorPath("android-sdk/emulator")
        clearDataBeforeEachRun()
-       runShellBeforeAllScreens("SHELL_COMMAND_BEFORE_ALL")
-       runShellAfterAllScreens("SHELL_COMMAND_AFTER_ALL")
+       runShellsBeforeAllScreens("SHELL_COMMAND_BEFORE_ALL", "SHELL_COMMAND_BEFORE_ALL_2")
+       runShellsAfterAllScreens("SHELL_COMMAND_AFTER_ALL", "SHELL_COMMAND_AFTER_ALL_2")
    }
    Screens{
        screen{
@@ -69,8 +69,8 @@ class DemoTest : TosterTest(
            url("fi.epicbot.toster.samples.SampleFontSizeActivity")
            shortUrl("SampleFontSizeActivity") // optional
            delayAfterOpenMillis(4500L)
-           runShellBefore("SOME_COMMAND")
-           runShellAfter("SOME_COMMAND")
+           runShellsBefore("SOME_COMMAND", "ANOTHER_COMMAND")
+           runShellsAfter("SOME_COMMAND", "ANOTHER_COMMAND")
            clearDataBeforeRun()
            activityParams {
                integer("int_value", 42)
@@ -165,6 +165,24 @@ Available font scales:
 - DEFAULT (1.0)
 - LARGE (1.15)
 - LARGEST (1.3)
+
+### Density
+
+To set up the screen density you can use setScreenDensity(value) command inside `Config` or `Screen` context.
+
+Available densities:
+- LDPI (120 dpi)
+- MDPI (160 dpi)
+- HDPI (240 dpi)
+- XHDPI (320 dpi)
+- XXHDPI (480 dpi)
+- XXXHDPI (640 dpi)
+- TVDPI (213 dpi)
+- CUSTOM - for any custom dpi
+
+### Screen size
+
+To set up the screen size you can use setScreenSize(width, height) command inside `Config` or `Screen` context.
 
 ### Emulator path
 Path to emulator in your sdk folder.
