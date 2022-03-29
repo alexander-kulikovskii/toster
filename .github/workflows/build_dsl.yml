@@ -101,6 +101,7 @@ jobs:
           disable-animations: true
           script: |
             adb devices
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleDensityTest" --stacktrace
             ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest" --stacktrace
             ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest" --stacktrace
             ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest" --stacktrace
