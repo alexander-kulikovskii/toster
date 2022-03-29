@@ -152,7 +152,7 @@ private val exceptionData = mapOf(
         permissions = Permissions(granted = listOf(NOT_EMPTY_FIELD)),
         devices = Devices(emulators = listOf(Emulator(NOT_EMPTY_FIELD))),
         emulatorPath = NOT_EMPTY_FIELD,
-        shellBeforeAllScreens = " ",
+        shellsBeforeAllScreens = arrayOf(" "),
     ) to BLANK_SHELL_BEFORE_ALL_SCREENS,
     Config(
         applicationName = NOT_EMPTY_FIELD,
@@ -162,7 +162,7 @@ private val exceptionData = mapOf(
         permissions = Permissions(granted = listOf(NOT_EMPTY_FIELD)),
         devices = Devices(emulators = listOf(Emulator(NOT_EMPTY_FIELD))),
         emulatorPath = NOT_EMPTY_FIELD,
-        shellAfterAllScreens = " ",
+        shellsAfterAllScreens = arrayOf(" "),
     ) to BLANK_SHELL_AFTER_ALL_SCREENS,
     Config(
         applicationName = NOT_EMPTY_FIELD,

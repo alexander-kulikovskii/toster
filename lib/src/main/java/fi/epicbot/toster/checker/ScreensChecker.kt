@@ -24,12 +24,16 @@ internal class ScreensChecker(private val screens: List<Screen>) : Checker {
                 throwExceptionIfAllBlank(EMPTY_URL_NAME)
                 throwExceptionIfAllNotBlank(URL_AND_SHORT_URL_ARE_SET)
             }
-            shellBefore.throwExceptionIfNotEmptyButBlank(
-                BLANK_SHELL_BEFORE_SCREEN
-            )
-            shellAfter.throwExceptionIfNotEmptyButBlank(
-                BLANK_SHELL_AFTER_SCREEN
-            )
+            shellsBefore.forEach {
+                it.throwExceptionIfNotEmptyButBlank(
+                    BLANK_SHELL_BEFORE_SCREEN
+                )
+            }
+            shellsAfter.forEach {
+                it.throwExceptionIfNotEmptyButBlank(
+                    BLANK_SHELL_AFTER_SCREEN
+                )
+            }
             permissions.granted.throwExceptionIfOneBlank(EMPTY_GRANTED_PERMISSIONS)
             permissions.revoked.throwExceptionIfOneBlank(EMPTY_REVOKED_PERMISSIONS)
             if (delayAfterOpenMillis <= 0) {

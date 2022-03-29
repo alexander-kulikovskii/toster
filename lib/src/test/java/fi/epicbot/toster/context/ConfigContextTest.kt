@@ -39,8 +39,8 @@ private val configList = listOf(
             collage = Collage(enabled = false, rows = 0, columns = 0),
             clearDataBeforeEachRun = false,
             devices = Devices(emulators = emptyList(), phones = emptyList()),
-            shellBeforeAllScreens = "",
-            shellAfterAllScreens = "",
+            shellsBeforeAllScreens = emptyArray(),
+            shellsAfterAllScreens = emptyArray(),
             permissions = Permissions(granted = emptyList(), revoked = emptyList()),
             testTimeoutMillis = 600 * 1000L,
             deleteAndInstallApk = true,
@@ -130,16 +130,16 @@ private val configList = listOf(
     ConfigContextData(
         "runShellBeforeAllScreens",
         {
-            runShellBeforeAllScreens(shell = "shell")
+            runShellsBeforeAllScreens("shell")
         },
-        Config(shellBeforeAllScreens = "shell"),
+        Config(shellsBeforeAllScreens = arrayOf("shell")),
     ),
     ConfigContextData(
         "runShellAfterAllScreens",
         {
-            runShellAfterAllScreens(shell = "shell")
+            runShellsAfterAllScreens("shell")
         },
-        Config(shellAfterAllScreens = "shell"),
+        Config(shellsAfterAllScreens = arrayOf("shell")),
     ),
     ConfigContextData(
         "clearDataBeforeEachRun",
@@ -336,14 +336,14 @@ internal class ConfigContextTest : BehaviorSpec({
                 )
 
                 Then(
-                    "shellBeforeAllScreens should be ${expected.shellBeforeAllScreens}",
-                    actual.shellBeforeAllScreens,
-                    expected.shellBeforeAllScreens
+                    "shellBeforeAllScreens should be ${expected.shellsBeforeAllScreens.joinToString()}",
+                    actual.shellsBeforeAllScreens.joinToString(),
+                    expected.shellsBeforeAllScreens.joinToString()
                 )
                 Then(
-                    "shellAfterAllScreens should be ${expected.shellAfterAllScreens}",
-                    actual.shellAfterAllScreens,
-                    expected.shellAfterAllScreens
+                    "shellAfterAllScreens should be ${expected.shellsAfterAllScreens.joinToString()}",
+                    actual.shellsAfterAllScreens.joinToString(),
+                    expected.shellsAfterAllScreens.joinToString()
                 )
 
                 Then(

@@ -32,8 +32,8 @@ private val screenList = listOf(
             activityParams = mutableListOf(),
             actions = mutableListOf(),
             clearDataBeforeRun = false,
-            shellBefore = "",
-            shellAfter = "",
+            shellsBefore = emptyArray(),
+            shellsAfter = emptyArray(),
             permissions = Permissions(),
             screenshotAsLastAction = true,
             resetGfxInfoBeforeStart = false,
@@ -122,19 +122,19 @@ private val screenList = listOf(
     ScreenContextData(
         "set runShellBefore",
         {
-            runShellBefore("shell")
+            runShellsBefore("shell")
         },
         Screen(
-            shellBefore = "shell"
+            shellsBefore = arrayOf("shell")
         )
     ),
     ScreenContextData(
         "set runShellAfter",
         {
-            runShellAfter("shell")
+            runShellsAfter("shell")
         },
         Screen(
-            shellAfter = "shell"
+            shellsAfter = arrayOf("shell")
         )
     ),
     ScreenContextData(
@@ -239,14 +239,14 @@ internal class ScreenContextTest : BehaviorSpec({
                     expected.clearDataBeforeRun,
                 )
                 Then(
-                    "shellBefore should be ${expected.shellBefore}",
-                    actual.shellBefore,
-                    expected.shellBefore,
+                    "shellBefore should be ${expected.shellsBefore.joinToString()}",
+                    actual.shellsBefore.joinToString(),
+                    expected.shellsBefore.joinToString(),
                 )
                 Then(
-                    "shellAfter should be ${expected.shellAfter}",
-                    actual.shellAfter,
-                    expected.shellAfter
+                    "shellAfter should be ${expected.shellsAfter.joinToString()}",
+                    actual.shellsAfter.joinToString(),
+                    expected.shellsAfter.joinToString()
                 )
                 Then(
                     "permissions.revoked should be ${expected.permissions}",

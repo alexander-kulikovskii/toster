@@ -57,12 +57,12 @@ class ConfigContext {
         config.fontScale = scale
     }
 
-    fun runShellBeforeAllScreens(shell: String) {
-        config.shellBeforeAllScreens = shell
+    fun runShellsBeforeAllScreens(vararg shell: String) {
+        config.shellsBeforeAllScreens = shell
     }
 
-    fun runShellAfterAllScreens(shell: String) {
-        config.shellAfterAllScreens = shell
+    fun runShellsAfterAllScreens(vararg shell: String) {
+        config.shellsAfterAllScreens = shell
     }
 
     fun clearDataBeforeEachRun() {
