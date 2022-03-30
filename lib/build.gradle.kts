@@ -4,21 +4,25 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.19.0"
     id("kotlinx-serialization")
     id ("pl.droidsonroids.pitest")
-    id("org.jetbrains.kotlinx.kover") version "0.4.2"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
+    id("com.getkeepsafe.dexcount")
+}
+apply {
+    from("${rootDir}/gradle/dependency-updates.gradle")
 }
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    api("io.kotest:kotest-runner-junit5:5.1.0")
+    api("io.kotest:kotest-runner-junit5:5.2.2")
     implementation("com.lordcodes.turtle:turtle:0.6.0")
     implementation("io.kotlintest:kotlintest-runner-junit4:3.4.2")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
 
     testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.1.0")
-    testImplementation("io.mockk:mockk:1.12.2")
-    testImplementation("io.mockk:mockk-agent-api:1.12.2")
-    testImplementation("io.mockk:mockk-agent-jvm:1.12.2")
+    testImplementation("io.mockk:mockk:1.12.3")
+    testImplementation("io.mockk:mockk-agent-api:1.12.3")
+    testImplementation("io.mockk:mockk-agent-jvm:1.12.3")
     testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
 }
 
@@ -50,4 +54,10 @@ project.apply{
 configure<pl.droidsonroids.gradle.pitest.PitestPluginExtension> {
     testPlugin.set("Kotest")
     targetClasses.set(listOf("fi.epicbot.toster.*"))
+}
+
+kover {
+    coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
+    intellijEngineVersion.set("1.0.656")
+    jacocoEngineVersion.set("0.8.7")
 }
