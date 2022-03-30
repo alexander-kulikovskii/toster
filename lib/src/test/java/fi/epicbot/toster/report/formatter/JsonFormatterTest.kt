@@ -140,6 +140,8 @@ private val REPORT_FULL_PRETTY = """
                     ],
                     "gfxInfo": [
                     ],
+                    "cpuUsage": [
+                    ],
                     "memory": [
                         {
                             "index": 1,
@@ -216,6 +218,8 @@ private val REPORT_FULL_PRETTY = """
                         }
                     ],
                     "gfxInfo": [
+                    ],
+                    "cpuUsage": [
                     ],
                     "memory": [
                     ],

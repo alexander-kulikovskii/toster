@@ -3,6 +3,7 @@ package fi.epicbot.toster.model
 import fi.epicbot.toster.executor.ActionExecutor
 import fi.epicbot.toster.extension.saveForPath
 import fi.epicbot.toster.report.model.Common
+import fi.epicbot.toster.report.model.CpuUsage
 import fi.epicbot.toster.report.model.GfxInfo
 import fi.epicbot.toster.report.model.Memory
 import fi.epicbot.toster.report.model.ReportScreen
@@ -47,6 +48,7 @@ sealed class Action {
     object ShowDemoMode : Action()
     object ShowGpuOverdraw : Action()
     class Swipe(val swipeMove: SwipeMove) : Action()
+    object TakeCpuUsage : Action()
     object TakeGfxInfo : Action()
     object TakeMemoryAllocation : Action()
     class TakeMemoryHeap(val index: Int) : Action()
@@ -95,6 +97,7 @@ internal fun Action.title(): String {
         Action.ShowDemoMode -> "Show demo mode"
         Action.ShowGpuOverdraw -> "Show gpu overdraw"
         is Action.Swipe -> swipeMove.toString()
+        is Action.TakeCpuUsage -> "Take cpu usage"
         is Action.TakeGfxInfo -> "Take gfxinfo"
         Action.TakeMemoryAllocation -> "Take memory allocation"
         is Action.TakeMemoryHeap -> "Take memory heap <$index>"
@@ -117,6 +120,7 @@ internal suspend fun DescribeSpecContainerContext.runAction(
                 is Common -> reportScreen.common.add(reportAction)
                 is Memory -> reportScreen.memory.add(reportAction)
                 is GfxInfo -> reportScreen.gfxInfo.add(reportAction)
+                is CpuUsage -> reportScreen.cpuUsage.add(reportAction)
                 is Screenshot -> reportScreen.screenshots.add(
                     reportAction.copy(pathUrl = "${reportScreen.name.saveForPath()}/${reportAction.pathUrl}")
                 )

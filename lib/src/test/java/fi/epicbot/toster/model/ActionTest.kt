@@ -21,7 +21,7 @@ import io.mockk.mockk
 private val reportScreen = ReportScreen("test report")
 private val actionExecutor = AndroidExecutor(
     "serial", mockk(relaxed = true), mockk(relaxed = true),
-    mockk(relaxed = true), mockk(relaxed = true), mockk(relaxed = true)
+    mockk(relaxed = true), mockk(relaxed = true), mockk(relaxed = true), mockk(relaxed = true)
 )
 private const val IMAGE_PREFIX = "prefix"
 

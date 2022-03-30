@@ -5,6 +5,7 @@ import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.executor.android.AndroidExecutor
 import fi.epicbot.toster.executor.android.EmulatorExecutor
 import fi.epicbot.toster.model.Config
+import fi.epicbot.toster.parser.CpuUsageParser
 import fi.epicbot.toster.parser.DumpSysParser
 import fi.epicbot.toster.parser.GfxInfoParser
 import fi.epicbot.toster.time.TimeProvider
@@ -23,6 +24,7 @@ internal class MockedFacade {
     val shellExecutor: ShellExecutor
     val dumpSysParser: DumpSysParser
     val gfxInfoParser: GfxInfoParser
+    val cpuUsageParser: CpuUsageParser
 
     init {
         config = mockk(relaxed = true)
@@ -32,6 +34,7 @@ internal class MockedFacade {
         shellExecutor = mockk(relaxed = true)
         dumpSysParser = mockk(relaxed = true)
         gfxInfoParser = mockk(relaxed = true)
+        cpuUsageParser = mockk(relaxed = true)
     }
 
     fun adb(command: String): String = shellExecutor.runCommandForScreen(
@@ -58,6 +61,7 @@ internal fun provideAndroidExecutor(facade: MockedFacade): ActionExecutor {
         facade.shellExecutor,
         facade.dumpSysParser,
         facade.gfxInfoParser,
+        facade.cpuUsageParser,
         facade.timeProvider,
     )
 }
@@ -73,6 +77,7 @@ internal fun provideEmulatorExecutor(
         facade.shellExecutor,
         facade.dumpSysParser,
         facade.gfxInfoParser,
+        facade.cpuUsageParser,
         facade.timeProvider,
     )
 }

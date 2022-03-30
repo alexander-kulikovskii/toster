@@ -8,9 +8,11 @@ import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.SwipeMove
 import fi.epicbot.toster.model.title
 import fi.epicbot.toster.model.toMove
+import fi.epicbot.toster.parser.CpuUsageParser
 import fi.epicbot.toster.parser.DumpSysParser
 import fi.epicbot.toster.parser.GfxInfoParser
 import fi.epicbot.toster.report.model.Common
+import fi.epicbot.toster.report.model.CpuUsage
 import fi.epicbot.toster.report.model.Device
 import fi.epicbot.toster.report.model.GfxInfo
 import fi.epicbot.toster.report.model.Memory
@@ -19,13 +21,14 @@ import fi.epicbot.toster.report.model.Screenshot
 import fi.epicbot.toster.time.TimeProvider
 import kotlin.math.max
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 internal open class AndroidExecutor(
     private val serialName: String,
     private val config: Config,
     private val shellExecutor: ShellExecutor,
     private val dumpSysParser: DumpSysParser,
     private val gfxInfoParser: GfxInfoParser,
+    private val cpuUsageParser: CpuUsageParser,
     private val timeProvider: TimeProvider,
 ) : ActionExecutor {
 
@@ -46,6 +49,9 @@ internal open class AndroidExecutor(
     override suspend fun execute(action: Action, imagePrefix: String): ReportAction {
         if (action is Action.TakeMemoryAllocation) {
             return takeMemoryAllocation(action)
+        }
+        if (action is Action.TakeCpuUsage) {
+            return takeCpuUsage(action)
         }
         if (action is Action.TakeScreenshot) {
             return takeScreenshot(action, imagePrefix)
@@ -141,6 +147,22 @@ internal open class AndroidExecutor(
             )
         }
         "input touchscreen swipe ${move.xFrom} ${move.yFrom} ${move.xTo} ${move.yTo}".adbShell()
+    }
+
+    private fun takeCpuUsage(action: Action.TakeCpuUsage): CpuUsage {
+        val startTime = timeProvider.getTimeMillis()
+
+        val rawCpuInfo = "dumpsys cpuinfo | grep $apkPackage".adbShell()
+        val measurement = cpuUsageParser.parse(rawData = rawCpuInfo, apkPackage = apkPackage)
+
+        val endTime = timeProvider.getTimeMillis()
+        return CpuUsage(
+            index = actionIndex++,
+            name = action.title(),
+            measurement = measurement,
+            startTime = startTime,
+            endTime = endTime,
+        )
     }
 
     private fun takeMemoryAllocation(action: Action.TakeMemoryAllocation): Memory {
