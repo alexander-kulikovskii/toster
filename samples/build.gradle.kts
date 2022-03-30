@@ -4,6 +4,9 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.19.0"
     id("kotlinx-serialization")
 }
+apply {
+    from("${rootDir}/gradle/dependency-updates.gradle")
+}
 
 dependencies {
     implementation ("androidx.core:core-ktx:1.7.0")
