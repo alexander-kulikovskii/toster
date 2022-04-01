@@ -8,9 +8,11 @@ import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.SwipeMove
 import fi.epicbot.toster.model.title
 import fi.epicbot.toster.model.toMove
+import fi.epicbot.toster.parser.CpuUsageParser
 import fi.epicbot.toster.parser.DumpSysParser
 import fi.epicbot.toster.parser.GfxInfoParser
 import fi.epicbot.toster.report.model.Common
+import fi.epicbot.toster.report.model.CpuUsage
 import fi.epicbot.toster.report.model.Device
 import fi.epicbot.toster.report.model.GfxInfo
 import fi.epicbot.toster.report.model.Memory
@@ -19,13 +21,14 @@ import fi.epicbot.toster.report.model.Screenshot
 import fi.epicbot.toster.time.TimeProvider
 import kotlin.math.max
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 internal open class AndroidExecutor(
     private val serialName: String,
     private val config: Config,
     private val shellExecutor: ShellExecutor,
     private val dumpSysParser: DumpSysParser,
     private val gfxInfoParser: GfxInfoParser,
+    private val cpuUsageParser: CpuUsageParser,
     private val timeProvider: TimeProvider,
 ) : ActionExecutor {
 
@@ -46,6 +49,9 @@ internal open class AndroidExecutor(
     override suspend fun execute(action: Action, imagePrefix: String): ReportAction {
         if (action is Action.TakeMemoryAllocation) {
             return takeMemoryAllocation(action)
+        }
+        if (action is Action.TakeCpuUsage) {
+            return takeCpuUsage(action)
         }
         if (action is Action.TakeScreenshot) {
             return takeScreenshot(action, imagePrefix)
@@ -143,6 +149,42 @@ internal open class AndroidExecutor(
         "input touchscreen swipe ${move.xFrom} ${move.yFrom} ${move.xTo} ${move.yTo}".adbShell()
     }
 
+    private fun getPid(): String {
+        val psInfo = "ps | grep $apkPackage".adbShell()
+        return psInfo.split("\\s+".toRegex())[1]
+    }
+
+    private fun getCoreNumber(): Int {
+        return try {
+            max(1, "nproc".adbShell().toInt())
+        } catch (_: Exception) {
+            1
+        }
+    }
+
+    private fun takeCpuUsage(action: Action.TakeCpuUsage): CpuUsage {
+        val startTime = timeProvider.getTimeMillis()
+
+        val pid = getPid()
+        val coreNumber = getCoreNumber() // TODO make call only once
+        val rawCpuInfo = "top -p $pid -d 0.1 -n $SAMPLE_NUMBER".adbShell()
+
+        val measurement = cpuUsageParser.parse(
+            rawData = rawCpuInfo,
+            sampleNumber = SAMPLE_NUMBER,
+            coreNumber = coreNumber
+        )
+
+        val endTime = timeProvider.getTimeMillis()
+        return CpuUsage(
+            index = actionIndex++,
+            name = action.title(),
+            measurement = measurement,
+            startTime = startTime,
+            endTime = endTime,
+        )
+    }
+
     private fun takeMemoryAllocation(action: Action.TakeMemoryAllocation): Memory {
         val startTime = timeProvider.getTimeMillis()
 
@@ -226,6 +268,7 @@ internal open class AndroidExecutor(
     private fun String.adbShell(): String = "shell $this".adb()
 
     private companion object {
+        private const val SAMPLE_NUMBER = 5
         private const val DEVICE_SCREENSHOT_PATH = "/sdcard/toster_screenshot_image.png"
         private const val SYSTEM_UI_COMMAND = "am broadcast -a com.android.systemui.demo -e command"
     }

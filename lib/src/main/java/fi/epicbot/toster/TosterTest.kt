@@ -17,6 +17,7 @@ import fi.epicbot.toster.model.Screen
 import fi.epicbot.toster.model.makeReport
 import fi.epicbot.toster.model.runAction
 import fi.epicbot.toster.model.toStringParams
+import fi.epicbot.toster.parser.CpuUsageParser
 import fi.epicbot.toster.parser.DumpSysParser
 import fi.epicbot.toster.parser.GfxInfoParser
 import fi.epicbot.toster.report.DefaultReporter
@@ -61,6 +62,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
             ShellExecutor("/build/toster/${config.applicationName.saveForPath()}", shellLogger)
         val dumpSysParser = DumpSysParser()
         val gfxInfoParser = GfxInfoParser()
+        val cpuUsageParser = CpuUsageParser()
 
         config.devices.emulators.forEach { emulator ->
             val actionExecutor = EmulatorExecutor(
@@ -70,6 +72,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                 shellExecutor = shellExecutor,
                 dumpSysParser = dumpSysParser,
                 gfxInfoParser = gfxInfoParser,
+                cpuUsageParser = cpuUsageParser,
                 timeProvider = timeProvider,
             )
             runScreens(actionExecutor, config, screens, reportDevices)
@@ -81,6 +84,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                 shellExecutor = shellExecutor,
                 dumpSysParser = dumpSysParser,
                 gfxInfoParser = gfxInfoParser,
+                cpuUsageParser = cpuUsageParser,
                 timeProvider = timeProvider,
             )
             runScreens(actionExecutor, config, screens, reportDevices)

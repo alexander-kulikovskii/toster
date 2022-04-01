@@ -31,6 +31,7 @@ class ReportScreen(
     val name: String,
     val common: MutableList<Common> = mutableListOf(),
     val gfxInfo: MutableList<GfxInfo> = mutableListOf(),
+    val cpuUsage: MutableList<CpuUsage> = mutableListOf(),
     val memory: MutableList<Memory> = mutableListOf(),
     val screenshots: MutableList<Screenshot> = mutableListOf(),
 )
@@ -70,6 +71,15 @@ class GfxInfo(
 ) : ReportAction()
 
 @Serializable
+class CpuUsage(
+    override val index: Long,
+    override val name: String,
+    override val startTime: Long,
+    override val endTime: Long,
+    val measurement: CpuCell,
+) : ReportAction()
+
+@Serializable
 data class Screenshot(
     override val index: Long,
     override val name: String,
@@ -85,6 +95,11 @@ class MemoryCell(
     val heapSize: Long,
     val heapAlloc: Long,
     val heapFree: Long,
+)
+
+@Serializable
+class CpuCell(
+    val user: Double,
 )
 
 @Serializable

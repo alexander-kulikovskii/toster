@@ -75,4 +75,8 @@ class ActionContext {
     fun trimMemory(trimMemoryLevel: TrimMemoryLevel) {
         actions.add(Action.TrimMemory(trimMemoryLevel))
     }
+
+    fun takeCpuUsage() {
+        actions.add(Action.TakeCpuUsage)
+    }
 }
