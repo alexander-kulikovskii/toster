@@ -4,28 +4,31 @@ import fi.epicbot.toster.report.model.CpuCell
 
 internal class CpuUsageParser {
 
-    fun parse(rawData: String, apkPackage: String): CpuCell {
+    fun parse(rawData: String, sampleNumber: Int, coreNumber: Int): CpuCell {
         if (rawData.isBlank()) {
             return EMPTY_CPU_CELL
         }
         return try {
-            val tmpIndex = rawData.indexOf(apkPackage) + apkPackage.length + 2
-            val tmp = rawData.substring(tmpIndex)
-            val userPercentIndexEnd = tmp.indexOf("%")
+            val cpuLines = rawData
+                .split("\n")
+                .filter { it.contains("cpu") && it.contains("user") }
 
-            val kernelPercentIndexStart = tmp.indexOf("+", startIndex = userPercentIndexEnd + 1) + 2
-            val kernelPercentIndexEnd = tmp.indexOf("%", startIndex = userPercentIndexEnd + 1)
+            if (cpuLines.size != sampleNumber) {
+                return ERROR_CPU_CELL
+            }
 
-            CpuCell(
-                user = tmp.substring(0, userPercentIndexEnd).toFloat(),
-                kernel = tmp.substring(kernelPercentIndexStart, kernelPercentIndexEnd).toFloat()
-            )
+            val sumCpu = cpuLines.sumOf {
+                it.split("\\s+".toRegex())[1].replace("%user", "").toDouble()
+            }
+
+            CpuCell(user = sumCpu / (sampleNumber * coreNumber))
         } catch (_: Exception) {
-            EMPTY_CPU_CELL
+            ERROR_CPU_CELL
         }
     }
 
     private companion object {
-        private val EMPTY_CPU_CELL = CpuCell(user = 0f, kernel = 0f)
+        private val EMPTY_CPU_CELL = CpuCell(user = 0.0)
+        private val ERROR_CPU_CELL = CpuCell(user = -1.0)
     }
 }

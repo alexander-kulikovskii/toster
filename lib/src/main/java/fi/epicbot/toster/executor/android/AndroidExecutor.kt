@@ -149,11 +149,31 @@ internal open class AndroidExecutor(
         "input touchscreen swipe ${move.xFrom} ${move.yFrom} ${move.xTo} ${move.yTo}".adbShell()
     }
 
+    private fun getPid(): String {
+        val psInfo = "ps | grep $apkPackage".adbShell()
+        return psInfo.split("\\s+".toRegex())[1]
+    }
+
+    private fun getCoreNumber(): Int {
+        return try {
+            max(1, "nproc".adbShell().toInt())
+        } catch (_: Exception) {
+            1
+        }
+    }
+
     private fun takeCpuUsage(action: Action.TakeCpuUsage): CpuUsage {
         val startTime = timeProvider.getTimeMillis()
 
-        val rawCpuInfo = "dumpsys cpuinfo | grep $apkPackage".adbShell()
-        val measurement = cpuUsageParser.parse(rawData = rawCpuInfo, apkPackage = apkPackage)
+        val pid = getPid()
+        val coreNumber = getCoreNumber() // TODO make call only once
+        val rawCpuInfo = "top -p $pid -d 0.1 -n $SAMPLE_NUMBER".adbShell()
+
+        val measurement = cpuUsageParser.parse(
+            rawData = rawCpuInfo,
+            sampleNumber = SAMPLE_NUMBER,
+            coreNumber = coreNumber
+        )
 
         val endTime = timeProvider.getTimeMillis()
         return CpuUsage(
@@ -248,6 +268,7 @@ internal open class AndroidExecutor(
     private fun String.adbShell(): String = "shell $this".adb()
 
     private companion object {
+        private const val SAMPLE_NUMBER = 5
         private const val DEVICE_SCREENSHOT_PATH = "/sdcard/toster_screenshot_image.png"
         private const val SYSTEM_UI_COMMAND = "am broadcast -a com.android.systemui.demo -e command"
     }

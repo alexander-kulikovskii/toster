@@ -99,8 +99,7 @@ class MemoryCell(
 
 @Serializable
 class CpuCell(
-    val user: Float,
-    val kernel: Float,
+    val user: Double,
 )
 
 @Serializable
