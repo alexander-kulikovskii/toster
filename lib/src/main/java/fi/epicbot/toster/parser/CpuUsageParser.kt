@@ -4,6 +4,7 @@ import fi.epicbot.toster.report.model.CpuCell
 
 internal class CpuUsageParser {
 
+    @Suppress("ReturnCount")
     fun parse(rawData: String, sampleNumber: Int, coreNumber: Int): CpuCell {
         if (rawData.isBlank()) {
             return EMPTY_CPU_CELL

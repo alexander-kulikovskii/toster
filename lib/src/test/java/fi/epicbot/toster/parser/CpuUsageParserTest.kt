@@ -49,6 +49,7 @@ private val WrongRawData = """
  9273 u0_a248      10 -10  16G 282M 131M S  0.0   3.7  72:01.28 fi.epicbot.text
 """.trimIndent()
 
+@Suppress("MaxLineLength")
 private val FullRawData = """
 [s[999C[999B[6n[u[H[J[?25l[H[J[s[999C[999B[6n[uTasks: 1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
   Mem:  7647796K total,  7559944K used,    87852K free,  4043864K buffers
