@@ -26,7 +26,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.12.3")
     testImplementation("io.mockk:mockk-agent-api:1.12.3")
     testImplementation("io.mockk:mockk-agent-jvm:1.12.3")
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.6.20")
 }
 
 android {
