@@ -22,6 +22,7 @@ import fi.epicbot.toster.parser.DumpSysParser
 import fi.epicbot.toster.parser.GfxInfoParser
 import fi.epicbot.toster.report.DefaultReporter
 import fi.epicbot.toster.report.formatter.JsonFormatter
+import fi.epicbot.toster.report.html.HtmlReporterFacade
 import fi.epicbot.toster.report.model.ReportCollage
 import fi.epicbot.toster.report.model.ReportDevice
 import fi.epicbot.toster.report.model.ReportScreen
@@ -96,10 +97,12 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
             JsonFormatter(prettyPrintJson = true),
             config.shellLoggerConfig,
         )
+        val htmlReporterFacade = HtmlReporterFacade()
         config.makeReport(
             reportDevices,
             endTestTime - startTestTime,
             defaultReporter,
+            htmlReporterFacade,
             shellExecutor,
             shellLogger,
         )

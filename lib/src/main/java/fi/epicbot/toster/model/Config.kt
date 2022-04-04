@@ -46,10 +46,12 @@ class Overdraw(
     val threshold: Double = 0.0,
 )
 
+@Suppress("LongParameterList")
 internal fun Config.makeReport(
     reportDevices: MutableList<ReportDevice>,
     testTime: Long,
     defaultReporter: Reporter,
+    htmlReporterFacade: Reporter,
     shellExecutor: ShellExecutor,
     shellLogger: ShellLogger,
 ) {
@@ -70,7 +72,7 @@ internal fun Config.makeReport(
         ReportAppInfo(applicationName, testTime),
         reportDevices,
     )
-    (listOf(defaultReporter) + reportConfig.customReporters).forEach { reporter ->
+    (listOf(defaultReporter, htmlReporterFacade) + reportConfig.customReporters).forEach { reporter ->
         reporter.makeReport(reportOutput, shellExecutor, shellLogger)
     }
 }
