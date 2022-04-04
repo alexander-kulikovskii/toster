@@ -12,7 +12,7 @@ import kotlinx.html.h2
 import kotlinx.html.id
 import kotlinx.html.stream.createHTML
 
-internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
+internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
 
     override fun makeReport(
         reportOutput: ReportOutput,
@@ -22,8 +22,8 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
 
         reportOutput.devices.forEach { device ->
             generateDeviceChartBuilder(shellExecutor, device)
-            generateDeviceCpuData(shellExecutor, device)
-            generateDeviceCpuPage(shellExecutor, reportOutput.appInfo.appName, device)
+            generateDeviceMemoryData(shellExecutor, device)
+            generateDeviceMemoryPage(shellExecutor, reportOutput.appInfo.appName, device)
         }
     }
 
@@ -40,52 +40,55 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
                                 
                 const chart$index = new Chart(ctx$index, {
                     type: 'line',
-                    data: data$index,
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                suggestedMin: 0,
-                                suggestedMax: 100,
-                            }
-                        }
-                    }
+                    data: data$index
                 });
             """.trimIndent()
         }
 
         shellExecutor.makeFileForChart(
-            device.cpuDir(),
+            device.memoryDir(),
             CHART_BUILDER_NAME,
             chartBuilder
         )
     }
 
-    private fun generateDeviceCpuData(
+    private fun generateDeviceMemoryData(
         shellExecutor: ShellExecutor,
         device: ReportDevice
     ) {
         val chartData = device.userScreens().mapIndexed { index, reportScreen ->
-            val data = reportScreen.cpuUsage.joinToString(
+            val dataDalvik = reportScreen.memory.joinToString(
                 separator = ", ",
-                transform = { it.measurement.user.toString() }
+                transform = { (it.measurements["Dalvik Heap"]?.memory ?: 0).toString() }
+            )
+            val dataNative = reportScreen.memory.joinToString(
+                separator = ", ",
+                transform = { (it.measurements["Native Heap"]?.memory ?: 0).toString() }
             )
 
-            val firstCpuUsageEndTime = reportScreen.cpuUsage.firstOrNull()?.endTime ?: 0L
-            val indexStr = reportScreen.cpuUsage.map {
-                (it.endTime - firstCpuUsageEndTime) / MILLIS_IN_SECOND
+            val firstMemoryUsageEndTime = reportScreen.memory.firstOrNull()?.endTime ?: 0L
+            val indexStr = reportScreen.memory.map {
+                (it.endTime - firstMemoryUsageEndTime) / MILLIS_IN_SECOND
             }.joinToString(separator = ", ")
 
             """
-                var labelName = "CPU"
+                var labelName = "Memory"
                 var labels$index = [$indexStr]
                 var dataSets$index = [
                 {
-                    label: "Cpu usage",
-                    data: [$data],
+                    label: "Dalvik memory",
+                    data: [$dataDalvik],
                     fill: true,
-                    borderColor: "rgb(73, 128, 135)",
-                    backgroundColor: "rgba(73, 128, 135, 0.8)",
+                    borderColor: "rgb(83, 124, 156)",
+                    backgroundColor: "rgba(83, 124, 156, 0.8)",
+                    tension: 0.3
+                },
+                {
+                    label: "Native memory",
+                    data: [$dataNative],
+                    fill: true,
+                    borderColor: "rgb(148, 203, 170)",
+                    backgroundColor: "rgba(148, 203, 170, 0.8)",
                     tension: 0.3
                 },
                 ]
@@ -93,27 +96,27 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
         }.joinToString(separator = "\n")
 
         shellExecutor.makeFileForChart(
-            device.cpuDir(),
-            "cpu_data.js",
+            device.memoryDir(),
+            "memory_data.js",
             chartData
         )
     }
 
-    private fun generateDeviceCpuPage(
+    private fun generateDeviceMemoryPage(
         shellExecutor: ShellExecutor,
         appName: String,
         device: ReportDevice
     ) {
-        val cpuBody = getTemplate(CPU_TEMPLATE)
+        val memoryBody = getTemplate(MEMORY_TEMPLATE)
             .replace(APP_NAME_PLACEHOLDER, appName)
             .replace(DEVICE_NAME_PLACEHOLDER, device.device.name)
             .replace(GENERATED_WITH_PLACEHOLDER, getGenerateWithHtml())
             .replace(METRICS_HOLDER_VERSION, getAllCharts(device))
 
         shellExecutor.makeFileForChart(
-            device.cpuDir(),
+            device.memoryDir(),
             "index.html",
-            cpuBody
+            memoryBody
         )
     }
 
@@ -125,7 +128,7 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
 
     private fun ReportDevice.userScreens() = reportScreens.dropLast(1).drop(1)
 
-    private fun ReportDevice.cpuDir() = "${device.name.saveForPath()}/cpu"
+    private fun ReportDevice.memoryDir() = "${device.name.saveForPath()}/memory"
 
     private fun createChart(index: Int, screen: ReportScreen) = createHTML().div {
         h2 {
