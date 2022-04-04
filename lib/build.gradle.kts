@@ -16,6 +16,9 @@ dependencies {
     api("io.kotest:kotest-runner-junit5:5.2.2")
     implementation("com.lordcodes.turtle:turtle:0.6.0")
     implementation("io.kotlintest:kotlintest-runner-junit4:3.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.5") {
+        exclude(group = "org.jetbrains.kotlin")
+    }
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
 

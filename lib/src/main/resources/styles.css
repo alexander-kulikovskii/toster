@@ -1,0 +1,9 @@
+h2 {
+  background-color: #666666;
+  padding: 0.2em;
+  color: #ffffff;
+}
+
+a:link, a:hover, a:visited {
+  color: blue;
+}

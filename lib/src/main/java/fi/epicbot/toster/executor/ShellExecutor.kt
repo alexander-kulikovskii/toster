@@ -32,6 +32,16 @@ class ShellExecutor(projectDir: String, private val logger: ShellLogger) {
 
     fun makeDirForScreen(path: String): String = makeDir(path, screenWorkingDir)
 
+    fun makeFile(path: String, fileName: String, content: String) {
+        val dir = File("$workingDir/$path")
+        if (dir.exists().not()) {
+            dir.mkdir()
+        }
+        File("$workingDir/$path/$fileName").bufferedWriter().use { out ->
+            out.write(content)
+        }
+    }
+
     fun runShellCommand(command: String, fromRootFolder: Boolean = false): String {
         logger.logCommand("$SH_COMMAND ${listOf("-c", command).joinToString(" ")}")
         return shellRun(
