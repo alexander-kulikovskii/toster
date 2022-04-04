@@ -10,7 +10,7 @@ internal class HtmlReporterFacade : Reporter {
     private val htmlReporters = listOf(
         StartPageHtmlReporter(),
         CpuUsageHtmlReporter(),
-//        MemoryUsageHtmlReporter(),
+        MemoryUsageHtmlReporter(),
 //        CollageHtmlReporter(),
     )
 

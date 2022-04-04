@@ -52,6 +52,7 @@ internal abstract class BaseHtmlReporter : Reporter {
 
         internal const val METRICS_HOLDER_VERSION = "@@metrics@@"
         internal const val CPU_TEMPLATE = "cpu_index.html"
-        internal const val OUTPUT_CPU_USAGE_BUILDER_NAME = "chart_builder.js"
+        internal const val MEMORY_TEMPLATE = "memory_index.html"
+        internal const val CHART_BUILDER_NAME = "chart_builder.js"
     }
 }
