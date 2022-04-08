@@ -59,6 +59,9 @@ internal open class AndroidExecutor(
         if (action is Action.TakeGfxInfo) {
             return takeGfxInfo(action)
         }
+        if (action is Action.TakeLogcat){
+            return takeLogcat(action)
+        }
 
         val startTime = timeProvider.getTimeMillis()
         when (action) {
@@ -125,6 +128,8 @@ internal open class AndroidExecutor(
             Action.ResetScreenSize -> "wm size reset".adbShell()
             is Action.SetScreenDensity -> "wm density ${action.density.dpi}".adbShell()
             Action.ResetScreenDensity -> "wm density reset".adbShell()
+            Action.ClearLogcat -> "logcat -c".adbShell()
+            is Action.SetLogcatBufferSize -> "logcat -G ${action.bufferSize}".adbShell()
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
         val endTime = timeProvider.getTimeMillis()
@@ -238,6 +243,22 @@ internal open class AndroidExecutor(
         )
     }
 
+    private fun takeLogcat(action: Action.TakeLogcat): Common {
+        val startTime = timeProvider.getTimeMillis()
+
+        val index = actionIndex++
+        val screenshotFileName = "logcat_$index.txt"
+        "adb logcat -b ${action.buffer.bufferName} -d > ${serialName.saveForPath()}/$screenshotFileName".shellForScreen()
+
+        val endTime = timeProvider.getTimeMillis()
+        return Common(
+            index = index,
+            name = action.title(),
+            startTime = startTime,
+            endTime = endTime,
+        )
+    }
+
     private fun closeAppsInTray() {
         val appList =
             "dumpsys window a | grep \"/\" | cut -d \"{\" -f2 | cut -d \"/\" -f1 | cut -d \" \" -f2".adbShell()
@@ -262,6 +283,8 @@ internal open class AndroidExecutor(
     private fun String.makeDir(): String = shellExecutor.makeDir(this)
 
     private fun String.shell(): String = shellExecutor.runShellCommand(this, fromRootFolder = true)
+
+    private fun String.shellForScreen(): String = shellExecutor.runShellCommand(this, fromRootFolder = false)
 
     private fun String.adb(): String = shellExecutor.runCommandForScreen("adb", this)
 

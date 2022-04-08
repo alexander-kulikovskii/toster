@@ -122,6 +122,11 @@ private suspend fun DescribeSpecContainerContext.runBeforeScreens(
             executeCondition = config.restartAdbServiceBeforeEachDevice,
         )
         prepareEnvironment()
+        config.globalLogcatBufferSize?.let { logcatBufferSize ->
+            runAction(
+                Action.SetLogcatBufferSize(logcatBufferSize), this, beforeScreen
+            )
+        }
         config.shellsBeforeAllScreens.forEach { shellBeforeAllScreens ->
             runAction(
                 Action.ShellBeforeAllScreens(shellBeforeAllScreens),
@@ -244,6 +249,13 @@ private suspend fun DescribeSpecContainerContext.runScreen(
             shellBefore.isNotBlank(),
         )
     }
+    runAction(
+        Action.ClearLogcat,
+        actionExecutor,
+        reportScreen,
+        imagePrefix,
+        executeCondition = screen.clearLogcatBefore
+    )
 
     screen.screenDensity?.let { screenDensity ->
         runAction(

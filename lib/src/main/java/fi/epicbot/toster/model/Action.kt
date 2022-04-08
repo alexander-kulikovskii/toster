@@ -12,6 +12,7 @@ import io.kotest.core.spec.style.scopes.DescribeSpecContainerContext
 
 sealed class Action {
     object ClearAppData : Action()
+    object ClearLogcat : Action()
     object ClearText : Action()
     class Click(val x: Int, val y: Int) : Action()
     object ClickBack : Action()
@@ -38,6 +39,7 @@ sealed class Action {
     class SendKeyEvent(val keyEvent: String) : Action()
     object SetDemoModeEnable : Action()
     class SetFontScale(val fontScale: FontScale) : Action()
+    class SetLogcatBufferSize(val bufferSize: BufferSize) : Action()
     class SetScreenDensity(val density: Density) : Action()
     class SetScreenSize(val screenSize: ScreenSize) : Action()
     class Shell(val shell: String, val name: String) : Action()
@@ -52,6 +54,7 @@ sealed class Action {
     object TakeGfxInfo : Action()
     object TakeMemoryAllocation : Action()
     class TakeMemoryHeap(val index: Int) : Action()
+    class TakeLogcat(val buffer: Buffer) : Action()
     class TakeScreenshot(val name: String) : Action()
     class TrimMemory(val trimMemoryLevel: TrimMemoryLevel) : Action()
     class TypeText(val text: String) : Action()
@@ -61,6 +64,7 @@ sealed class Action {
 internal fun Action.title(): String {
     return when (this) {
         Action.ClearAppData -> "Clear app data"
+        Action.ClearLogcat -> "Clear logcat"
         Action.ClearText -> TODO()
         is Action.Click -> "Click to ($x;$y)"
         Action.ClickBack -> "Click back"
@@ -87,6 +91,7 @@ internal fun Action.title(): String {
         is Action.SendKeyEvent -> "Send key event <$keyEvent>"
         Action.SetDemoModeEnable -> "Set demo mode enable"
         is Action.SetFontScale -> "Set font scale <$fontScale>"
+        is Action.SetLogcatBufferSize -> "Set logcat buffer size $bufferSize"
         is Action.SetScreenDensity -> "Set screen density <${density.dpi}>"
         is Action.SetScreenSize -> "Set screen size <${screenSize.width}x${screenSize.height}>"
         is Action.Shell -> if (name.isBlank()) "Run shell" else "Run $name"
@@ -101,6 +106,7 @@ internal fun Action.title(): String {
         is Action.TakeGfxInfo -> "Take gfxinfo"
         Action.TakeMemoryAllocation -> "Take memory allocation"
         is Action.TakeMemoryHeap -> "Take memory heap <$index>"
+        is Action.TakeLogcat -> "Take logcat ${buffer.bufferName}"
         is Action.TakeScreenshot -> "Take screenshot"
         is Action.TrimMemory -> "Send trim memory <${trimMemoryLevel.level}>"
         is Action.TypeText -> "Type text <$text>"
