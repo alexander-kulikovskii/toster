@@ -47,7 +47,6 @@ internal abstract class BaseHtmlReporter : Reporter {
 
         internal const val MAIN_TEMPLATE = "main_index.html"
         internal const val DEVICE_TEMPLATE = "device_index.html"
-        internal const val CHART_TEMPLATE = "chart.js"
         internal const val STYLE_TEMPLATE = "styles.css"
 
         internal const val METRICS_HOLDER_VERSION = "@@metrics@@"

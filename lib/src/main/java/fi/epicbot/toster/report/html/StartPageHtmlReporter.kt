@@ -19,15 +19,9 @@ internal class StartPageHtmlReporter : BaseHtmlReporter() {
     ) {
         generateMainPage(shellExecutor, reportOutput)
         copyStyleFile(shellExecutor)
-        copyChartFile(shellExecutor)
         reportOutput.devices.forEach { device ->
             generateDevicePage(shellExecutor, reportOutput.appInfo.appName, device)
         }
-    }
-
-    private fun copyChartFile(shellExecutor: ShellExecutor) {
-        val chartFile = getTemplate(CHART_TEMPLATE)
-        shellExecutor.makeFileForChart(fileName = CHART_TEMPLATE, content = chartFile)
     }
 
     private fun copyStyleFile(shellExecutor: ShellExecutor) {
