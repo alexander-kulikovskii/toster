@@ -2,6 +2,7 @@ package fi.epicbot.toster.context
 
 import fi.epicbot.toster.TosterDslMarker
 import fi.epicbot.toster.model.Action
+import fi.epicbot.toster.model.Buffer
 import fi.epicbot.toster.model.Move
 import fi.epicbot.toster.model.SwipeMove
 import fi.epicbot.toster.model.TrimMemoryLevel
@@ -78,5 +79,13 @@ class ActionContext {
 
     fun takeCpuUsage() {
         actions.add(Action.TakeCpuUsage)
+    }
+
+    fun clearLogcat() {
+        actions.add(Action.ClearLogcat)
+    }
+
+    fun takeLogcat(buffer: Buffer = Buffer.DEFAULT) {
+        actions.add(Action.TakeLogcat(buffer))
     }
 }

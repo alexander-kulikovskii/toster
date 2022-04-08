@@ -18,4 +18,5 @@ class Screen(
     var closeAppsInTrayBeforeStart: Boolean = false,
     var screenDensity: Density? = null,
     var screenSize: ScreenSize? = null,
+    var clearLogcatBefore: Boolean = false,
 )

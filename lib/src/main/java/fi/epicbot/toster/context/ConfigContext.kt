@@ -1,6 +1,8 @@
 package fi.epicbot.toster.context
 
 import fi.epicbot.toster.TosterDslMarker
+import fi.epicbot.toster.model.BufferDimension
+import fi.epicbot.toster.model.BufferSize
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.Devices
@@ -117,5 +119,9 @@ class ConfigContext {
 
     fun setScreenSize(width: Int, height: Int) {
         config.globalScreenSize = ScreenSize(width = width, height = height)
+    }
+
+    fun setLogcatBufferSize(size: Int, bufferDimension: BufferDimension) {
+        config.globalLogcatBufferSize = BufferSize(size, bufferDimension)
     }
 }

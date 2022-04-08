@@ -79,4 +79,8 @@ class ScreenContext {
     fun setScreenSize(width: Int, height: Int) {
         screen.screenSize = ScreenSize(width = width, height = height)
     }
+
+    fun clearLogcatBefore() {
+        screen.clearLogcatBefore = true
+    }
 }

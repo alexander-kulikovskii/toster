@@ -39,6 +39,7 @@ class Config(
     var restartAdbServiceBeforeEachDevice: Boolean = false,
     var globalScreenDensity: Density? = null,
     var globalScreenSize: ScreenSize? = null,
+    var globalLogcatBufferSize: BufferSize? = null,
 )
 
 class Overdraw(
