@@ -11,7 +11,7 @@ internal class HtmlReporterFacade : Reporter {
         StartPageHtmlReporter(),
         CpuUsageHtmlReporter(),
         MemoryUsageHtmlReporter(),
-//        CollageHtmlReporter(),
+        CollageHtmlReporter(),
     )
 
     override fun makeReport(
