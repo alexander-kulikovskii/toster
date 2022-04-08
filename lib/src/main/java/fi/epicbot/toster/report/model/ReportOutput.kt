@@ -87,6 +87,7 @@ data class Screenshot(
     override val endTime: Long,
     val prefix: String,
     val pathUrl: String,
+    val localUrl: String = "",
 ) : ReportAction()
 
 @Serializable

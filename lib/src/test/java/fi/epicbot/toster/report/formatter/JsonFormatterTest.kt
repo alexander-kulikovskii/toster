@@ -115,6 +115,7 @@ private val REPORT_OUTPUT_PRETTY = """
 }
 """.trimIndent()
 
+
 private val REPORT_FULL_PRETTY = """
 {
     "appInfo": {
@@ -185,7 +186,8 @@ private val REPORT_FULL_PRETTY = """
                             "startTime": 4,
                             "endTime": 5,
                             "prefix": "normal",
-                            "pathUrl": "image.png"
+                            "pathUrl": "image.png",
+                            "localUrl": ""
                         },
                         {
                             "index": 3,
@@ -193,7 +195,8 @@ private val REPORT_FULL_PRETTY = """
                             "startTime": 6,
                             "endTime": 7,
                             "prefix": "",
-                            "pathUrl": ""
+                            "pathUrl": "",
+                            "localUrl": ""
                         }
                     ]
                 }
@@ -233,7 +236,6 @@ private val REPORT_FULL_PRETTY = """
     ]
 }
 """.trimIndent()
-
 private val testDataList = listOf(
     TestData(true, reportShort, REPORT_OUTPUT_PRETTY),
     TestData(false, reportShort, REPORT_OUTPUT_FLAT),

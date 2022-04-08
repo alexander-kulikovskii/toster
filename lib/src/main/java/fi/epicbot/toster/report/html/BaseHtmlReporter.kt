@@ -51,7 +51,9 @@ internal abstract class BaseHtmlReporter : Reporter {
         internal const val STYLE_TEMPLATE = "styles.css"
 
         internal const val METRICS_HOLDER_VERSION = "@@metrics@@"
+        internal const val COLLAGE_HOLDER_VERSION = "@@collage@@"
         internal const val CPU_TEMPLATE = "cpu_index.html"
+        internal const val COLLAGE_TEMPLATE = "collage_index.html"
         internal const val MEMORY_TEMPLATE = "memory_index.html"
         internal const val CHART_BUILDER_NAME = "chart_builder.js"
     }

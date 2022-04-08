@@ -62,7 +62,10 @@ internal fun Config.makeReport(
         val deviceName = reportDevice.device.name.saveForPath()
         reportDevice.reportScreens.forEach { reportScreen ->
             val tmp = reportScreen.screenshots.map { screenshot ->
-                screenshot.copy(pathUrl = "${shellExecutor.workingDir}/$deviceName/${screenshot.pathUrl}")
+                screenshot.copy(
+                    pathUrl = "${shellExecutor.workingDir}/$deviceName/${screenshot.pathUrl}",
+                    localUrl = "$deviceName/${screenshot.pathUrl}"
+                )
             }
             reportScreen.screenshots.clear()
             reportScreen.screenshots.addAll(tmp)
