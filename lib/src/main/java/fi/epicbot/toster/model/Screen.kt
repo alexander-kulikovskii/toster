@@ -6,7 +6,7 @@ class Screen(
     var url: String = "",
     var shortUrl: String = "",
     var delayAfterOpenMillis: Long = 2000L,
-    var fontScale: FontScale = FontScale.DEFAULT,
+    var fontScale: FontScale? = null,
     val activityParams: MutableList<ActivityParam> = mutableListOf(),
     val actions: MutableList<Action> = mutableListOf(),
     var clearDataBeforeRun: Boolean = false,

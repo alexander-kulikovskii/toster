@@ -32,7 +32,7 @@ private val configList = listOf(
             applicationPackageName = "",
             apkUrl = "",
             emulatorPath = "",
-            fontScale = FontScale.DEFAULT,
+            fontScale = null,
             checkOverdraw = Overdraw(check = false, threshold = 0.0),
             reportConfig = ReportConfig(enable = true, customReporters = mutableListOf()),
             shellLoggerConfig = ShellLoggerConfig(enable = true, enableTimestamp = true),
