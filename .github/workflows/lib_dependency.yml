@@ -1,4 +1,4 @@
-name: Library availability
+name: Library dependencies
 
 on:
   schedule:
