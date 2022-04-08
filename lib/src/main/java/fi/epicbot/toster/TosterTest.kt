@@ -286,12 +286,14 @@ private suspend fun DescribeSpecContainerContext.runScreen(
         runAction(Action.RevokePermission(it), actionExecutor, reportScreen, imagePrefix)
     }
 
-    val fontScale = if (screen.fontScale != FontScale.DEFAULT) {
+    val fontScale = if (screen.fontScale != null && screen.fontScale != FontScale.DEFAULT) {
         screen.fontScale
     } else {
         config.fontScale
     }
-    runAction(Action.SetFontScale(fontScale), actionExecutor, reportScreen, imagePrefix)
+    fontScale?.let { fontScale ->
+        runAction(Action.SetFontScale(fontScale), actionExecutor, reportScreen, imagePrefix)
+    }
     runAction(
         Action.CloseAppsInTray,
         actionExecutor,
@@ -323,7 +325,9 @@ private suspend fun DescribeSpecContainerContext.runScreen(
         runAction(Action.TakeScreenshot(""), actionExecutor, reportScreen, imagePrefix)
     }
 
-    runAction(Action.SetFontScale(FontScale.DEFAULT), actionExecutor, reportScreen, imagePrefix)
+    fontScale?.let {
+        runAction(Action.SetFontScale(FontScale.DEFAULT), actionExecutor, reportScreen, imagePrefix)
+    }
 
     runAction(Action.CloseApp, actionExecutor, reportScreen, imagePrefix)
 

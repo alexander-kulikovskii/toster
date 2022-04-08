@@ -14,7 +14,7 @@ class Config(
     var applicationPackageName: String = "",
     var apkUrl: String = "",
     var emulatorPath: String = "",
-    var fontScale: FontScale = FontScale.DEFAULT,
+    var fontScale: FontScale? = null,
     var checkOverdraw: Overdraw = Overdraw(),
     var reportConfig: ReportConfig = ReportConfig(),
     var shellLoggerConfig: ShellLoggerConfig = ShellLoggerConfig(),
