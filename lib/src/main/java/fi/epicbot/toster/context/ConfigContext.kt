@@ -124,4 +124,8 @@ class ConfigContext {
     fun setLogcatBufferSize(size: Int, bufferDimension: BufferDimension) {
         config.globalLogcatBufferSize = BufferSize(size, bufferDimension)
     }
+
+    fun setDemoModeTime(time: String) {
+        config.demoModeTime = time
+    }
 }

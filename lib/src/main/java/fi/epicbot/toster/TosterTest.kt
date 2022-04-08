@@ -156,7 +156,7 @@ private suspend fun DescribeSpecContainerContext.runBeforeScreens(
 
         if (config.useDemoMode) {
             runAction(Action.SetDemoModeEnable, this, beforeScreen)
-            runAction(Action.ShowDemoMode, this, beforeScreen)
+            runAction(Action.ShowDemoMode(config.demoModeTime), this, beforeScreen)
         }
 
         runAction(Action.HideGpuOverdraw, this, beforeScreen)
