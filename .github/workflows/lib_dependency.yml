@@ -1,0 +1,30 @@
+name: Library availability
+
+on:
+  schedule:
+    - cron: '0 5 * * 0'
+
+jobs:
+  lib-dependency:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: "11"
+
+      - name: Change wrapper permissions
+        shell: bash
+        run: chmod +x ./gradlew
+
+      - name: Run lib dependency
+        run: ./gradlew :lib:dependencyUpdates --stacktrace
+
+      - name: publish artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: DependencyOutput
+          path: lib/build/dependencyUpdates/report.txt
