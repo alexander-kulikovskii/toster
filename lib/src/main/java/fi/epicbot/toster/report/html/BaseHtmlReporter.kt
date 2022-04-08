@@ -13,7 +13,7 @@ internal abstract class BaseHtmlReporter : Reporter {
     internal fun getGenerateWithHtml() = createHTML().div {
         text("generated with ")
         a("https://github.com/alexander-kulikovskii/toster") {
-            text("toster version 0.2.8") // TODO get from constants
+            text("toster version 0.2.9") // TODO get from constants
         }
     }
 
