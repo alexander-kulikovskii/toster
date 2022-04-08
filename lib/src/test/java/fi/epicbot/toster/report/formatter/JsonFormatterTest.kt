@@ -115,7 +115,6 @@ private val REPORT_OUTPUT_PRETTY = """
 }
 """.trimIndent()
 
-
 private val REPORT_FULL_PRETTY = """
 {
     "appInfo": {
