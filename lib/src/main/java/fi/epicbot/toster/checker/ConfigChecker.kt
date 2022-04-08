@@ -49,6 +49,9 @@ internal class ConfigChecker(private val config: Config) : Checker {
             if (testTimeoutMillis <= 0) {
                 throw IllegalArgumentException(TIMEOUT_TOO_SMALL)
             }
+            if (!demoModeTime.all { it.isDigit() } || demoModeTime.length != DEMO_MODE_TIME_DEFAULT_LENGTH) {
+                throw IllegalArgumentException(DEMO_MODE_TIME_FORMAT)
+            }
         }
     }
 
@@ -65,5 +68,7 @@ internal class ConfigChecker(private val config: Config) : Checker {
         private const val BLANK_SHELL_AFTER_ALL_SCREENS = "Set non empty shell after all screens"
         private const val TIMEOUT_TOO_SMALL = "Test timeout too small"
         private const val EMPTY_GRANTED_PERMISSIONS = "All granted permissions shouldn't be empty"
+        private const val DEMO_MODE_TIME_FORMAT = "Wrong format for demo mode time"
+        private const val DEMO_MODE_TIME_DEFAULT_LENGTH = 4
     }
 }

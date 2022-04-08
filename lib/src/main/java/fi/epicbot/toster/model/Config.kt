@@ -40,6 +40,7 @@ class Config(
     var globalScreenDensity: Density? = null,
     var globalScreenSize: ScreenSize? = null,
     var globalLogcatBufferSize: BufferSize? = null,
+    var demoModeTime: String = "1300",
 )
 
 class Overdraw(

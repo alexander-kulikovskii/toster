@@ -74,7 +74,7 @@ internal open class AndroidExecutor(
             is Action.Click -> "input tap ${action.x} ${action.y}".adbShell()
             Action.CloseApp -> "am force-stop $apkPackage".adbShell()
             Action.SetDemoModeEnable -> "settings put global sysui_demo_allowed 1".adbShell()
-            Action.ShowDemoMode -> showDemoMode()
+            is Action.ShowDemoMode -> showDemoMode(action)
             Action.HideDemoMode -> "$SYSTEM_UI_COMMAND exit".adbShell()
             is Action.OpenScreen -> {
                 shellExecutor.setScreenDirAndMakeIt(serialName.saveForPath() + "/" + action.screen.name)
@@ -267,9 +267,9 @@ internal open class AndroidExecutor(
         }
     }
 
-    private fun showDemoMode() {
-        // Set the clock to 12:00
-        "$SYSTEM_UI_COMMAND clock -e hhmm 1200".adbShell()
+    private fun showDemoMode(action: Action.ShowDemoMode) {
+        // Set the clock
+        "$SYSTEM_UI_COMMAND clock -e hhmm ${action.time}".adbShell()
         // Set the wifi level to max
         "$SYSTEM_UI_COMMAND network -e wifi show -e level 4".adbShell()
         // Show the silent volume icon

@@ -47,7 +47,7 @@ sealed class Action {
     class ShellAfterScreen(val shell: String) : Action()
     class ShellBeforeAllScreens(val shell: String) : Action()
     class ShellBeforeScreen(val shell: String) : Action()
-    object ShowDemoMode : Action()
+    class ShowDemoMode(val time: String) : Action()
     object ShowGpuOverdraw : Action()
     class Swipe(val swipeMove: SwipeMove) : Action()
     object TakeCpuUsage : Action()
@@ -99,7 +99,7 @@ internal fun Action.title(): String {
         is Action.ShellAfterScreen -> "Run shell after screen"
         is Action.ShellBeforeAllScreens -> "Run shell before all screens"
         is Action.ShellBeforeScreen -> "Run shell before screen"
-        Action.ShowDemoMode -> "Show demo mode"
+        is Action.ShowDemoMode -> "Show demo mode with time $time"
         Action.ShowGpuOverdraw -> "Show gpu overdraw"
         is Action.Swipe -> swipeMove.toString()
         is Action.TakeCpuUsage -> "Take cpu usage"

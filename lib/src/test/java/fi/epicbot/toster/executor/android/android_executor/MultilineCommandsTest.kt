@@ -43,10 +43,10 @@ private val MULTILINE_ACTIONS = listOf(
         )
     ),
     MultilineActionTest(
-        Action.ShowDemoMode,
-        "Show demo mode",
+        Action.ShowDemoMode("1300"),
+        "Show demo mode with time 1300",
         listOf(
-            "$SYSTEM_UI_COMMAND clock -e hhmm 1200",
+            "$SYSTEM_UI_COMMAND clock -e hhmm 1300",
             "$SYSTEM_UI_COMMAND network -e wifi show -e level 4",
             "$SYSTEM_UI_COMMAND status -e volume vibrate",
             "$SYSTEM_UI_COMMAND battery -e level 100 -e plugged false",
