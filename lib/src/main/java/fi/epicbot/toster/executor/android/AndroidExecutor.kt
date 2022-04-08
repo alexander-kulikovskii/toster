@@ -59,7 +59,7 @@ internal open class AndroidExecutor(
         if (action is Action.TakeGfxInfo) {
             return takeGfxInfo(action)
         }
-        if (action is Action.TakeLogcat){
+        if (action is Action.TakeLogcat) {
             return takeLogcat(action)
         }
 
@@ -247,8 +247,8 @@ internal open class AndroidExecutor(
         val startTime = timeProvider.getTimeMillis()
 
         val index = actionIndex++
-        val screenshotFileName = "logcat_$index.txt"
-        "adb logcat -b ${action.buffer.bufferName} -d > ${serialName.saveForPath()}/$screenshotFileName".shellForScreen()
+        val screenshotFileName = "${serialName.saveForPath()}/logcat_$index.txt"
+        "adb logcat -b ${action.buffer.bufferName} -d > $screenshotFileName".shellForScreen()
 
         val endTime = timeProvider.getTimeMillis()
         return Common(

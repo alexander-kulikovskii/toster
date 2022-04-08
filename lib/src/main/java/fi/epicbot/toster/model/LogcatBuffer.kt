@@ -23,7 +23,7 @@ sealed class Buffer(val bufferName: String) {
     object DEFAULT : Buffer("default")
 }
 
-sealed class BufferDimension(val value:String){
+sealed class BufferDimension(val value: String) {
     object KILOBYTES : BufferDimension("K")
     object MEGABYTES : BufferDimension("M")
 }
