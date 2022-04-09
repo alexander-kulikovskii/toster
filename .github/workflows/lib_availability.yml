@@ -49,3 +49,18 @@ jobs:
 
       - name: Download deps
         run: sh scripts/check_deps.sh
+
+      - name: Send message on fail
+        if: ${{ failure() }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            Job: Library availability
+            lib-versions: ${{ matrix.lib-versions }}
+            gradle-plugins: ${{ matrix.gradle-plugins }}
+            gradle-tools: ${{ matrix.gradle-tools }}
+            kotlin-version: ${{ matrix.kotlin-version }}
+            Repository: ${{ github.repository }}
+            Status: Failure
