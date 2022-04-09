@@ -20,3 +20,16 @@ jobs:
 
       - name: Publish results
         run: python3 scripts/report_parser.py -i=${{ secrets.BADGE_PROJECT_ID }} -t=${{ secrets.BADGE_PROJECT_TOKEN }} -k=codeCoverage
+
+      - name: Send message on fail
+        if: ${{ failure() }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+
+            Repository: ${{ github.repository }}
+            Status: Failure
