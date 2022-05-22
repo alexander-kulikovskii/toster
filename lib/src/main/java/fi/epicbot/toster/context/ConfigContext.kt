@@ -7,6 +7,7 @@ import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.Devices
 import fi.epicbot.toster.model.FontScale
+import fi.epicbot.toster.model.MultiApk
 import fi.epicbot.toster.model.Overdraw
 import fi.epicbot.toster.model.Permissions
 import fi.epicbot.toster.model.ScreenSize
@@ -35,8 +36,16 @@ class ConfigContext {
         config.emulatorPath = value
     }
 
-    fun apkUrl(value: String) {
-        config.apkUrl = value
+    fun apk(init: ApkContext.() -> Unit) {
+        val context = ApkContext().apply(init)
+        val apk = context.apk
+        config.multiApk = MultiApk().apply { add(apk) }
+    }
+
+    fun multiApk(init: MultiApkContext.() -> Unit) {
+        val context = MultiApkContext().apply(init)
+        val multiApk = context.multiApk
+        config.multiApk = multiApk
     }
 
     fun checkOverdraw(value: Overdraw) {

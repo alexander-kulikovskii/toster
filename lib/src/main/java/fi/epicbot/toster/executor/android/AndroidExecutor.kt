@@ -2,7 +2,7 @@ package fi.epicbot.toster.executor.android
 
 import fi.epicbot.toster.executor.ActionExecutor
 import fi.epicbot.toster.executor.ShellExecutor
-import fi.epicbot.toster.extension.saveForPath
+import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.SwipeMove
@@ -77,7 +77,7 @@ internal open class AndroidExecutor(
             is Action.ShowDemoMode -> showDemoMode(action)
             Action.HideDemoMode -> "$SYSTEM_UI_COMMAND exit".adbShell()
             is Action.OpenScreen -> {
-                shellExecutor.setScreenDirAndMakeIt(serialName.saveForPath() + "/" + action.screen.name)
+                shellExecutor.setScreenDirAndMakeIt(serialName.safeForPath() + "/" + action.screen.name)
                 val screenUrl = if (action.screen.url.isNotBlank()) action.screen.url else
                     "${config.applicationPackageName}.${action.screen.shortUrl}"
                 "am start -n $apkPackage/$screenUrl${action.params}".adbShell()
@@ -229,7 +229,7 @@ internal open class AndroidExecutor(
         "/system/bin/screencap -p $DEVICE_SCREENSHOT_PATH".adbShell()
         val index = actionIndex++
         val screenshotFileName =
-            if (action.name.saveForPath().isNotBlank()) action.name.saveForPath() else index
+            if (action.name.safeForPath().isNotBlank()) action.name.safeForPath() else index
         "pull $DEVICE_SCREENSHOT_PATH $imagePrefix/$screenshotFileName.png".adb()
 
         val endTime = timeProvider.getTimeMillis()
@@ -247,7 +247,7 @@ internal open class AndroidExecutor(
         val startTime = timeProvider.getTimeMillis()
 
         val index = actionIndex++
-        val screenshotFileName = "${serialName.saveForPath()}/logcat_$index.txt"
+        val screenshotFileName = "${serialName.safeForPath()}/logcat_$index.txt"
         "adb logcat -b ${action.buffer.bufferName} -d > $screenshotFileName".shellForScreen()
 
         val endTime = timeProvider.getTimeMillis()

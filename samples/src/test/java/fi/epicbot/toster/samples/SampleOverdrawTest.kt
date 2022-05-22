@@ -10,7 +10,9 @@ class SampleOverdrawTest : TosterTest(
         runShellsBeforeAllScreens("../gradlew :samples:assembleDebug")
         applicationName("SampleOverdraw")
         applicationPackageName("fi.epicbot.toster.samples")
-        apkUrl("build/outputs/apk/debug/samples-debug.apk")
+        apk{
+            url("build/outputs/apk/debug/samples-debug.apk")
+        }
         report {
         }
 

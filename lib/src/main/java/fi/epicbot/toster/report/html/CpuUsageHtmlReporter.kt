@@ -1,7 +1,7 @@
 package fi.epicbot.toster.report.html
 
 import fi.epicbot.toster.executor.ShellExecutor
-import fi.epicbot.toster.extension.saveForPath
+import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.logger.ShellLogger
 import fi.epicbot.toster.report.model.ReportDevice
 import fi.epicbot.toster.report.model.ReportOutput
@@ -19,11 +19,10 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
         shellExecutor: ShellExecutor,
         shellLogger: ShellLogger,
     ) {
-
-        reportOutput.devices.forEach { device ->
+        reportOutput.builds.first().devices.forEach { device ->
             generateDeviceChartBuilder(shellExecutor, device)
-            generateDeviceCpuData(shellExecutor, device)
             generateDeviceCpuPage(shellExecutor, reportOutput.appInfo.appName, device)
+            generateDeviceCpuData(shellExecutor, reportOutput, device)
         }
     }
 
@@ -63,31 +62,19 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
 
     private fun generateDeviceCpuData(
         shellExecutor: ShellExecutor,
-        device: ReportDevice
+        reportOutput: ReportOutput,
+        device: ReportDevice,
     ) {
         val chartData = device.userScreens().mapIndexed { index, reportScreen ->
-            val data = reportScreen.cpuUsage.joinToString(
-                separator = ", ",
-                transform = { it.measurement.user.toString() }
-            )
-
             val firstCpuUsageEndTime = reportScreen.cpuUsage.firstOrNull()?.endTime ?: 0L
             val indexStr = reportScreen.cpuUsage.map {
                 (it.endTime - firstCpuUsageEndTime) / MILLIS_IN_SECOND
             }.joinToString(separator = ", ")
-
             """
                 var labelName = "CPU"
                 var labels$index = [$indexStr]
                 var dataSets$index = [
-                {
-                    label: "Cpu usage",
-                    data: [$data],
-                    fill: true,
-                    borderColor: "rgb(73, 128, 135)",
-                    backgroundColor: "rgba(73, 128, 135, 0.8)",
-                    tension: 0.3
-                },
+                ${getDataSet(index, reportOutput)}
                 ]
             """.trimIndent()
         }.joinToString(separator = "\n")
@@ -99,12 +86,37 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
         )
     }
 
+    private fun getDataSet(screenIndex: Int, reportOutput: ReportOutput): String {
+        var res = ""
+        reportOutput.builds.forEachIndexed { index, build ->
+            val buildName = build.name.safeForPath()
+            build.devices.forEach { device ->
+                val data = device.userScreens()[screenIndex].cpuUsage.joinToString(
+                    separator = ", ",
+                    transform = { it.measurement.user.toString() }
+                )
+                res += """
+                {
+                    label: "$buildName",
+                    data: [$data],
+                    fill: $FILL_CHART,
+                    borderColor: "${getColorByIndex(index)}",
+                    backgroundColor: "${getColorByIndex(index, transparent = true)}",
+                    tension: 0.3
+                },
+                
+                """.trimIndent()
+            }
+        }
+        return res
+    }
+
     private fun generateDeviceCpuPage(
         shellExecutor: ShellExecutor,
         appName: String,
         device: ReportDevice
     ) {
-        val cpuBody = getTemplate(CPU_TEMPLATE)
+        val cpuBody = getTemplate(CPU_TEMPLATE_NAME)
             .replace(APP_NAME_PLACEHOLDER, appName)
             .replace(DEVICE_NAME_PLACEHOLDER, device.device.name)
             .replace(GENERATED_WITH_PLACEHOLDER, getGenerateWithHtml())
@@ -123,9 +135,7 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
         }.joinToString(separator = "\n")
     }
 
-    private fun ReportDevice.userScreens() = reportScreens.dropLast(1).drop(1)
-
-    private fun ReportDevice.cpuDir() = "${device.name.saveForPath()}/cpu"
+    private fun ReportDevice.cpuDir() = "${device.name.safeForPath()}/cpu"
 
     private fun createChart(index: Int, screen: ReportScreen) = createHTML().div {
         h2 {
@@ -133,11 +143,7 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
         }
         canvas {
             id = "chart$index"
-            height = "80"
+            height = CHART_HEIGHT
         }
-    }
-
-    private companion object {
-        private const val MILLIS_IN_SECOND = 1000.0
     }
 }

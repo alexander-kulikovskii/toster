@@ -15,10 +15,8 @@ internal class ConfigChecker(private val config: Config) : Checker {
             applicationPackageName.throwExceptionIfBlank(
                 EMPTY_APPLICATION_PACKAGE_NAME
             )
-            if (deleteAndInstallApk) {
-                apkUrl.throwExceptionIfBlank(
-                    EMPTY_APK_URL
-                )
+            if (deleteAndInstallApk && multiApk.apks.isEmpty()) {
+                throw IllegalArgumentException(EMPTY_APK_URL)
             }
             permissions.granted.throwExceptionIfOneBlank(EMPTY_GRANTED_PERMISSIONS)
 

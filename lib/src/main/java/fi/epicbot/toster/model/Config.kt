@@ -1,18 +1,18 @@
 package fi.epicbot.toster.model
 
 import fi.epicbot.toster.executor.ShellExecutor
-import fi.epicbot.toster.extension.saveForPath
+import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.logger.ShellLogger
 import fi.epicbot.toster.report.Reporter
 import fi.epicbot.toster.report.model.ReportAppInfo
-import fi.epicbot.toster.report.model.ReportDevice
+import fi.epicbot.toster.report.model.ReportBuild
 import fi.epicbot.toster.report.model.ReportOutput
 
 @Suppress("LongParameterList", "MagicNumber")
 class Config(
     var applicationName: String = "",
     var applicationPackageName: String = "",
-    var apkUrl: String = "",
+    var multiApk: MultiApk = MultiApk(),
     var emulatorPath: String = "",
     var fontScale: FontScale? = null,
     var checkOverdraw: Overdraw = Overdraw(),
@@ -41,6 +41,7 @@ class Config(
     var globalScreenSize: ScreenSize? = null,
     var globalLogcatBufferSize: BufferSize? = null,
     var demoModeTime: String = "1300",
+
 )
 
 class Overdraw(
@@ -50,7 +51,7 @@ class Overdraw(
 
 @Suppress("LongParameterList")
 internal fun Config.makeReport(
-    reportDevices: MutableList<ReportDevice>,
+    reportBuilds: MutableList<ReportBuild>,
     testTime: Long,
     defaultReporter: Reporter,
     htmlReporterFacade: Reporter,
@@ -60,24 +61,26 @@ internal fun Config.makeReport(
     if (reportConfig.enable.not()) {
         return
     }
-    reportDevices.forEach { reportDevice ->
-        val deviceName = reportDevice.device.name.saveForPath()
-        reportDevice.reportScreens.forEach { reportScreen ->
-            val tmp = reportScreen.screenshots.map { screenshot ->
-                screenshot.copy(
-                    pathUrl = "${shellExecutor.workingDir}/$deviceName/${screenshot.pathUrl}",
-                    localUrl = "$deviceName/${screenshot.pathUrl}"
-                )
+    reportBuilds.forEach { reportBuild ->
+        reportBuild.devices.forEach { reportDevice ->
+            val deviceName = reportDevice.device.name.safeForPath()
+            reportDevice.reportScreens.forEach { reportScreen ->
+                val tmp = reportScreen.screenshots.map { screenshot ->
+                    screenshot.copy(
+                        pathUrl = "${shellExecutor.workingDir}/$deviceName/${screenshot.pathUrl}",
+                        localUrl = "$deviceName/${screenshot.pathUrl}"
+                    )
+                }
+                reportScreen.screenshots.clear()
+                reportScreen.screenshots.addAll(tmp)
             }
-            reportScreen.screenshots.clear()
-            reportScreen.screenshots.addAll(tmp)
         }
     }
     val reportOutput = ReportOutput(
         ReportAppInfo(applicationName, testTime),
-        reportDevices,
+        reportBuilds,
     )
-    (listOf(defaultReporter, htmlReporterFacade) + reportConfig.customReporters).forEach { reporter ->
+    (listOf(htmlReporterFacade, defaultReporter) + reportConfig.customReporters).forEach { reporter ->
         reporter.makeReport(reportOutput, shellExecutor, shellLogger)
     }
 }

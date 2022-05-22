@@ -1,14 +1,16 @@
 package fi.epicbot.toster.model
 
 import fi.epicbot.toster.executor.ActionExecutor
-import fi.epicbot.toster.extension.saveForPath
+import fi.epicbot.toster.executor.ShellExecutor
+import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.report.model.Common
 import fi.epicbot.toster.report.model.CpuUsage
 import fi.epicbot.toster.report.model.GfxInfo
 import fi.epicbot.toster.report.model.Memory
 import fi.epicbot.toster.report.model.ReportScreen
 import fi.epicbot.toster.report.model.Screenshot
-import io.kotest.core.spec.style.scopes.DescribeSpecContainerContext
+import fi.epicbot.toster.time.TimeProvider
+import io.kotest.core.spec.style.scopes.DescribeSpecContainerScope
 
 sealed class Action {
     object ClearAppData : Action()
@@ -113,7 +115,7 @@ internal fun Action.title(): String {
     }
 }
 
-internal suspend fun DescribeSpecContainerContext.runAction(
+internal suspend fun DescribeSpecContainerScope.runAction(
     action: Action,
     actionExecutor: ActionExecutor,
     reportScreen: ReportScreen,
@@ -128,9 +130,26 @@ internal suspend fun DescribeSpecContainerContext.runAction(
                 is GfxInfo -> reportScreen.gfxInfo.add(reportAction)
                 is CpuUsage -> reportScreen.cpuUsage.add(reportAction)
                 is Screenshot -> reportScreen.screenshots.add(
-                    reportAction.copy(pathUrl = "${reportScreen.name.saveForPath()}/${reportAction.pathUrl}")
+                    reportAction.copy(pathUrl = "${reportScreen.name.safeForPath()}/${reportAction.pathUrl}")
                 )
             }
+        }
+    }
+}
+
+internal suspend fun DescribeSpecContainerScope.runShellAction(
+    command: String,
+    timeProvider: TimeProvider,
+    shellExecutor: ShellExecutor,
+    reportScreen: ReportScreen,
+    executeCondition: Boolean = true,
+) {
+    if (executeCondition) {
+        it("Run command") {
+            val startTime = timeProvider.getTimeMillis()
+            val reportAction = shellExecutor.runShellCommand(command, fromRootFolder = true)
+            val endTime = timeProvider.getTimeMillis()
+            reportScreen.common.add(Common(-1, "Run command", startTime, endTime))
         }
     }
 }

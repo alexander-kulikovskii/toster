@@ -1,7 +1,7 @@
 package fi.epicbot.toster.report.html
 
 import fi.epicbot.toster.executor.ShellExecutor
-import fi.epicbot.toster.extension.saveForPath
+import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.logger.ShellLogger
 import fi.epicbot.toster.report.model.ReportDevice
 import fi.epicbot.toster.report.model.ReportOutput
@@ -19,11 +19,10 @@ internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
         shellExecutor: ShellExecutor,
         shellLogger: ShellLogger,
     ) {
-
-        reportOutput.devices.forEach { device ->
+        reportOutput.builds.first().devices.forEach { device ->
             generateDeviceChartBuilder(shellExecutor, device)
-            generateDeviceMemoryData(shellExecutor, device)
             generateDeviceMemoryPage(shellExecutor, reportOutput.appInfo.appName, device)
+            generateDeviceMemoryData(shellExecutor, reportOutput, device)
         }
     }
 
@@ -54,17 +53,10 @@ internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
 
     private fun generateDeviceMemoryData(
         shellExecutor: ShellExecutor,
-        device: ReportDevice
+        reportOutput: ReportOutput,
+        device: ReportDevice,
     ) {
         val chartData = device.userScreens().mapIndexed { index, reportScreen ->
-            val dataDalvik = reportScreen.memory.joinToString(
-                separator = ", ",
-                transform = { (it.measurements["Dalvik Heap"]?.memory ?: 0).toString() }
-            )
-            val dataNative = reportScreen.memory.joinToString(
-                separator = ", ",
-                transform = { (it.measurements["Native Heap"]?.memory ?: 0).toString() }
-            )
 
             val firstMemoryUsageEndTime = reportScreen.memory.firstOrNull()?.endTime ?: 0L
             val indexStr = reportScreen.memory.map {
@@ -75,22 +67,7 @@ internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
                 var labelName = "Memory"
                 var labels$index = [$indexStr]
                 var dataSets$index = [
-                {
-                    label: "Dalvik memory",
-                    data: [$dataDalvik],
-                    fill: true,
-                    borderColor: "rgb(83, 124, 156)",
-                    backgroundColor: "rgba(83, 124, 156, 0.8)",
-                    tension: 0.3
-                },
-                {
-                    label: "Native memory",
-                    data: [$dataNative],
-                    fill: true,
-                    borderColor: "rgb(148, 203, 170)",
-                    backgroundColor: "rgba(148, 203, 170, 0.8)",
-                    tension: 0.3
-                },
+                ${getDataSet(index, reportOutput)}
                 ]
             """.trimIndent()
         }.joinToString(separator = "\n")
@@ -102,12 +79,50 @@ internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
         )
     }
 
+    private fun getDataSet(screenIndex: Int, reportOutput: ReportOutput): String {
+        var res = ""
+        reportOutput.builds.forEachIndexed { index, build ->
+            val buildName = build.name.safeForPath()
+            build.devices.forEach { device ->
+                val reportScreen = device.userScreens()[screenIndex]
+                val dataDalvik = reportScreen.memory.joinToString(
+                    separator = ", ",
+                    transform = { (it.measurements["Dalvik Heap"]?.memory ?: 0).toString() }
+                )
+                val dataNative = reportScreen.memory.joinToString(
+                    separator = ", ",
+                    transform = { (it.measurements["Native Heap"]?.memory ?: 0).toString() }
+                )
+                res += """
+                {
+                    label: "Dalvik memory ($buildName)",
+                    data: [$dataDalvik],
+                    fill: $FILL_CHART,
+                    borderColor: "${getColorByIndex(index * 2)}",
+                    backgroundColor: "${getColorByIndex(index * 2, transparent = true)}",
+                    tension: 0.3
+                },
+                {
+                    label: "Native memory ($buildName)",
+                    data: [$dataNative],
+                    fill: $FILL_CHART,
+                    borderColor: "${getColorByIndex(index * 2 + 1)}",
+                    backgroundColor: "${getColorByIndex(index * 2 + 1, transparent = true)}",
+                    tension: 0.3
+                },
+                
+                """.trimIndent()
+            }
+        }
+        return res
+    }
+
     private fun generateDeviceMemoryPage(
         shellExecutor: ShellExecutor,
         appName: String,
         device: ReportDevice
     ) {
-        val memoryBody = getTemplate(MEMORY_TEMPLATE)
+        val memoryBody = getTemplate(MEMORY_TEMPLATE_NAME)
             .replace(APP_NAME_PLACEHOLDER, appName)
             .replace(DEVICE_NAME_PLACEHOLDER, device.device.name)
             .replace(GENERATED_WITH_PLACEHOLDER, getGenerateWithHtml())
@@ -126,9 +141,7 @@ internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
         }.joinToString(separator = "\n")
     }
 
-    private fun ReportDevice.userScreens() = reportScreens.dropLast(1).drop(1)
-
-    private fun ReportDevice.memoryDir() = "${device.name.saveForPath()}/memory"
+    private fun ReportDevice.memoryDir() = "${device.name.safeForPath()}/memory"
 
     private fun createChart(index: Int, screen: ReportScreen) = createHTML().div {
         h2 {
@@ -136,11 +149,7 @@ internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
         }
         canvas {
             id = "chart$index"
-            height = "80"
+            height = CHART_HEIGHT
         }
-    }
-
-    private companion object {
-        private const val MILLIS_IN_SECOND = 1000.0
     }
 }

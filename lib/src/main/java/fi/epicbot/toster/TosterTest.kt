@@ -1,5 +1,6 @@
 package fi.epicbot.toster
 
+import fi.epicbot.toster.checker.ApkChecker
 import fi.epicbot.toster.checker.ConfigChecker
 import fi.epicbot.toster.checker.ScreensChecker
 import fi.epicbot.toster.context.ConfigContext
@@ -8,14 +9,16 @@ import fi.epicbot.toster.executor.ActionExecutor
 import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.executor.android.AndroidExecutor
 import fi.epicbot.toster.executor.android.EmulatorExecutor
-import fi.epicbot.toster.extension.saveForPath
+import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.logger.DefaultLogger
 import fi.epicbot.toster.model.Action
+import fi.epicbot.toster.model.Apk
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.FontScale
 import fi.epicbot.toster.model.Screen
 import fi.epicbot.toster.model.makeReport
 import fi.epicbot.toster.model.runAction
+import fi.epicbot.toster.model.runShellAction
 import fi.epicbot.toster.model.toStringParams
 import fi.epicbot.toster.parser.CpuUsageParser
 import fi.epicbot.toster.parser.DumpSysParser
@@ -23,10 +26,12 @@ import fi.epicbot.toster.parser.GfxInfoParser
 import fi.epicbot.toster.report.DefaultReporter
 import fi.epicbot.toster.report.formatter.JsonFormatter
 import fi.epicbot.toster.report.html.HtmlReporterFacade
+import fi.epicbot.toster.report.model.ReportBuild
 import fi.epicbot.toster.report.model.ReportCollage
 import fi.epicbot.toster.report.model.ReportDevice
 import fi.epicbot.toster.report.model.ReportScreen
 import fi.epicbot.toster.time.DefaultTimeProvider
+import fi.epicbot.toster.time.TimeProvider
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.core.spec.style.scopes.DescribeSpecContainerContext
 
@@ -44,6 +49,8 @@ object Config {
         val config = ConfigContext().apply(init).config
         val configChecker = ConfigChecker(config)
         configChecker.check()
+        val apkChecker = ApkChecker(config.multiApk!!.apks)
+        apkChecker.check()
         return config
     }
 }
@@ -55,42 +62,61 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
     failfast = config.failFast
 
     describe(config.applicationName) {
+
         val timeProvider = DefaultTimeProvider()
         val startTestTime = timeProvider.getTimeMillis()
-        val reportDevices = mutableListOf<ReportDevice>()
         val shellLogger = DefaultLogger(timeProvider)
-        val shellExecutor =
-            ShellExecutor("/build/toster/${config.applicationName.saveForPath()}", shellLogger)
+        val reportBuilds = mutableListOf<ReportBuild>()
+
         val dumpSysParser = DumpSysParser()
         val gfxInfoParser = GfxInfoParser()
         val cpuUsageParser = CpuUsageParser()
 
-        config.devices.emulators.forEach { emulator ->
-            val actionExecutor = EmulatorExecutor(
-                serialName = emulator.name,
-                config = config,
-                startDelayMillis = emulator.startDelayMillis,
-                shellExecutor = shellExecutor,
-                dumpSysParser = dumpSysParser,
-                gfxInfoParser = gfxInfoParser,
-                cpuUsageParser = cpuUsageParser,
-                timeProvider = timeProvider,
-            )
-            runScreens(actionExecutor, config, screens, reportDevices)
-        }
-        config.devices.phones.forEach { phone ->
-            val actionExecutor = AndroidExecutor(
-                serialName = phone.uuid,
-                config = config,
-                shellExecutor = shellExecutor,
-                dumpSysParser = dumpSysParser,
-                gfxInfoParser = gfxInfoParser,
-                cpuUsageParser = cpuUsageParser,
-                timeProvider = timeProvider,
-            )
-            runScreens(actionExecutor, config, screens, reportDevices)
-        }
+        config.multiApk.apks.forEachIndexed { index, apk ->
+            describe(apk.prefix) {
+                val reportDevices = mutableListOf<ReportDevice>()
+                val shellExecutor =
+                    ShellExecutor(
+                        "/build/toster/${config.applicationName.safeForPath()}",
+                        apk.prefix,
+                        shellLogger,
+                        index == 0,
+                    )
+                runShellsForApk(shellExecutor = shellExecutor, timeProvider = timeProvider, apk)
 
+                config.devices.emulators.forEach { emulator ->
+                    val actionExecutor = EmulatorExecutor(
+                        serialName = emulator.name,
+                        config = config,
+                        startDelayMillis = emulator.startDelayMillis,
+                        shellExecutor = shellExecutor,
+                        dumpSysParser = dumpSysParser,
+                        gfxInfoParser = gfxInfoParser,
+                        cpuUsageParser = cpuUsageParser,
+                        timeProvider = timeProvider,
+                    )
+                    runScreens(actionExecutor, config, apk, screens, reportDevices)
+                }
+                config.devices.phones.forEach { phone ->
+                    val actionExecutor = AndroidExecutor(
+                        serialName = phone.uuid,
+                        config = config,
+                        shellExecutor = shellExecutor,
+                        dumpSysParser = dumpSysParser,
+                        gfxInfoParser = gfxInfoParser,
+                        cpuUsageParser = cpuUsageParser,
+                        timeProvider = timeProvider,
+                    )
+                    runScreens(actionExecutor, config, apk, screens, reportDevices)
+                }
+                reportBuilds.add(
+                    ReportBuild(
+                        name = apk.prefix,
+                        devices = reportDevices,
+                    )
+                )
+            }
+        }
         val endTestTime = timeProvider.getTimeMillis()
 
         val defaultReporter = DefaultReporter(
@@ -98,8 +124,15 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
             config.shellLoggerConfig,
         )
         val htmlReporterFacade = HtmlReporterFacade()
+        val shellExecutor =
+            ShellExecutor(
+                "/build/toster/${config.applicationName.safeForPath()}",
+                "",
+                shellLogger,
+                false
+            )
         config.makeReport(
-            reportDevices,
+            reportBuilds,
             endTestTime - startTestTime,
             defaultReporter,
             htmlReporterFacade,
@@ -109,9 +142,28 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
     }
 })
 
+private suspend fun DescribeSpecContainerContext.runShellsForApk(
+    shellExecutor: ShellExecutor,
+    timeProvider: TimeProvider,
+    apk: Apk,
+): ReportScreen {
+    val apkReport = ReportScreen(name = "Before")
+    apk.shellsBefore.forEach { shell ->
+        runShellAction(
+            shell,
+            timeProvider,
+            shellExecutor,
+            apkReport,
+            executeCondition = shell.isNotBlank(),
+        )
+    }
+    return apkReport
+}
+
 private suspend fun DescribeSpecContainerContext.runBeforeScreens(
     actionExecutor: ActionExecutor,
     config: Config,
+    apk: Apk,
 ): ReportScreen {
     val beforeScreen = ReportScreen(name = "Before")
     actionExecutor.run {
@@ -149,7 +201,7 @@ private suspend fun DescribeSpecContainerContext.runBeforeScreens(
         if (config.deleteAndInstallApk) {
             runAction(Action.ClearAppData, this, beforeScreen)
             runAction(Action.DeleteApk, this, beforeScreen)
-            runAction(Action.InstallApk(config.apkUrl), this, beforeScreen)
+            runAction(Action.InstallApk(apk.url), this, beforeScreen)
         }
 
         runAction(Action.HideDemoMode, this, beforeScreen)
@@ -201,12 +253,13 @@ private suspend fun DescribeSpecContainerContext.runAfterScreens(
 private suspend fun DescribeSpecContainerContext.runScreens(
     actionExecutor: ActionExecutor,
     config: Config,
+    apk: Apk,
     screens: List<Screen>,
     reportDevices: MutableList<ReportDevice>,
 ) = describe(actionExecutor.executor().toString()) {
 
     val reportScreens: MutableList<ReportScreen> = mutableListOf()
-    val beforeScreenReport = runBeforeScreens(actionExecutor, config)
+    val beforeScreenReport = runBeforeScreens(actionExecutor, config, apk)
 
     screens.forEach { screen ->
         val reportScreen = ReportScreen(name = screen.name)

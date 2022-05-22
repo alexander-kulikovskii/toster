@@ -22,6 +22,6 @@ internal fun String.findRow(name: String): List<String> {
     }
 }
 
-internal fun String.saveForPath(): String {
+internal fun String.safeForPath(): String {
     return this.trim().replace("[.,;!@#$%^&*()+=>< ]".toRegex(), "_")
 }
