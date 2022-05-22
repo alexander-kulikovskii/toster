@@ -7,6 +7,7 @@ import fi.epicbot.toster.model.Config
 
 internal class ConfigChecker(private val config: Config) : Checker {
 
+    @Suppress("ComplexMethod")
     override fun check() {
         config.run {
             applicationName.throwExceptionIfBlank(
@@ -15,7 +16,8 @@ internal class ConfigChecker(private val config: Config) : Checker {
             applicationPackageName.throwExceptionIfBlank(
                 EMPTY_APPLICATION_PACKAGE_NAME
             )
-            if (deleteAndInstallApk && multiApk.apks.isEmpty()) {
+            val emptyMultiApk = multiApk.apks.isEmpty() || multiApk.apks.all { it.url.isBlank() }
+            if (deleteAndInstallApk && emptyMultiApk) {
                 throw IllegalArgumentException(EMPTY_APK_URL)
             }
             permissions.granted.throwExceptionIfOneBlank(EMPTY_GRANTED_PERMISSIONS)

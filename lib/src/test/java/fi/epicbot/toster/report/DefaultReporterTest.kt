@@ -48,7 +48,7 @@ class DefaultReporterTest : BehaviorSpec({
 
 private val reportOutput = ReportOutput(
     ReportAppInfo(appName = "Test", testTime = 0L),
-    devices = mutableListOf()
+    builds = mutableListOf(),
 )
 
 private val REPORT_OUTPUT = """
