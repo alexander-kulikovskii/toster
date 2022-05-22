@@ -19,21 +19,21 @@ internal class StartPageHtmlReporter : BaseHtmlReporter() {
     ) {
         generateMainPage(shellExecutor, reportOutput)
         copyStyleFile(shellExecutor)
-        reportOutput.devices.forEach { device ->
+        reportOutput.builds.first().devices.forEach { device ->
             generateDevicePage(shellExecutor, reportOutput.appInfo.appName, device)
         }
     }
 
     private fun copyStyleFile(shellExecutor: ShellExecutor) {
-        val styleFile = getTemplate(STYLE_TEMPLATE)
-        shellExecutor.makeFileForChart(fileName = STYLE_TEMPLATE, content = styleFile)
+        val styleFile = getTemplate(STYLE_TEMPLATE_NAME)
+        shellExecutor.makeFileForChart(fileName = STYLE_TEMPLATE_NAME, content = styleFile)
     }
 
     private fun generateMainPage(shellExecutor: ShellExecutor, reportOutput: ReportOutput) {
-        val htmlBody = getTemplate(MAIN_TEMPLATE)
+        val htmlBody = getTemplate(MAIN_TEMPLATE_NAME)
             .replace(APP_NAME_PLACEHOLDER, reportOutput.appInfo.appName)
             .replace(GENERATED_WITH_PLACEHOLDER, getGenerateWithHtml())
-            .replace(DEVICES_PLACEHOLDER, createDeviceListHtml(reportOutput.devices))
+            .replace(DEVICES_PLACEHOLDER, createDeviceListHtml(reportOutput.builds.first().devices))
         shellExecutor.makeFileForChart(fileName = "index.html", content = htmlBody)
     }
 
@@ -42,7 +42,7 @@ internal class StartPageHtmlReporter : BaseHtmlReporter() {
         appName: String,
         device: ReportDevice
     ) {
-        val htmlBody = getTemplate(DEVICE_TEMPLATE)
+        val htmlBody = getTemplate(DEVICE_TEMPLATE_NAME)
             .replace(APP_NAME_PLACEHOLDER, appName)
             .replace(DEVICE_NAME_PLACEHOLDER, device.device.name)
             .replace(GENERATED_WITH_PLACEHOLDER, getGenerateWithHtml())

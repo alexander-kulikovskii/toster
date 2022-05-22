@@ -3,19 +3,24 @@ package fi.epicbot.toster.executor
 import com.lordcodes.turtle.ShellLocation
 import com.lordcodes.turtle.shellRun
 import fi.epicbot.toster.extension.plus
-import fi.epicbot.toster.extension.saveForPath
+import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.logger.ShellLogger
 import java.io.File
 
-class ShellExecutor(projectDir: String, private val logger: ShellLogger) {
+class ShellExecutor(
+    projectDir: String,
+    private val apkPrefix: String,
+    private val logger: ShellLogger,
+    clearBefore: Boolean,
+) {
 
-    internal var workingDir = ShellLocation.CURRENT_WORKING + projectDir.saveForPath()
+    internal var workingDir = ShellLocation.CURRENT_WORKING + projectDir.safeForPath()
         private set
 
     private var screenWorkingDir = workingDir
 
     init {
-        makeDir(workingDir.toString(), clearBefore = true)
+        makeDir(workingDir.toString(), clearBefore = clearBefore)
     }
 
     suspend fun delay(delayMillis: Long) {
@@ -23,7 +28,7 @@ class ShellExecutor(projectDir: String, private val logger: ShellLogger) {
     }
 
     fun setScreenDirAndMakeIt(screenName: String) {
-        screenWorkingDir = workingDir + "/${screenName.saveForPath()}"
+        screenWorkingDir = workingDir + "/$apkPrefix/${screenName.safeForPath()}"
         makeDir(screenWorkingDir.toString())
     }
 
@@ -33,9 +38,10 @@ class ShellExecutor(projectDir: String, private val logger: ShellLogger) {
     fun makeDirForScreen(path: String): String = makeDir(path, screenWorkingDir)
 
     fun makeFile(path: String, fileName: String, content: String) {
+        logger.logCommand("$MKDIR_COMMAND -p ${listOf(workingDir, path, fileName).joinToString("/")}")
         val dir = File("$workingDir/$path")
         if (dir.exists().not()) {
-            dir.mkdir()
+            dir.mkdirs()
         }
         File("$workingDir/$path/$fileName").bufferedWriter().use { out ->
             out.write(content)

@@ -10,7 +10,9 @@ class SampleFontSizeTest : TosterTest(
         runShellsBeforeAllScreens("../gradlew :samples:assembleDebug")
         applicationName("SampleFontSize")
         applicationPackageName("fi.epicbot.toster.samples")
-        apkUrl("build/outputs/apk/debug/samples-debug.apk")
+        apk {
+            url("build/outputs/apk/debug/samples-debug.apk")
+        }
         report {
         }
 

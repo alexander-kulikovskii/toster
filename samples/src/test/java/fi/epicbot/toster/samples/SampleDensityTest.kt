@@ -11,7 +11,9 @@ class SampleDensityTest : TosterTest(
         runShellsBeforeAllScreens("../gradlew :samples:assembleDebug")
         applicationName("SampleDensity")
         applicationPackageName("fi.epicbot.toster.samples")
-        apkUrl("build/outputs/apk/debug/samples-debug.apk")
+        apk {
+            url("build/outputs/apk/debug/samples-debug.apk")
+        }
         setScreenDensity(Density.HDPI)
         report {
         }

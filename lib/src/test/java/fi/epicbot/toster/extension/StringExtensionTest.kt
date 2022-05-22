@@ -7,7 +7,7 @@ class StringExtensionTest : BehaviorSpec({
     testData.forEach() { (inputData, expectedValue) ->
         Given(inputData) {
             When("Get save string for path") {
-                val actualValue = inputData.saveForPath()
+                val actualValue = inputData.safeForPath()
                 Then("It should be $expectedValue") {
                     actualValue shouldBe expectedValue
                 }

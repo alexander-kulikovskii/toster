@@ -23,6 +23,7 @@ private const val PROJECT_DIR = "/test"
 private const val FULL_PATH = CURRENT_WORKING_PATH + PROJECT_DIR
 private const val SCREEN_NAME = "/screen"
 private const val SCREEN_SUB_NAME = "overdraw"
+private const val BUILD_NAME = "default"
 private const val DELAY_MS = 250L
 
 class ShellExecutorTest : BehaviorSpec({
@@ -32,7 +33,7 @@ class ShellExecutorTest : BehaviorSpec({
         val logger = mockShellAndProvideMockedLogger()
 
         When("init it") {
-            val shellEx = ShellExecutor(PROJECT_DIR, logger)
+            val shellEx = ShellExecutor(PROJECT_DIR, "default", logger, true)
             Then("output dir should be created") {
                 shellEx.workingDir.toString() shouldBe FULL_PATH
             }
@@ -63,7 +64,7 @@ class ShellExecutorTest : BehaviorSpec({
         val logger = mockShellAndProvideMockedLogger()
 
         When("makeDir") {
-            val shellEx = ShellExecutor(PROJECT_DIR, logger)
+            val shellEx = ShellExecutor(PROJECT_DIR, "default", logger, false)
             shellEx.makeDir(SCREEN_NAME, clearBefore = false)
 
             Verify("check log") {
@@ -83,7 +84,7 @@ class ShellExecutorTest : BehaviorSpec({
         val logger = mockShellAndProvideMockedLogger()
 
         When("makeDir work dir") {
-            val shellEx = ShellExecutor(PROJECT_DIR, logger)
+            val shellEx = ShellExecutor(PROJECT_DIR, "default", logger, false)
             shellEx.makeDirForScreen(SCREEN_NAME)
 
             Verify("check log") {
@@ -103,7 +104,7 @@ class ShellExecutorTest : BehaviorSpec({
         val logger = mockShellAndProvideMockedLogger()
 
         When("run command for screen") {
-            val shellEx = ShellExecutor(PROJECT_DIR, logger)
+            val shellEx = ShellExecutor(PROJECT_DIR, "default", logger, false)
             shellEx.runCommandForScreen("command", "argument1 argument2")
 
             Verify("check log") {
@@ -123,7 +124,7 @@ class ShellExecutorTest : BehaviorSpec({
         val logger = mockShellAndProvideMockedLogger()
 
         When("run shell command") {
-            val shellEx = ShellExecutor(PROJECT_DIR, logger)
+            val shellEx = ShellExecutor(PROJECT_DIR, "default", logger, false)
             shellEx.runShellCommand("command argument1 argument2", false)
 
             Verify("check log") {
@@ -143,16 +144,16 @@ class ShellExecutorTest : BehaviorSpec({
         val logger = mockShellAndProvideMockedLogger()
 
         When("setScreenDirAndMakeIt") {
-            val shellEx = ShellExecutor(PROJECT_DIR, logger)
+            val shellEx = ShellExecutor(PROJECT_DIR, "default", logger, true)
             shellEx.setScreenDirAndMakeIt(SCREEN_SUB_NAME)
 
             Verify("check log") {
-                logger.logCommand("mkdir -p $FULL_PATH/$SCREEN_SUB_NAME")
+                logger.logCommand("mkdir -p $FULL_PATH/$BUILD_NAME/$SCREEN_SUB_NAME")
             }
             Verify("check shell command") {
                 shellRun(
                     command = "mkdir",
-                    arguments = listOf("-p", "$FULL_PATH/$SCREEN_SUB_NAME"),
+                    arguments = listOf("-p", "$FULL_PATH/$BUILD_NAME/$SCREEN_SUB_NAME"),
                     workingDirectory = CURRENT_WORKING
                 )
             }
@@ -165,7 +166,7 @@ class ShellExecutorTest : BehaviorSpec({
         When("set delay") {
             mockkStatic("kotlinx.coroutines.DelayKt")
             coJustRun { delay(DELAY_MS) }
-            val shellEx = ShellExecutor(PROJECT_DIR, logger)
+            val shellEx = ShellExecutor(PROJECT_DIR, "default", logger, false)
             shellEx.delay(DELAY_MS)
 
             CoVerify("check delay") {

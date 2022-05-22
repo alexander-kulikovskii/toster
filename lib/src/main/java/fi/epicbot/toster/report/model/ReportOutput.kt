@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class ReportOutput(
     val appInfo: ReportAppInfo,
-    val devices: MutableList<ReportDevice>,
+    val builds: MutableList<ReportBuild>,
 )
 
 @Serializable
@@ -21,6 +21,12 @@ class ReportDevice(
     val device: Device,
     val reportScreens: List<ReportScreen>,
     val collage: ReportCollage,
+)
+
+@Serializable
+class ReportBuild(
+    val name: String,
+    val devices: MutableList<ReportDevice>,
 )
 
 @Serializable

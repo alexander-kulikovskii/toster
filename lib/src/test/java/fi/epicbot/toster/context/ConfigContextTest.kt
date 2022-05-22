@@ -1,12 +1,14 @@
 package fi.epicbot.toster.context
 
 import fi.epicbot.toster.Then
+import fi.epicbot.toster.model.Apk
 import fi.epicbot.toster.model.Collage
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.Devices
 import fi.epicbot.toster.model.Emulator
 import fi.epicbot.toster.model.FontScale
+import fi.epicbot.toster.model.MultiApk
 import fi.epicbot.toster.model.Overdraw
 import fi.epicbot.toster.model.Permissions
 import fi.epicbot.toster.model.Phone
@@ -30,7 +32,7 @@ private val configList = listOf(
         Config(
             applicationName = "",
             applicationPackageName = "",
-            apkUrl = "",
+            multiApk = MultiApk(),
             emulatorPath = "",
             fontScale = null,
             checkOverdraw = Overdraw(check = false, threshold = 0.0),
@@ -90,9 +92,9 @@ private val configList = listOf(
     ConfigContextData(
         "apkUrl",
         {
-            apkUrl("url")
+            apk { url("url") }
         },
-        Config(apkUrl = "url"),
+        Config(multiApk = MultiApk().apply { add(Apk(url = "url")) }),
     ),
     ConfigContextData(
         "checkOverdraw",
@@ -257,7 +259,11 @@ internal class ConfigContextTest : BehaviorSpec({
                     actual.applicationPackageName,
                     expected.applicationPackageName
                 )
-                Then("apkUrl should be ${expected.apkUrl}", actual.apkUrl, expected.apkUrl)
+                Then(
+                    "apkUrl should be ${expected.multiApk.apks.joinToString { it.prefix + ", " }}",
+                    actual.multiApk.apks.joinToString { it.url + it.prefix + it.shellsBefore.joinToString() },
+                    expected.multiApk.apks.joinToString { it.url + it.prefix + it.shellsBefore.joinToString() }
+                )
                 Then(
                     "emulatorPath should be ${expected.emulatorPath}",
                     actual.emulatorPath,
