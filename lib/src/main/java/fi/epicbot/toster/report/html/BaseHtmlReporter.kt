@@ -12,7 +12,7 @@ internal abstract class BaseHtmlReporter : Reporter {
     internal fun getGenerateWithHtml() = createHTML().div {
         text("generated with ")
         a("https://github.com/alexander-kulikovskii/toster") {
-            text("toster version 0.2.9") // TODO get from constants
+            text("toster version $LIB_VERSION") // TODO get from constants
         }
     }
 
@@ -76,6 +76,9 @@ internal abstract class BaseHtmlReporter : Reporter {
         internal const val CHART_HEIGHT = "80"
         internal const val DEFAULT_SCREENSHOT_HEIGHT = "500"
         internal const val MILLIS_IN_SECOND = 1000.0
+
+        internal const val LIB_VERSION = "0.2.9"
+        internal const val CHART_VERSION = "3.7.1"
 
         private const val COLOR_SIZE = 20
         private const val CHART_TRANSPARENT_VALUE = 0.8

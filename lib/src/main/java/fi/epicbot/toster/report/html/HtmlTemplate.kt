@@ -1,5 +1,7 @@
 package fi.epicbot.toster.report.html
 
+import fi.epicbot.toster.report.html.BaseHtmlReporter.Companion.CHART_VERSION
+
 internal val MAIN_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -104,7 +106,7 @@ internal val CPU_TEMPLATE = """
     <title>toster report</title>
     <link rel="stylesheet" type="text/css" href="../../styles.css">
     <script src="cpu_data.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/$CHART_VERSION/chart.js"></script>
 </head>
 
 <body>
@@ -127,7 +129,7 @@ internal val MEMORY_TEMPLATE = """
     <title>toster report</title>
     <link rel="stylesheet" type="text/css" href="../../styles.css">
     <script src="memory_data.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/$CHART_VERSION/chart.js"></script>
 </head>
 
 <body>
