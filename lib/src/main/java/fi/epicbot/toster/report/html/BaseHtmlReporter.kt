@@ -36,19 +36,38 @@ internal abstract class BaseHtmlReporter : Reporter {
         this.makeFile("chart/$path", fileName, content)
     }
 
-    @Suppress("MagicNumber")
+    @Suppress("MagicNumber", "ComplexMethod")
     internal fun getColorByIndex(index: Int, transparent: Boolean = false): String {
         val color = when (index % COLOR_SIZE) {
-            0 -> "73, 128, 135"
-            1 -> "148, 203, 170"
-            2 -> "42, 53, 10"
-            3 -> "148, 253, 50"
+            0 -> "255, 95, 95"
+            6 -> "143, 71, 71"
+            12 -> "255, 168, 168"
+
+            1 -> "255, 177, 86"
+            7 -> "182, 144, 101"
+            13 -> "255, 199, 0"
+
+            2 -> "103, 237, 116"
+            8 -> "35, 189, 97"
+            14 -> "82, 143, 88"
+
+            3 -> "19, 211, 200"
+            9 -> "122, 174, 171"
+            15 -> "58, 143, 138"
+
+            4 -> "90, 117, 255"
+            10 -> "118, 124, 160"
+            16 -> "127, 38, 216"
+
+            5 -> "219, 56, 203"
+            11 -> "136, 87, 131"
+            17 -> "184, 32, 114"
             else -> "73, 128, 135"
         }
         return if (transparent) {
-            "rgb($color)"
-        } else {
             "rgba($color, $CHART_TRANSPARENT_VALUE)"
+        } else {
+            "rgb($color)"
         }
     }
 
@@ -80,7 +99,7 @@ internal abstract class BaseHtmlReporter : Reporter {
         internal const val LIB_VERSION = "0.2.9"
         internal const val CHART_VERSION = "3.7.1"
 
-        private const val COLOR_SIZE = 20
+        private const val COLOR_SIZE = 18
         private const val CHART_TRANSPARENT_VALUE = 0.8
     }
 }
