@@ -30,18 +30,16 @@ internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
         var chartBuilder = ""
         device.userScreens().forEachIndexed { index, _ ->
             chartBuilder += """
-                const ctx$index = document.getElementById('chart$index');
-                                
-                const data$index = {
-                    labels: labels$index,
-                    datasets: dataSets$index,
-                };
-                                
-                const chart$index = new Chart(ctx$index, {
-                    type: 'line',
-                    data: data$index
-                });
-            """.trimIndent()
+                |const ctx$index = document.getElementById('chart$index');
+                |const data$index = {
+                |    labels: labels$index,
+                |    datasets: dataSets$index,
+                |};
+                |const chart$index = new Chart(ctx$index, {
+                |    type: 'line',
+                |    data: data$index
+                |});
+            """.trimMargin()
         }
 
         shellExecutor.makeFileForChart(
@@ -64,12 +62,12 @@ internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
             }.joinToString(separator = ", ")
 
             """
-                var labelName = "Memory"
-                var labels$index = [$indexStr]
-                var dataSets$index = [
-                ${getDataSet(index, reportOutput)}
-                ]
-            """.trimIndent()
+                |var labelName = "Memory"
+                |var labels$index = [$indexStr]
+                |var dataSets$index = [
+                |${getDataSet(index, reportOutput)}
+                |]
+            """.trimMargin()
         }.joinToString(separator = "\n")
 
         shellExecutor.makeFileForChart(
@@ -94,24 +92,23 @@ internal class MemoryUsageHtmlReporter : BaseHtmlReporter() {
                     transform = { (it.measurements["Native Heap"]?.memory ?: 0).toString() }
                 )
                 res += """
-                {
-                    label: "Dalvik memory ($buildName)",
-                    data: [$dataDalvik],
-                    fill: $FILL_CHART,
-                    borderColor: "${getColorByIndex(index * 2)}",
-                    backgroundColor: "${getColorByIndex(index * 2, transparent = true)}",
-                    tension: 0.3
-                },
-                {
-                    label: "Native memory ($buildName)",
-                    data: [$dataNative],
-                    fill: $FILL_CHART,
-                    borderColor: "${getColorByIndex(index * 2 + 1)}",
-                    backgroundColor: "${getColorByIndex(index * 2 + 1, transparent = true)}",
-                    tension: 0.3
-                },
-                
-                """.trimIndent()
+                |{
+                |    label: "Dalvik memory ($buildName)",
+                |    data: [$dataDalvik],
+                |    fill: $FILL_CHART,
+                |    borderColor: "${getColorByIndex(index * 2)}",
+                |    backgroundColor: "${getColorByIndex(index * 2, transparent = true)}",
+                |    tension: 0.3
+                |},
+                |{
+                |    label: "Native memory ($buildName)",
+                |    data: [$dataNative],
+                |    fill: $FILL_CHART,
+                |    borderColor: "${getColorByIndex(index * 2 + 1)}",
+                |    backgroundColor: "${getColorByIndex(index * 2 + 1, transparent = true)}",
+                |    tension: 0.3
+                |},
+                """.trimMargin()
             }
         }
         return res
