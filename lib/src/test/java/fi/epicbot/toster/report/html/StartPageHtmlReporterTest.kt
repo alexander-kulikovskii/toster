@@ -3,6 +3,7 @@ package fi.epicbot.toster.report.html
 import fi.epicbot.toster.Verify
 import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.logger.ShellLogger
+import fi.epicbot.toster.report.html.BaseHtmlReporter.Companion.LIB_VERSION
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.mockk
 
@@ -62,7 +63,7 @@ private val START_PAGE = """
 </div>
 
 
-<div>generated with <a href="https://github.com/alexander-kulikovskii/toster">toster version 0.2.9</a></div>
+<div>generated with <a href="https://github.com/alexander-kulikovskii/toster">toster version $LIB_VERSION</a></div>
 
 </body>
 </html>
@@ -115,7 +116,7 @@ private val DEVICE_PAGE = """
     </ul>
 </div>
 
-<div>generated with <a href="https://github.com/alexander-kulikovskii/toster">toster version 0.2.9</a></div>
+<div>generated with <a href="https://github.com/alexander-kulikovskii/toster">toster version $LIB_VERSION</a></div>
 
 </body>
 </html>

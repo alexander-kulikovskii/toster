@@ -3,6 +3,8 @@ package fi.epicbot.toster.report.html
 import fi.epicbot.toster.Verify
 import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.logger.ShellLogger
+import fi.epicbot.toster.report.html.BaseHtmlReporter.Companion.CHART_VERSION
+import fi.epicbot.toster.report.html.BaseHtmlReporter.Companion.LIB_VERSION
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.mockk
 
@@ -48,7 +50,7 @@ private val MEMORY_REPORT = """
     <title>toster report</title>
     <link rel="stylesheet" type="text/css" href="../../styles.css">
     <script src="memory_data.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/$CHART_VERSION/chart.js"></script>
 </head>
 
 <body>
@@ -61,7 +63,7 @@ private val MEMORY_REPORT = """
 </div>
 
 
-<div>generated with <a href="https://github.com/alexander-kulikovskii/toster">toster version 0.2.9</a></div>
+<div>generated with <a href="https://github.com/alexander-kulikovskii/toster">toster version $LIB_VERSION</a></div>
 
 <script type="text/javascript" src="chart_builder.js"></script>
 </body>
