@@ -48,6 +48,7 @@ private const val BLANK_SHELL_BEFORE_ALL_SCREENS = "Set non empty shell before a
 private const val BLANK_SHELL_AFTER_ALL_SCREENS = "Set non empty shell after all screens"
 private const val TIMEOUT_TOO_SMALL = "Test timeout too small"
 private const val EMPTY_GRANTED_PERMISSIONS = "All granted permissions shouldn't be empty"
+private const val DEMO_MODE_TIME_FORMAT = "Wrong format for demo mode time"
 private const val NOT_EMPTY_FIELD = "Test"
 private val NOT_EMPTY_APK_LIST = MultiApk().apply { add(Apk(url = NOT_EMPTY_FIELD)) }
 private val EMPTY_APK_LIST = MultiApk()
@@ -195,4 +196,37 @@ private val exceptionData = mapOf(
         emulatorPath = NOT_EMPTY_FIELD,
         testTimeoutMillis = -1,
     ) to TIMEOUT_TOO_SMALL,
+    Config(
+        applicationName = NOT_EMPTY_FIELD,
+        applicationPackageName = NOT_EMPTY_FIELD,
+        multiApk = NOT_EMPTY_APK_LIST,
+        deleteAndInstallApk = true,
+        permissions = Permissions(granted = listOf(NOT_EMPTY_FIELD)),
+        devices = Devices(emulators = listOf(Emulator(NOT_EMPTY_FIELD))),
+        emulatorPath = NOT_EMPTY_FIELD,
+        testTimeoutMillis = 1,
+        demoModeTime = "12a3"
+    ) to DEMO_MODE_TIME_FORMAT,
+    Config(
+        applicationName = NOT_EMPTY_FIELD,
+        applicationPackageName = NOT_EMPTY_FIELD,
+        multiApk = NOT_EMPTY_APK_LIST,
+        deleteAndInstallApk = true,
+        permissions = Permissions(granted = listOf(NOT_EMPTY_FIELD)),
+        devices = Devices(emulators = listOf(Emulator(NOT_EMPTY_FIELD))),
+        emulatorPath = NOT_EMPTY_FIELD,
+        testTimeoutMillis = 1,
+        demoModeTime = "12345"
+    ) to DEMO_MODE_TIME_FORMAT,
+    Config(
+        applicationName = NOT_EMPTY_FIELD,
+        applicationPackageName = NOT_EMPTY_FIELD,
+        multiApk = NOT_EMPTY_APK_LIST,
+        deleteAndInstallApk = true,
+        permissions = Permissions(granted = listOf(NOT_EMPTY_FIELD)),
+        devices = Devices(emulators = listOf(Emulator(NOT_EMPTY_FIELD))),
+        emulatorPath = NOT_EMPTY_FIELD,
+        testTimeoutMillis = 1,
+        demoModeTime = "123"
+    ) to DEMO_MODE_TIME_FORMAT,
 )

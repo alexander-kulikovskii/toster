@@ -8,13 +8,14 @@ import fi.epicbot.toster.model.Apk
 internal class ApkChecker(private val apks: List<Apk>) : Checker {
 
     override fun check() {
-        apks.forEach {
-            checkApk(it)
+        if (apks.isEmpty()){
+            throw IllegalArgumentException(EMPTY_APK_LIST)
         }
-        if (apks.size > 1) {
-            apks.forEach {
-                it.prefix?.throwExceptionIfBlank(EMPTY_APK_PREFIX)
-            }
+        apks.forEach { apk ->
+            checkApk(apk)
+        }
+        apks.forEach { apk ->
+            apk.prefix.throwExceptionIfBlank(EMPTY_APK_PREFIX)
         }
         apks.map { it.prefix.toString() }.throwExceptionIfAllElementsNotUnique(NOT_UNIQUE_PREFIXES)
     }
@@ -31,6 +32,7 @@ internal class ApkChecker(private val apks: List<Apk>) : Checker {
     }
 
     private companion object {
+        private const val EMPTY_APK_LIST = "Apk list shouldn't be empty"
         private const val EMPTY_APK_URL = "Apk url shouldn't be empty"
         private const val EMPTY_APK_PREFIX = "Apk prefix shouldn't be empty"
         private const val NOT_UNIQUE_PREFIXES = "All prefixes should be unique"
