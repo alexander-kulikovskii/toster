@@ -90,16 +90,16 @@ var dataSets0 = [
     label: "Dalvik memory (test)",
     data: [],
     fill: false,
-    borderColor: "rgba(73, 128, 135, 0.8)",
-    backgroundColor: "rgb(73, 128, 135)",
+    borderColor: "rgb(255, 95, 95)",
+    backgroundColor: "rgba(255, 95, 95, 0.8)",
     tension: 0.3
 },
 {
     label: "Native memory (test)",
     data: [],
     fill: false,
-    borderColor: "rgba(148, 203, 170, 0.8)",
-    backgroundColor: "rgb(148, 203, 170)",
+    borderColor: "rgb(255, 177, 86)",
+    backgroundColor: "rgba(255, 177, 86, 0.8)",
     tension: 0.3
 },
 ]

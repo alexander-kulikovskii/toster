@@ -101,8 +101,8 @@ var dataSets0 = [
         label: "test",
         data: [],
         fill: false,
-        borderColor: "rgba(73, 128, 135, 0.8)",
-        backgroundColor: "rgb(73, 128, 135)",
+        borderColor: "rgb(255, 95, 95)",
+        backgroundColor: "rgba(255, 95, 95, 0.8)",
         tension: 0.3
     },
 ]
