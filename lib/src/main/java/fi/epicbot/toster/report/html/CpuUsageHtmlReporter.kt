@@ -30,27 +30,27 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
         var chartBuilder = ""
         device.userScreens().forEachIndexed { index, _ ->
             chartBuilder += """
-                const ctx$index = document.getElementById('chart$index');
-                                
-                const data$index = {
-                    labels: labels$index,
-                    datasets: dataSets$index,
-                };
-                                
-                const chart$index = new Chart(ctx$index, {
-                    type: 'line',
-                    data: data$index,
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                suggestedMin: 0,
-                                suggestedMax: 100,
-                            }
-                        }
-                    }
-                });
-            """.trimIndent()
+            |const ctx$index = document.getElementById('chart$index');
+            |                                
+            |const data$index = {
+            |    labels: labels$index,
+            |    datasets: dataSets$index,
+            |};
+            |                                
+            |const chart$index = new Chart(ctx$index, {
+            |    type: 'line',
+            |    data: data$index,
+            |    options: {
+            |        responsive: true,
+            |        scales: {
+            |            y: {
+            |                suggestedMin: 0,
+            |                suggestedMax: 100,
+            |            }
+            |        }
+            |    }
+            |});
+            """.trimMargin()
         }
 
         shellExecutor.makeFileForChart(
@@ -71,12 +71,12 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
                 (it.endTime - firstCpuUsageEndTime) / MILLIS_IN_SECOND
             }.joinToString(separator = ", ")
             """
-                var labelName = "CPU"
-                var labels$index = [$indexStr]
-                var dataSets$index = [
-                ${getDataSet(index, reportOutput)}
-                ]
-            """.trimIndent()
+                |var labelName = "CPU"
+                |var labels$index = [$indexStr]
+                |var dataSets$index = [
+                |${getDataSet(index, reportOutput)}
+                |]
+            """.trimMargin()
         }.joinToString(separator = "\n")
 
         shellExecutor.makeFileForChart(
@@ -96,16 +96,15 @@ internal class CpuUsageHtmlReporter : BaseHtmlReporter() {
                     transform = { it.measurement.user.toString() }
                 )
                 res += """
-                {
-                    label: "$buildName",
-                    data: [$data],
-                    fill: $FILL_CHART,
-                    borderColor: "${getColorByIndex(index)}",
-                    backgroundColor: "${getColorByIndex(index, transparent = true)}",
-                    tension: 0.3
-                },
-                
-                """.trimIndent()
+                |    {
+                |        label: "$buildName",
+                |        data: [$data],
+                |        fill: $FILL_CHART,
+                |        borderColor: "${getColorByIndex(index)}",
+                |        backgroundColor: "${getColorByIndex(index, transparent = true)}",
+                |        tension: 0.3
+                |    },
+                """.trimMargin()
             }
         }
         return res
