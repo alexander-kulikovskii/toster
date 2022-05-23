@@ -40,8 +40,6 @@ internal class StartPageHtmlReporterTest : BehaviorSpec({
     }
 })
 
-
-
 private val START_PAGE = """
 <!DOCTYPE html>
 <html lang="en">
