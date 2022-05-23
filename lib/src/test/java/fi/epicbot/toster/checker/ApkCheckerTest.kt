@@ -65,7 +65,7 @@ private val correctData = listOf(
         Apk(
             url = NOT_EMPTY_FIELD,
             shellsBefore = arrayOf(NOT_EMPTY_FIELD),
-            prefix = NOT_EMPTY_FIELD+"2",
+            prefix = NOT_EMPTY_FIELD + "2",
         )
     ),
 )

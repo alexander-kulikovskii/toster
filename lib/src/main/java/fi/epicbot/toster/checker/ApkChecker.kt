@@ -8,7 +8,7 @@ import fi.epicbot.toster.model.Apk
 internal class ApkChecker(private val apks: List<Apk>) : Checker {
 
     override fun check() {
-        if (apks.isEmpty()){
+        if (apks.isEmpty()) {
             throw IllegalArgumentException(EMPTY_APK_LIST)
         }
         apks.forEach { apk ->
