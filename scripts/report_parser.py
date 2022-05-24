@@ -1,6 +1,7 @@
 import argparse
 import requests
 import sys
+import re
 import xml.etree.ElementTree as ET
 
 PITEST_FILE_PATH = "lib/build/reports/pitest/mutations.xml"
@@ -9,7 +10,9 @@ BASE_URL = "https://us-central1-epicbot-github-badges.cloudfunctions.net"
 
 
 def _parse_pitest_coverage():
-    root = ET.parse(PITEST_FILE_PATH).getroot()
+    data = open(PITEST_FILE_PATH).read()
+    data = re.sub(r'&#([a-zA-Z0-9]+);?', r'[#\1;]', data)
+    root = ET.fromstring(data)
     survived_count = 0
     killed_count = 0
     for mutation in root:
