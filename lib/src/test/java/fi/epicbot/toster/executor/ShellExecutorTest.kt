@@ -174,6 +174,20 @@ class ShellExecutorTest : BehaviorSpec({
             }
         }
     }
+
+    Given("Shell executor 8") {
+        val logger = mockShellAndProvideMockedLogger()
+
+        When("makeFile") {
+            val shellEx = ShellExecutor(PROJECT_DIR, "default", logger, false)
+            shellEx.makeFile(path = "path", fileName = "fileName", content = "content")
+
+            Verify("check log") {
+                logger.logCommand("mkdir -p $FULL_PATH/path/fileName")
+            }
+            // TODO add file check
+        }
+    }
 })
 
 private fun mockShellAndProvideMockedLogger(): ShellLogger {

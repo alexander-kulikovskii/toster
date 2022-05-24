@@ -3,6 +3,8 @@ package fi.epicbot.toster.executor.android.android_executor
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.Verify
 import fi.epicbot.toster.model.Action
+import fi.epicbot.toster.model.BufferDimension
+import fi.epicbot.toster.model.BufferSize
 import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.FontScale
 import fi.epicbot.toster.model.ScreenSize
@@ -105,6 +107,21 @@ private val COMMON_ACTIONS = listOf(
         Action.ResetScreenSize,
         "Reset screen size",
         "wm size reset"
+    ),
+    CommonActionTest(
+        Action.ClearLogcat,
+        "Clear logcat",
+        "logcat -c"
+    ),
+    CommonActionTest(
+        Action.SetLogcatBufferSize(bufferSize = BufferSize(42, dimension = BufferDimension.KILOBYTES)),
+        "Set logcat buffer size 42K",
+        "logcat -G 42K"
+    ),
+    CommonActionTest(
+        Action.SetLogcatBufferSize(bufferSize = BufferSize(2, dimension = BufferDimension.MEGABYTES)),
+        "Set logcat buffer size 2M",
+        "logcat -G 2M"
     ),
 )
 
