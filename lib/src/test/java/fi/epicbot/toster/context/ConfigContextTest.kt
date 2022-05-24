@@ -260,7 +260,7 @@ private val configList = listOf(
     ConfigContextData(
         "set multiApk",
         {
-            multiApk{
+            multiApk {
                 apk {
                     url("url")
                     prefix("prefix")
@@ -268,15 +268,17 @@ private val configList = listOf(
                 }
             }
         },
-        Config(multiApk = MultiApk().apply {
-            add(
-                Apk(
-                    url = "url",
-                    prefix = "prefix",
-                    shellsBefore = arrayOf("1", "2")
+        Config(
+            multiApk = MultiApk().apply {
+                add(
+                    Apk(
+                        url = "url",
+                        prefix = "prefix",
+                        shellsBefore = arrayOf("1", "2")
+                    )
                 )
-            )
-        })
+            }
+        )
     ),
 )
 
