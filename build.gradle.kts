@@ -10,7 +10,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.20")
         classpath(kotlin("serialization", version = kotlinVersion))
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0")
-        classpath("pl.droidsonroids.gradle:gradle-pitest-plugin:0.2.8")
+        classpath("pl.droidsonroids.gradle:gradle-pitest-plugin:0.2.9")
         classpath("com.getkeepsafe.dexcount:dexcount-gradle-plugin:3.1.0")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     }
