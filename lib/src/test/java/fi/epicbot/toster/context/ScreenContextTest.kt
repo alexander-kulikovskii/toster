@@ -200,6 +200,15 @@ private val screenList = listOf(
             screenSize = ScreenSize(24, 42)
         )
     ),
+    ScreenContextData(
+        "clearLogcatBefore",
+        {
+            clearLogcatBefore()
+        },
+        Screen(
+            clearLogcatBefore = true,
+        )
+    ),
 )
 
 internal class ScreenContextTest : BehaviorSpec({
@@ -282,6 +291,11 @@ internal class ScreenContextTest : BehaviorSpec({
                     "screenSize should be ${expected.screenSize}",
                     "${actual.screenSize?.width ?: 0}x${actual.screenSize?.height ?: 0}",
                     "${expected.screenSize?.width ?: 0}x${expected.screenSize?.height ?: 0}",
+                )
+                Then(
+                    "clearLogcatBefore should be ${expected.clearLogcatBefore}",
+                    actual.clearLogcatBefore,
+                    expected.clearLogcatBefore,
                 )
             }
         }

@@ -1,6 +1,7 @@
 package fi.epicbot.toster.context
 
 import fi.epicbot.toster.model.Action
+import fi.epicbot.toster.model.Buffer
 import fi.epicbot.toster.model.Move
 import fi.epicbot.toster.model.SwipeMove
 import fi.epicbot.toster.model.TrimMemoryLevel
@@ -224,6 +225,42 @@ private val actionList = listOf(
         },
         listOf(
             Action.TrimMemory(TrimMemoryLevel.BACKGROUND),
+        )
+    ),
+    ActionContextData(
+        "takeCpuUsage",
+        {
+            takeCpuUsage()
+        },
+        listOf(
+            Action.TakeCpuUsage,
+        )
+    ),
+    ActionContextData(
+        "clearLogcat",
+        {
+            clearLogcat()
+        },
+        listOf(
+            Action.ClearLogcat,
+        )
+    ),
+    ActionContextData(
+        "takeLogcat custom",
+        {
+            takeLogcat(Buffer.MAIN)
+        },
+        listOf(
+            Action.TakeLogcat(Buffer.MAIN),
+        )
+    ),
+    ActionContextData(
+        "takeLogcat default",
+        {
+            takeLogcat()
+        },
+        listOf(
+            Action.TakeLogcat(Buffer.DEFAULT),
         )
     ),
 )

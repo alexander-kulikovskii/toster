@@ -2,6 +2,8 @@ package fi.epicbot.toster.context
 
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.model.Apk
+import fi.epicbot.toster.model.BufferDimension
+import fi.epicbot.toster.model.BufferSize
 import fi.epicbot.toster.model.Collage
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.Density
@@ -57,6 +59,8 @@ private val configList = listOf(
             useDemoMode = true,
             failFast = true,
             restartAdbServiceBeforeEachDevice = false,
+            globalLogcatBufferSize = null,
+            demoModeTime = "1300",
         )
     ),
     ConfigContextData(
@@ -239,6 +243,43 @@ private val configList = listOf(
         },
         Config(globalScreenSize = ScreenSize(24, 42))
     ),
+    ConfigContextData(
+        "set logcatBufferSize",
+        {
+            setLogcatBufferSize(42, BufferDimension.MEGABYTES)
+        },
+        Config(globalLogcatBufferSize = BufferSize(42, BufferDimension.MEGABYTES))
+    ),
+    ConfigContextData(
+        "set demoModeTime",
+        {
+            setDemoModeTime("1234")
+        },
+        Config(demoModeTime = "1234")
+    ),
+    ConfigContextData(
+        "set multiApk",
+        {
+            multiApk {
+                apk {
+                    url("url")
+                    prefix("prefix")
+                    runShellsBefore("1", "2")
+                }
+            }
+        },
+        Config(
+            multiApk = MultiApk().apply {
+                add(
+                    Apk(
+                        url = "url",
+                        prefix = "prefix",
+                        shellsBefore = arrayOf("1", "2")
+                    )
+                )
+            }
+        )
+    ),
 )
 
 internal class ConfigContextTest : BehaviorSpec({
@@ -416,6 +457,21 @@ internal class ConfigContextTest : BehaviorSpec({
                     "globalScreenSize should be ${expected.globalScreenSize}",
                     "${actual.globalScreenSize?.width ?: 0}x${actual.globalScreenSize?.height ?: 0}",
                     "${expected.globalScreenSize?.width ?: 0}x${expected.globalScreenSize?.height ?: 0}",
+                )
+                Then(
+                    "globalLogcatBufferSize.size should be ${expected.globalLogcatBufferSize?.size}",
+                    actual.globalLogcatBufferSize?.size,
+                    expected.globalLogcatBufferSize?.size
+                )
+                Then(
+                    "globalLogcatBufferSize.dimension should be ${expected.globalLogcatBufferSize?.dimension}",
+                    actual.globalLogcatBufferSize?.dimension?.value,
+                    expected.globalLogcatBufferSize?.dimension?.value
+                )
+                Then(
+                    "demoModeTime should be ${expected.demoModeTime}",
+                    actual.demoModeTime,
+                    expected.demoModeTime
                 )
             }
         }
