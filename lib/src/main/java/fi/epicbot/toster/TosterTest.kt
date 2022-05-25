@@ -124,7 +124,7 @@ private fun makeReport(
     reportBuilds: MutableList<ReportBuild>,
     testTime: Long,
     shellLogger: ShellLogger,
-){
+) {
     val defaultReporter = DefaultReporter(
         JsonFormatter(prettyPrintJson = true),
         config.shellLoggerConfig,
