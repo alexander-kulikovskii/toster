@@ -19,7 +19,7 @@ class TakeGfxInfoTest : BehaviorSpec({
         every {
             facade.adbShell("dumpsys gfxinfo $PACKAGE_NAME")
         }.returns("raw data")
-        every { facade.gfxInfoParser.parse("raw data") }.returns(GFX_INFO_MEASUREMENTS)
+        every { facade.parserProvider.gfxInfoParser.parse("raw data") }.returns(GFX_INFO_MEASUREMENTS)
         val androidExecutor = provideAndroidExecutor(facade)
 
         When("Execute action TakeGfxInfo") {

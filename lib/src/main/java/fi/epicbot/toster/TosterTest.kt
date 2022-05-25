@@ -20,9 +20,7 @@ import fi.epicbot.toster.model.makeReport
 import fi.epicbot.toster.model.runAction
 import fi.epicbot.toster.model.runShellAction
 import fi.epicbot.toster.model.toStringParams
-import fi.epicbot.toster.parser.CpuUsageParser
-import fi.epicbot.toster.parser.DumpSysParser
-import fi.epicbot.toster.parser.GfxInfoParser
+import fi.epicbot.toster.parser.ParserProvider
 import fi.epicbot.toster.report.DefaultReporter
 import fi.epicbot.toster.report.formatter.JsonFormatter
 import fi.epicbot.toster.report.html.HtmlReporterFacade
@@ -67,10 +65,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
         val startTestTime = timeProvider.getTimeMillis()
         val shellLogger = DefaultLogger(timeProvider)
         val reportBuilds = mutableListOf<ReportBuild>()
-
-        val dumpSysParser = DumpSysParser()
-        val gfxInfoParser = GfxInfoParser()
-        val cpuUsageParser = CpuUsageParser()
+        val parserProvider = ParserProvider()
 
         config.multiApk.apks.forEachIndexed { index, apk ->
             describe(apk.prefix) {
@@ -90,9 +85,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                         config = config,
                         startDelayMillis = emulator.startDelayMillis,
                         shellExecutor = shellExecutor,
-                        dumpSysParser = dumpSysParser,
-                        gfxInfoParser = gfxInfoParser,
-                        cpuUsageParser = cpuUsageParser,
+                        parserProvider = parserProvider,
                         timeProvider = timeProvider,
                     )
                     runScreens(actionExecutor, config, apk, screens, reportDevices)
@@ -102,9 +95,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                         serialName = phone.uuid,
                         config = config,
                         shellExecutor = shellExecutor,
-                        dumpSysParser = dumpSysParser,
-                        gfxInfoParser = gfxInfoParser,
-                        cpuUsageParser = cpuUsageParser,
+                        parserProvider = parserProvider,
                         timeProvider = timeProvider,
                     )
                     runScreens(actionExecutor, config, apk, screens, reportDevices)

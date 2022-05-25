@@ -8,9 +8,7 @@ import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.SwipeMove
 import fi.epicbot.toster.model.title
 import fi.epicbot.toster.model.toMove
-import fi.epicbot.toster.parser.CpuUsageParser
-import fi.epicbot.toster.parser.DumpSysParser
-import fi.epicbot.toster.parser.GfxInfoParser
+import fi.epicbot.toster.parser.ParserProvider
 import fi.epicbot.toster.report.model.Common
 import fi.epicbot.toster.report.model.CpuUsage
 import fi.epicbot.toster.report.model.Device
@@ -26,9 +24,7 @@ internal open class AndroidExecutor(
     private val serialName: String,
     private val config: Config,
     private val shellExecutor: ShellExecutor,
-    private val dumpSysParser: DumpSysParser,
-    private val gfxInfoParser: GfxInfoParser,
-    private val cpuUsageParser: CpuUsageParser,
+    private val parserProvider: ParserProvider,
     private val timeProvider: TimeProvider,
 ) : ActionExecutor {
 
@@ -174,7 +170,7 @@ internal open class AndroidExecutor(
         val coreNumber = getCoreNumber() // TODO make call only once
         val rawCpuInfo = "top -p $pid -d 0.1 -n $SAMPLE_NUMBER".adbShell()
 
-        val measurement = cpuUsageParser.parse(
+        val measurement = parserProvider.cpuUsageParser.parse(
             rawData = rawCpuInfo,
             sampleNumber = SAMPLE_NUMBER,
             coreNumber = coreNumber
@@ -194,7 +190,7 @@ internal open class AndroidExecutor(
         val startTime = timeProvider.getTimeMillis()
 
         val rawMemInfo = "dumpsys meminfo $apkPackage -d".adbShell()
-        val measurements = dumpSysParser.parse(rawMemInfo)
+        val measurements = parserProvider.dumpSysParser.parse(rawMemInfo)
 
         val endTime = timeProvider.getTimeMillis()
         return Memory(
@@ -210,7 +206,7 @@ internal open class AndroidExecutor(
         val startTime = timeProvider.getTimeMillis()
 
         val rawMemInfo = "dumpsys gfxinfo $apkPackage".adbShell()
-        val measurements = gfxInfoParser.parse(rawMemInfo)
+        val measurements = parserProvider.gfxInfoParser.parse(rawMemInfo)
 
         val endTime = timeProvider.getTimeMillis()
         return GfxInfo(

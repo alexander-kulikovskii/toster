@@ -2,9 +2,7 @@ package fi.epicbot.toster.executor.android
 
 import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.model.Config
-import fi.epicbot.toster.parser.CpuUsageParser
-import fi.epicbot.toster.parser.DumpSysParser
-import fi.epicbot.toster.parser.GfxInfoParser
+import fi.epicbot.toster.parser.ParserProvider
 import fi.epicbot.toster.report.model.Device
 import fi.epicbot.toster.time.TimeProvider
 
@@ -14,17 +12,13 @@ internal class EmulatorExecutor(
     private val serialName: String,
     private val startDelayMillis: Long,
     private val shellExecutor: ShellExecutor,
-    private val dumpSysParser: DumpSysParser,
-    private val gfxInfoParser: GfxInfoParser,
-    private val cpuUsageParser: CpuUsageParser,
+    private val parserProvider: ParserProvider,
     private val timeProvider: TimeProvider,
 ) : AndroidExecutor(
     serialName,
     config = config,
     shellExecutor,
-    dumpSysParser,
-    gfxInfoParser,
-    cpuUsageParser,
+    parserProvider,
     timeProvider
 ) {
 
