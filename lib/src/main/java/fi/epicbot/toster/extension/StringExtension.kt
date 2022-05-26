@@ -1,5 +1,11 @@
 package fi.epicbot.toster.extension
 
+import fi.epicbot.toster.executor.ShellExecutor
+import fi.epicbot.toster.report.model.Common
+import fi.epicbot.toster.report.model.ReportScreen
+import fi.epicbot.toster.time.TimeProvider
+import io.kotest.core.spec.style.scopes.DescribeSpecContainerScope
+
 internal fun CharSequence.throwExceptionIfBlank(message: String) {
     if (this.isBlank()) {
         throw IllegalArgumentException(message)
@@ -24,4 +30,22 @@ internal fun String.findRow(name: String): List<String> {
 
 internal fun String.safeForPath(): String {
     return this.trim().replace("[.,;!@#$%^&*()+=>< ]".toRegex(), "_")
+}
+
+context(DescribeSpecContainerScope)
+internal suspend fun String.runShellAction(
+    timeProvider: TimeProvider,
+    shellExecutor: ShellExecutor,
+    reportScreen: ReportScreen,
+    executeCondition: Boolean = true,
+) {
+    if (executeCondition) {
+        val command = this
+        it("Run command <$command>") {
+            val startTime = timeProvider.getTimeMillis()
+            shellExecutor.runShellCommand(command, fromRootFolder = true)
+            val endTime = timeProvider.getTimeMillis()
+            reportScreen.common.add(Common(-1, "Run command <$command>", startTime, endTime))
+        }
+    }
 }

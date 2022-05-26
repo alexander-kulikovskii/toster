@@ -1,7 +1,6 @@
 package fi.epicbot.toster.model
 
 import fi.epicbot.toster.executor.ActionExecutor
-import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.report.model.Common
 import fi.epicbot.toster.report.model.CpuUsage
@@ -9,7 +8,6 @@ import fi.epicbot.toster.report.model.GfxInfo
 import fi.epicbot.toster.report.model.Memory
 import fi.epicbot.toster.report.model.ReportScreen
 import fi.epicbot.toster.report.model.Screenshot
-import fi.epicbot.toster.time.TimeProvider
 import io.kotest.core.spec.style.scopes.DescribeSpecContainerScope
 
 sealed class Action {
@@ -134,24 +132,6 @@ internal suspend fun Action.runAction(
                     reportAction.copy(pathUrl = "${reportScreen.name.safeForPath()}/${reportAction.pathUrl}")
                 )
             }
-        }
-    }
-}
-
-context(DescribeSpecContainerScope)
-internal suspend fun String.runShellAction(
-    timeProvider: TimeProvider,
-    shellExecutor: ShellExecutor,
-    reportScreen: ReportScreen,
-    executeCondition: Boolean = true,
-) {
-    if (executeCondition) {
-        val command = this
-        it("Run command <$command>") {
-            val startTime = timeProvider.getTimeMillis()
-            val reportAction = shellExecutor.runShellCommand(command, fromRootFolder = true)
-            val endTime = timeProvider.getTimeMillis()
-            reportScreen.common.add(Common(-1, "Run command <$command>", startTime, endTime))
         }
     }
 }
