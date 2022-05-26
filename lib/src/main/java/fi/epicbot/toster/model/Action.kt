@@ -115,14 +115,15 @@ internal fun Action.title(): String {
     }
 }
 
-internal suspend fun DescribeSpecContainerScope.runAction(
-    action: Action,
+context(DescribeSpecContainerScope)
+internal suspend fun Action.runAction(
     actionExecutor: ActionExecutor,
     reportScreen: ReportScreen,
     imagePrefix: String = "",
     executeCondition: Boolean = true,
 ) {
     if (executeCondition) {
+        val action = this
         it(action.title()) {
             when (val reportAction = actionExecutor.execute(action, imagePrefix)) {
                 is Common -> reportScreen.common.add(reportAction)
@@ -137,19 +138,20 @@ internal suspend fun DescribeSpecContainerScope.runAction(
     }
 }
 
-internal suspend fun DescribeSpecContainerScope.runShellAction(
-    command: String,
+context(DescribeSpecContainerScope)
+internal suspend fun String.runShellAction(
     timeProvider: TimeProvider,
     shellExecutor: ShellExecutor,
     reportScreen: ReportScreen,
     executeCondition: Boolean = true,
 ) {
     if (executeCondition) {
-        it("Run command") {
+        val command = this
+        it("Run command <$command>") {
             val startTime = timeProvider.getTimeMillis()
             val reportAction = shellExecutor.runShellCommand(command, fromRootFolder = true)
             val endTime = timeProvider.getTimeMillis()
-            reportScreen.common.add(Common(-1, "Run command", startTime, endTime))
+            reportScreen.common.add(Common(-1, "Run command <$command>", startTime, endTime))
         }
     }
 }
