@@ -5,9 +5,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        val kotlinVersion = "1.6.20"
-        classpath("com.android.tools.build:gradle:7.1.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.20")
+        val kotlinVersion = "1.6.21"
+        classpath("com.android.tools.build:gradle:7.1.3")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath(kotlin("serialization", version = kotlinVersion))
         classpath("de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0")
         classpath("pl.droidsonroids.gradle:gradle-pitest-plugin:0.2.9")

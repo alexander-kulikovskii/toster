@@ -1,4 +1,4 @@
-package fi.epicbot.toster.executor.android.android_executor
+package fi.epicbot.toster.executor.android.androidexecutor
 
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.ThenInstanseOf
@@ -20,10 +20,12 @@ class TakeGfxInfoTest : BehaviorSpec({
             facade.adbShell("dumpsys gfxinfo $PACKAGE_NAME")
         }.returns("raw data")
         every { facade.parserProvider.gfxInfoParser.parse("raw data") }.returns(GFX_INFO_MEASUREMENTS)
-        val androidExecutor = provideAndroidExecutor(facade)
+        val androidExecutor = provideAndroidExecutor(facade).apply {
+            imagePrefix = IMAGE_PREFIX
+        }
 
         When("Execute action TakeGfxInfo") {
-            val res = androidExecutor.execute(Action.TakeGfxInfo, IMAGE_PREFIX)
+            val res = androidExecutor.execute(Action.TakeGfxInfo)
             Then("Name should be $GFX_INFO_TITLE", res.name, GFX_INFO_TITLE)
             Verify("check shell") {
                 facade.adbShell("dumpsys gfxinfo $PACKAGE_NAME")

@@ -6,11 +6,13 @@ import fi.epicbot.toster.report.model.ReportAction
 
 internal interface ActionExecutor {
 
+    var imagePrefix: String
+
     fun executor(): Device
 
     suspend fun prepareEnvironment()
 
     suspend fun finishEnvironment()
 
-    suspend fun execute(action: Action, imagePrefix: String): ReportAction
+    suspend fun execute(action: Action): ReportAction
 }

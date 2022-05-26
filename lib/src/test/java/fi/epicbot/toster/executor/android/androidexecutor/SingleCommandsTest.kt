@@ -1,4 +1,4 @@
-package fi.epicbot.toster.executor.android.android_executor
+package fi.epicbot.toster.executor.android.androidexecutor
 
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.Verify
@@ -129,9 +129,11 @@ class SingleCommandsTest : BehaviorSpec({
     Given("AndroidExecutor") {
         COMMON_ACTIONS.forEach { commonActionTestObject ->
             val facade = MockedFacade()
-            val androidExecutor = provideAndroidExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade).apply {
+                imagePrefix = IMAGE_PREFIX
+            }
             When("Execute action ${commonActionTestObject.action.title()}") {
-                val res = androidExecutor.execute(commonActionTestObject.action, IMAGE_PREFIX)
+                val res = androidExecutor.execute(commonActionTestObject.action)
                 Then(
                     "Name should be ${commonActionTestObject.expectedTitle}",
                     res.name,

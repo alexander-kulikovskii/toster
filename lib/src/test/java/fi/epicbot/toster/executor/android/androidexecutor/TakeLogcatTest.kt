@@ -1,4 +1,4 @@
-package fi.epicbot.toster.executor.android.android_executor
+package fi.epicbot.toster.executor.android.androidexecutor
 
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.Verify
@@ -22,7 +22,9 @@ class TakeLogcatTest : BehaviorSpec({
 
     Given("AndroidExecutor") {
         val facade = MockedFacade()
-        val androidExecutor = provideAndroidExecutor(facade)
+        val androidExecutor = provideAndroidExecutor(facade).apply {
+            imagePrefix = IMAGE_PREFIX
+        }
         var index = 0
         BUFFER_DATA.forEach { (buffer, bufferName) ->
             every { facade.timeProvider.getTimeMillis() }.returnsMany(1L + index, 42L)
@@ -31,7 +33,7 @@ class TakeLogcatTest : BehaviorSpec({
                 facade.shell("adb logcat -b ${buffer.bufferName} -d > $screenshotFileName", false)
             }.returns("")
             When("Execute action TakeLogcat ${buffer.bufferName}") {
-                val res = androidExecutor.execute(Action.TakeLogcat(buffer), IMAGE_PREFIX)
+                val res = androidExecutor.execute(Action.TakeLogcat(buffer))
                 Then(
                     "Name should be $TAKE_LOGCAT_TITLE${buffer.bufferName}",
                     res.name,

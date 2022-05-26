@@ -1,4 +1,4 @@
-package fi.epicbot.toster.executor.android.android_executor
+package fi.epicbot.toster.executor.android.androidexecutor
 
 import fi.epicbot.toster.executor.ActionExecutor
 import fi.epicbot.toster.executor.ShellExecutor

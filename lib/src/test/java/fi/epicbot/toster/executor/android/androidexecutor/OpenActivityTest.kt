@@ -1,4 +1,4 @@
-package fi.epicbot.toster.executor.android.android_executor
+package fi.epicbot.toster.executor.android.androidexecutor
 
 import fi.epicbot.toster.CoVerify
 import fi.epicbot.toster.Then
@@ -42,9 +42,11 @@ class OpenActivityTest : BehaviorSpec({
 
         OPEN_ACTIVITY_ACTIONS.forEach { activityOpenActionTest ->
             val facade = MockedFacade()
-            val androidExecutor = provideAndroidExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade).apply {
+                imagePrefix = IMAGE_PREFIX
+            }
             When("Execute action ${activityOpenActionTest.action.title()}") {
-                val res = androidExecutor.execute(activityOpenActionTest.action, IMAGE_PREFIX)
+                val res = androidExecutor.execute(activityOpenActionTest.action)
                 Then(
                     "Name should be ${activityOpenActionTest.expectedTitle}",
                     res.name,

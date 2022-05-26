@@ -1,10 +1,10 @@
-package fi.epicbot.toster.executor.android.emulator_executor
+package fi.epicbot.toster.executor.android.emulatorexecutor
 
 import fi.epicbot.toster.CoVerify
 import fi.epicbot.toster.Verify
-import fi.epicbot.toster.executor.android.android_executor.MockedFacade
-import fi.epicbot.toster.executor.android.android_executor.SERIAL_NAME
-import fi.epicbot.toster.executor.android.android_executor.provideEmulatorExecutor
+import fi.epicbot.toster.executor.android.androidexecutor.MockedFacade
+import fi.epicbot.toster.executor.android.androidexecutor.SERIAL_NAME
+import fi.epicbot.toster.executor.android.androidexecutor.provideEmulatorExecutor
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 

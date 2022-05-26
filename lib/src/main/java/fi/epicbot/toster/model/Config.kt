@@ -84,3 +84,5 @@ internal fun Config.makeReport(
         reporter.makeReport(reportOutput, shellExecutor, shellLogger)
     }
 }
+
+internal fun Config.projectDir() = "/build/toster/${applicationName.safeForPath()}"

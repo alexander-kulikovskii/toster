@@ -1,4 +1,4 @@
-package fi.epicbot.toster.executor.android.android_executor
+package fi.epicbot.toster.executor.android.androidexecutor
 
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.ThenInstanseOf
@@ -18,10 +18,12 @@ class AndroidExecutorTest : BehaviorSpec({
         SCREENSHOT_NAME_MAP.forEach { (name_title, name_value) ->
             val facade = MockedFacade()
             every { facade.timeProvider.getTimeMillis() }.returnsMany(1L, 42L)
-            val androidExecutor = provideAndroidExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade).apply {
+                imagePrefix = IMAGE_PREFIX
+            }
 
             When("Execute action TakeScreenshot with <$name_title> name") {
-                val res = androidExecutor.execute(Action.TakeScreenshot(name_title), IMAGE_PREFIX)
+                val res = androidExecutor.execute(Action.TakeScreenshot(name_title))
                 Then("Name should be $TAKE_SCREENSHOT_TITLE", res.name, TAKE_SCREENSHOT_TITLE)
                 Verify("check make dir") {
                     facade.shellExecutor.makeDirForScreen("$IMAGE_PREFIX/")

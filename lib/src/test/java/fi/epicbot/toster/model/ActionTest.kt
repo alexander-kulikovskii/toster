@@ -27,11 +27,10 @@ private const val IMAGE_PREFIX = "prefix"
 
 private open class ActionTestSpec(action: Action, reportScreen: ReportScreen) : DescribeSpec({
     describe(action.title()) {
-        runAction(
-            action,
+        actionExecutor.imagePrefix = IMAGE_PREFIX
+        action.runAction(
             actionExecutor,
             reportScreen,
-            IMAGE_PREFIX,
             true,
         )
     }

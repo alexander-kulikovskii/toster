@@ -1,4 +1,4 @@
-package fi.epicbot.toster.executor.android.android_executor
+package fi.epicbot.toster.executor.android.androidexecutor
 
 import fi.epicbot.toster.Then
 import fi.epicbot.toster.ThenInstanseOf
@@ -31,9 +31,11 @@ class TakeCpuUsageTest : BehaviorSpec({
 
         every { facade.parserProvider.cpuUsageParser.parse("test_data", sampleNumber = 5, coreNumber = 8) }
             .returns(MEMORY_MEASUREMENTS)
-        val androidExecutor = provideAndroidExecutor(facade)
+        val androidExecutor = provideAndroidExecutor(facade).apply {
+            imagePrefix = IMAGE_PREFIX
+        }
         When("Execute action TakeMemoryAllocation") {
-            val res = androidExecutor.execute(Action.TakeCpuUsage, IMAGE_PREFIX)
+            val res = androidExecutor.execute(Action.TakeCpuUsage)
             Then("Name should be $TAKE_CPU_USAGE_TITLE", res.name, TAKE_CPU_USAGE_TITLE)
             Verify("check pid shell") {
                 facade.adbShell("ps | grep $PACKAGE_NAME")

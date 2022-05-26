@@ -1,10 +1,10 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("io.gitlab.arturbosch.detekt") version "1.19.0"
+    id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("kotlinx-serialization")
     id ("pl.droidsonroids.pitest")
-    id("org.jetbrains.kotlinx.kover") version "0.5.0"
+    id("org.jetbrains.kotlinx.kover") version "0.5.1"
     id("com.getkeepsafe.dexcount")
 }
 apply {
@@ -20,7 +20,7 @@ dependencies {
         exclude(group = "org.jetbrains.kotlin")
     }
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
 
     testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.1.0")
     testImplementation("io.mockk:mockk:1.12.3")
@@ -61,6 +61,12 @@ configure<pl.droidsonroids.gradle.pitest.PitestPluginExtension> {
 
 kover {
     coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
-    intellijEngineVersion.set("1.0.656")
-    jacocoEngineVersion.set("0.8.7")
+    intellijEngineVersion.set("1.0.668")
+    jacocoEngineVersion.set("0.8.8")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        freeCompilerArgs = freeCompilerArgs + listOf("-Xcontext-receivers")
+    }
 }
