@@ -22,10 +22,12 @@ class CloseAppInTrayTest : BehaviorSpec({
             facade.adbShell(DUMSYS_COMMAND)
         }.returns(APPS_IN_TRAY.joinToString("\n"))
 
-        val androidExecutor = provideAndroidExecutor(facade)
+        val androidExecutor = provideAndroidExecutor(facade).apply {
+            imagePrefix = IMAGE_PREFIX
+        }
 
         When("Execute action CloseAppsInTray") {
-            val res = androidExecutor.execute(Action.CloseAppsInTray, IMAGE_PREFIX)
+            val res = androidExecutor.execute(Action.CloseAppsInTray)
             Then("Name should be $CLOSE_APPS_IN_TRAY_TITLE", res.name, CLOSE_APPS_IN_TRAY_TITLE)
             Verify("check shell") {
                 facade.adbShell(DUMSYS_COMMAND)

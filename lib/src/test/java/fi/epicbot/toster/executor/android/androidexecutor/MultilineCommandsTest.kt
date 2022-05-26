@@ -69,9 +69,11 @@ class MultilineCommandsTest : BehaviorSpec({
 
         MULTILINE_ACTIONS.forEach { multilineActionTest ->
             val facade = MockedFacade()
-            val androidExecutor = provideAndroidExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade).apply {
+                imagePrefix = IMAGE_PREFIX
+            }
             When("Execute action ${multilineActionTest.action.title()}") {
-                val res = androidExecutor.execute(multilineActionTest.action, IMAGE_PREFIX)
+                val res = androidExecutor.execute(multilineActionTest.action)
                 Then(
                     "Name should be ${multilineActionTest.expectedTitle}",
                     res.name,

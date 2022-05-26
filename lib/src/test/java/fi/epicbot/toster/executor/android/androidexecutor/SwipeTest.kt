@@ -73,10 +73,12 @@ class SwipeTest : BehaviorSpec({
                     offsetFactor = 0.05,
                 )
             )
-            val androidExecutor = provideAndroidExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade).apply {
+                imagePrefix = IMAGE_PREFIX
+            }
 
             When("Execute action TakeGfxInfo") {
-                val res = androidExecutor.execute(it.action, IMAGE_PREFIX)
+                val res = androidExecutor.execute(it.action)
                 Then("Name should be ${it.name}", res.name, it.name)
                 if (it.action.swipeMove !is SwipeMove.Custom) {
                     Verify("check shell wm") {

@@ -117,13 +117,12 @@ context(DescribeSpecContainerScope)
 internal suspend fun Action.runAction(
     actionExecutor: ActionExecutor,
     reportScreen: ReportScreen,
-    imagePrefix: String = "",
     executeCondition: Boolean = true,
 ) {
     if (executeCondition) {
         val action = this
         it(action.title()) {
-            when (val reportAction = actionExecutor.execute(action, imagePrefix)) {
+            when (val reportAction = actionExecutor.execute(action)) {
                 is Common -> reportScreen.common.add(reportAction)
                 is Memory -> reportScreen.memory.add(reportAction)
                 is GfxInfo -> reportScreen.gfxInfo.add(reportAction)

@@ -11,12 +11,11 @@ context (DescribeSpecContainerScope)
 internal suspend fun ScreenSize?.apply(
     actionExecutor: ActionExecutor,
     reportScreen: ReportScreen,
-    imagePrefix: String = "",
     executeCondition: Boolean = true,
 ) {
     this?.let { screenSize ->
         Action.SetScreenSize(screenSize)
-            .runAction(actionExecutor, reportScreen, imagePrefix, executeCondition)
+            .runAction(actionExecutor, reportScreen, executeCondition)
     }
 }
 
@@ -24,12 +23,10 @@ context (DescribeSpecContainerScope)
 internal suspend fun ScreenSize?.reset(
     actionExecutor: ActionExecutor,
     reportScreen: ReportScreen,
-    imagePrefix: String = "",
 ) {
     Action.ResetScreenSize.runAction(
         actionExecutor,
         reportScreen,
-        imagePrefix,
         executeCondition = this != null
     )
 }

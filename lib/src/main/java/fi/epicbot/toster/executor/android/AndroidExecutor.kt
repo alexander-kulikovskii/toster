@@ -19,7 +19,7 @@ import fi.epicbot.toster.report.model.Screenshot
 import fi.epicbot.toster.time.TimeProvider
 import kotlin.math.max
 
-@Suppress("TooManyFunctions", "LongParameterList")
+@Suppress("TooManyFunctions")
 internal open class AndroidExecutor(
     private val serialName: String,
     private val config: Config,
@@ -30,6 +30,14 @@ internal open class AndroidExecutor(
 
     private val apkPackage = config.applicationPackageName
     private var actionIndex = 0L
+
+    private var prefix: String = ""
+
+    override var imagePrefix: String
+        get() = prefix
+        set(value) {
+            prefix = value
+        }
 
     override fun executor() = Device(type = "Phone", name = serialName)
 
@@ -42,7 +50,7 @@ internal open class AndroidExecutor(
     }
 
     @Suppress("ComplexMethod", "LongMethod", "ReturnCount")
-    override suspend fun execute(action: Action, imagePrefix: String): ReportAction {
+    override suspend fun execute(action: Action): ReportAction {
         if (action is Action.TakeMemoryAllocation) {
             return takeMemoryAllocation(action)
         }

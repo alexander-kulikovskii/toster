@@ -21,9 +21,11 @@ class MemoryAllocationTest : BehaviorSpec({
             facade.adbShell("dumpsys meminfo $PACKAGE_NAME -d")
         }.returns("raw data")
         every { facade.parserProvider.dumpSysParser.parse("raw data") }.returns(MEMORY_MEASUREMENTS)
-        val androidExecutor = provideAndroidExecutor(facade)
+        val androidExecutor = provideAndroidExecutor(facade).apply {
+            imagePrefix = IMAGE_PREFIX
+        }
         When("Execute action TakeMemoryAllocation") {
-            val res = androidExecutor.execute(Action.TakeMemoryAllocation, IMAGE_PREFIX)
+            val res = androidExecutor.execute(Action.TakeMemoryAllocation)
             Then("Name should be $TAKE_MEMORY_TITLE", res.name, TAKE_MEMORY_TITLE)
             Verify("check shell") {
                 facade.adbShell("dumpsys meminfo $PACKAGE_NAME -d")

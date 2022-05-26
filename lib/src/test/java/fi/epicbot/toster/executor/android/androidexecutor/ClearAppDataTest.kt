@@ -21,10 +21,12 @@ class ClearAppDataTest : BehaviorSpec({
             every {
                 facade.shell("adb shell pm list packages | grep $PACKAGE_NAME")
             }.returns(packageOutput)
-            val androidExecutor = provideAndroidExecutor(facade)
+            val androidExecutor = provideAndroidExecutor(facade).apply {
+                imagePrefix = IMAGE_PREFIX
+            }
 
             When("Execute action TakeGfxInfo") {
-                val res = androidExecutor.execute(Action.ClearAppData, IMAGE_PREFIX)
+                val res = androidExecutor.execute(Action.ClearAppData)
                 Then("Name should be $CLEAR_APP_TITLE", res.name, CLEAR_APP_TITLE)
                 Verify("check packages list shell") {
                     facade.shell("adb shell pm list packages | grep $PACKAGE_NAME")

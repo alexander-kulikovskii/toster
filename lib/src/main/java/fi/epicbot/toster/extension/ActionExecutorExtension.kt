@@ -101,11 +101,13 @@ internal suspend fun ActionExecutor.runScreens(
 
         screens.forEach { screen ->
             val reportScreen = ReportScreen(name = screen.name)
-            runScreen(config, screen, reportScreen, "normal")
+            actionExecutor.imagePrefix = "normal"
+            runScreen(config, screen, reportScreen)
             if (config.checkOverdraw.check) {
-                Action.ShowGpuOverdraw.runAction(actionExecutor, reportScreen, "overdraw")
-                runScreen(config, screen, reportScreen, "overdraw")
-                Action.HideGpuOverdraw.runAction(actionExecutor, reportScreen, "overdraw")
+                actionExecutor.imagePrefix = "overdraw"
+                Action.ShowGpuOverdraw.runAction(actionExecutor, reportScreen)
+                runScreen(config, screen, reportScreen)
+                Action.HideGpuOverdraw.runAction(actionExecutor, reportScreen)
                 // TODO run tests for getting overdraw info
             }
             // TODO compare screenshots
@@ -131,7 +133,6 @@ internal suspend fun ActionExecutor.runScreen(
     config: Config,
     screen: Screen,
     reportScreen: ReportScreen,
-    imagePrefix: String,
 ) {
     val actionExecutor = this
     describe("Screen: ${screen.name}; $imagePrefix") {
@@ -140,28 +141,26 @@ internal suspend fun ActionExecutor.runScreen(
             Action.ShellBeforeScreen(shellBefore).runAction(
                 actionExecutor,
                 reportScreen,
-                imagePrefix,
                 shellBefore.isNotBlank(),
             )
         }
         Action.ClearLogcat.runAction(
             actionExecutor,
             reportScreen,
-            imagePrefix,
             executeCondition = screen.clearLogcatBefore
         )
 
-        setScreenSizeAndDensity(screen, reportScreen, imagePrefix)
+        setScreenSizeAndDensity(screen, reportScreen)
 
         if (config.clearDataBeforeEachRun || screen.clearDataBeforeRun) {
-            Action.ClearAppData.runAction(actionExecutor, reportScreen, imagePrefix)
+            Action.ClearAppData.runAction(actionExecutor, reportScreen)
         }
 
         (config.permissions.granted + screen.permissions.granted).forEach {
-            Action.GrantPermission(it).runAction(actionExecutor, reportScreen, imagePrefix)
+            Action.GrantPermission(it).runAction(actionExecutor, reportScreen)
         }
         screen.permissions.revoked.forEach {
-            Action.RevokePermission(it).runAction(actionExecutor, reportScreen, imagePrefix)
+            Action.RevokePermission(it).runAction(actionExecutor, reportScreen)
         }
 
         val fontScale = if (screen.fontScale != null && screen.fontScale != FontScale.DEFAULT) {
@@ -170,19 +169,17 @@ internal suspend fun ActionExecutor.runScreen(
             config.fontScale
         }
         fontScale?.let { fontScale ->
-            Action.SetFontScale(fontScale).runAction(actionExecutor, reportScreen, imagePrefix)
+            Action.SetFontScale(fontScale).runAction(actionExecutor, reportScreen)
         }
 
         Action.CloseAppsInTray.runAction(
             actionExecutor,
             reportScreen,
-            imagePrefix,
             screen.closeAppsInTrayBeforeStart,
         )
         Action.ResetGfxInfo.runAction(
             actionExecutor,
             reportScreen,
-            imagePrefix,
             screen.resetGfxInfoBeforeStart,
         )
 
@@ -190,30 +187,28 @@ internal suspend fun ActionExecutor.runScreen(
         Action.OpenScreen(screen, activityParamsAsString).runAction(
             actionExecutor,
             reportScreen,
-            imagePrefix,
         )
 
         screen.actions.forEach { action ->
-            action.runAction(actionExecutor, reportScreen, imagePrefix)
+            action.runAction(actionExecutor, reportScreen)
         }
 
         if (screen.screenshotAsLastAction && screen.actions.count { it is Action.TakeScreenshot } == 0) {
-            Action.TakeScreenshot("").runAction(actionExecutor, reportScreen, imagePrefix)
+            Action.TakeScreenshot("").runAction(actionExecutor, reportScreen)
         }
 
         fontScale?.let {
-            Action.SetFontScale(FontScale.DEFAULT).runAction(actionExecutor, reportScreen, imagePrefix)
+            Action.SetFontScale(FontScale.DEFAULT).runAction(actionExecutor, reportScreen)
         }
 
-        Action.CloseApp.runAction(actionExecutor, reportScreen, imagePrefix)
+        Action.CloseApp.runAction(actionExecutor, reportScreen)
 
-        resetScreenSizeAndDensity(config, screen, reportScreen, imagePrefix)
+        resetScreenSizeAndDensity(config, screen, reportScreen)
 
         screen.shellsAfter.forEach { shellAfter ->
             Action.ShellAfterScreen(shellAfter).runAction(
                 actionExecutor,
                 reportScreen,
-                imagePrefix,
                 shellAfter.isNotBlank(),
             )
         }
@@ -233,17 +228,14 @@ context(DescribeSpecContainerScope)
 internal suspend fun ActionExecutor.setScreenSizeAndDensity(
     screen: Screen,
     reportScreen: ReportScreen,
-    imagePrefix: String,
 ) {
     screen.screenDensity.apply(
         this,
         reportScreen,
-        imagePrefix,
     )
     screen.screenSize.apply(
         this,
         reportScreen,
-        imagePrefix,
     )
 }
 
@@ -252,21 +244,18 @@ internal suspend fun ActionExecutor.resetScreenSizeAndDensity(
     config: Config,
     screen: Screen,
     reportScreen: ReportScreen,
-    imagePrefix: String,
 ) {
-    screen.screenSize.reset(this, reportScreen, imagePrefix)
-    screen.screenDensity.reset(this, reportScreen, imagePrefix)
+    screen.screenSize.reset(this, reportScreen)
+    screen.screenDensity.reset(this, reportScreen)
 
     config.globalScreenDensity.apply(
         this,
         reportScreen,
-        imagePrefix,
         screen.screenDensity != null,
     )
     config.globalScreenSize.apply(
         this,
         reportScreen,
-        imagePrefix,
         screen.screenSize != null,
     )
 }

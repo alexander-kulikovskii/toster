@@ -10,12 +10,12 @@ import fi.epicbot.toster.executor.android.AndroidExecutor
 import fi.epicbot.toster.executor.android.EmulatorExecutor
 import fi.epicbot.toster.extension.runScreens
 import fi.epicbot.toster.extension.runShellsForApk
-import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.logger.DefaultLogger
 import fi.epicbot.toster.logger.ShellLogger
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.Screen
 import fi.epicbot.toster.model.makeReport
+import fi.epicbot.toster.model.projectDir
 import fi.epicbot.toster.parser.ParserProvider
 import fi.epicbot.toster.report.DefaultReporter
 import fi.epicbot.toster.report.formatter.JsonFormatter
@@ -65,7 +65,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                 val reportDevices = mutableListOf<ReportDevice>()
                 val shellExecutor =
                     ShellExecutor(
-                        "/build/toster/${config.applicationName.safeForPath()}",
+                        config.projectDir(),
                         apk.prefix,
                         shellLogger,
                         index == 0,
@@ -124,7 +124,7 @@ internal fun makeReport(
     val htmlReporterFacade = HtmlReporterFacade()
     val shellExecutor =
         ShellExecutor(
-            "/build/toster/${config.applicationName.safeForPath()}",
+            config.projectDir(),
             "",
             shellLogger,
             false
