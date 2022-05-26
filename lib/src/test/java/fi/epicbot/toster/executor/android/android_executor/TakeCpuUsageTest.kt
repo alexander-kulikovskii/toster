@@ -29,7 +29,7 @@ class TakeCpuUsageTest : BehaviorSpec({
             facade.adbShell("top -p 234 -d 0.1 -n 5")
         }.returns("test_data")
 
-        every { facade.cpuUsageParser.parse("test_data", sampleNumber = 5, coreNumber = 8) }
+        every { facade.parserProvider.cpuUsageParser.parse("test_data", sampleNumber = 5, coreNumber = 8) }
             .returns(MEMORY_MEASUREMENTS)
         val androidExecutor = provideAndroidExecutor(facade)
         When("Execute action TakeMemoryAllocation") {

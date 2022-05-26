@@ -5,9 +5,7 @@ import fi.epicbot.toster.executor.ShellExecutor
 import fi.epicbot.toster.executor.android.AndroidExecutor
 import fi.epicbot.toster.executor.android.EmulatorExecutor
 import fi.epicbot.toster.model.Config
-import fi.epicbot.toster.parser.CpuUsageParser
-import fi.epicbot.toster.parser.DumpSysParser
-import fi.epicbot.toster.parser.GfxInfoParser
+import fi.epicbot.toster.parser.ParserProvider
 import fi.epicbot.toster.time.TimeProvider
 import io.mockk.every
 import io.mockk.mockk
@@ -22,9 +20,7 @@ internal class MockedFacade {
     val config: Config
     val timeProvider: TimeProvider
     val shellExecutor: ShellExecutor
-    val dumpSysParser: DumpSysParser
-    val gfxInfoParser: GfxInfoParser
-    val cpuUsageParser: CpuUsageParser
+    val parserProvider: ParserProvider
 
     init {
         config = mockk(relaxed = true)
@@ -32,9 +28,7 @@ internal class MockedFacade {
         every { config.applicationPackageName }.returns(PACKAGE_NAME)
         timeProvider = mockk(relaxed = true)
         shellExecutor = mockk(relaxed = true)
-        dumpSysParser = mockk(relaxed = true)
-        gfxInfoParser = mockk(relaxed = true)
-        cpuUsageParser = mockk(relaxed = true)
+        parserProvider = mockk(relaxed = true)
     }
 
     fun adb(command: String): String = shellExecutor.runCommandForScreen(
@@ -59,9 +53,7 @@ internal fun provideAndroidExecutor(facade: MockedFacade): ActionExecutor {
         SERIAL_NAME,
         facade.config,
         facade.shellExecutor,
-        facade.dumpSysParser,
-        facade.gfxInfoParser,
-        facade.cpuUsageParser,
+        facade.parserProvider,
         facade.timeProvider,
     )
 }
@@ -75,9 +67,7 @@ internal fun provideEmulatorExecutor(
         SERIAL_NAME,
         startDelayMillis,
         facade.shellExecutor,
-        facade.dumpSysParser,
-        facade.gfxInfoParser,
-        facade.cpuUsageParser,
+        facade.parserProvider,
         facade.timeProvider,
     )
 }
