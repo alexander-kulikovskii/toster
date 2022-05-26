@@ -12,9 +12,9 @@ apply {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    api("io.kotest:kotest-runner-junit5:5.2.2")
-    implementation("com.lordcodes.turtle:turtle:0.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    api("io.kotest:kotest-runner-junit5:5.3.0")
+    implementation("com.lordcodes.turtle:turtle:0.7.0")
     implementation("io.kotlintest:kotlintest-runner-junit4:3.4.2")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.5") {
         exclude(group = "org.jetbrains.kotlin")
@@ -23,10 +23,10 @@ dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
 
     testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.1.0")
-    testImplementation("io.mockk:mockk:1.12.3")
-    testImplementation("io.mockk:mockk-agent-api:1.12.3")
-    testImplementation("io.mockk:mockk-agent-jvm:1.12.3")
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.6.20")
+    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk-agent-api:1.12.4")
+    testImplementation("io.mockk:mockk-agent-jvm:1.12.4")
+    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 }
 
 android {
