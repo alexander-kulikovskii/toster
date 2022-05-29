@@ -4,8 +4,6 @@ import fi.epicbot.toster.CoVerify
 import fi.epicbot.toster.executor.ActionExecutor
 import fi.epicbot.toster.extension.runAfterScreens
 import fi.epicbot.toster.model.Action
-import fi.epicbot.toster.model.BufferDimension
-import fi.epicbot.toster.model.BufferSize
 import fi.epicbot.toster.model.Config
 import fi.epicbot.toster.model.Density
 import fi.epicbot.toster.model.ScreenSize

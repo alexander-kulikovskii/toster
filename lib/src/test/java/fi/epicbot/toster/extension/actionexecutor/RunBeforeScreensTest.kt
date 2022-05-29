@@ -2,7 +2,6 @@ package fi.epicbot.toster.extension.actionexecutor
 
 import fi.epicbot.toster.CoVerify
 import fi.epicbot.toster.executor.ActionExecutor
-import fi.epicbot.toster.extension.runAfterScreens
 import fi.epicbot.toster.extension.runBeforeScreens
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.BufferDimension
