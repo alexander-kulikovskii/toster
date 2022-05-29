@@ -16,7 +16,7 @@ import io.kotest.core.spec.style.scopes.DescribeSpecContainerScope
 context(DescribeSpecContainerScope)
 internal suspend fun ActionExecutor.runBeforeScreens(
     config: Config,
-    apk: Apk,
+    apkUrl: String,
 ): ReportScreen {
     val beforeScreen = ReportScreen(name = "Before")
 
@@ -46,7 +46,7 @@ internal suspend fun ActionExecutor.runBeforeScreens(
         listOf(
             Action.ClearAppData,
             Action.DeleteApk,
-            Action.InstallApk(apk.url)
+            Action.InstallApk(apkUrl)
         ).forEach { action ->
             action.runAction(this, beforeScreen)
         }
@@ -97,7 +97,7 @@ internal suspend fun ActionExecutor.runScreens(
     describe(this.executor().toString()) {
 
         val reportScreens: MutableList<ReportScreen> = mutableListOf()
-        val beforeScreenReport = runBeforeScreens(config, apk)
+        val beforeScreenReport = runBeforeScreens(config, apk.url)
 
         screens.forEach { screen ->
             val reportScreen = ReportScreen(name = screen.name)
