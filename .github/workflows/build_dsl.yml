@@ -53,6 +53,8 @@ jobs:
       matrix:
         api-level: [ 26, 31 ]
 
+      fail-fast: false
+
     steps:
       - uses: actions/checkout@v2
       - name: Setup Gradle Dependencies Cache
