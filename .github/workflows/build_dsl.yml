@@ -53,6 +53,8 @@ jobs:
       matrix:
         api-level: [ 26, 31 ]
 
+      fail-fast: false
+
     steps:
       - uses: actions/checkout@v2
       - name: Setup Gradle Dependencies Cache
@@ -110,6 +112,7 @@ jobs:
             ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest" --stacktrace
             ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest" --stacktrace
             ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest" --stacktrace
+            ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleMultiApkTest" --stacktrace
 
       - name: publish screenshot
         uses: actions/upload-artifact@v2
