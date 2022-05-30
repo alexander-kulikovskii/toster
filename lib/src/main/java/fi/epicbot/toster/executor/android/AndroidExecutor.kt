@@ -176,7 +176,11 @@ internal open class AndroidExecutor(
 
         val pid = getPid()
         val coreNumber = getCoreNumber() // TODO make call only once
-        val rawCpuInfo = "top -p $pid -d 0.1 -n $SAMPLE_NUMBER".adbShell()
+        val rawCpuInfo = try {
+            "top -p $pid -d 0.1 -n $SAMPLE_NUMBER".adbShell()
+        } catch (_: Exception) {
+            "top -p $pid -d 1 -n $SAMPLE_NUMBER".adbShell()
+        }
 
         val measurement = parserProvider.cpuUsageParser.parse(
             rawData = rawCpuInfo,
