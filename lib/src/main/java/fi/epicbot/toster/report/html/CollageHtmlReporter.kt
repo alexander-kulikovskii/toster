@@ -7,6 +7,8 @@ import fi.epicbot.toster.report.model.ReportBuild
 import fi.epicbot.toster.report.model.ReportDevice
 import fi.epicbot.toster.report.model.ReportOutput
 import fi.epicbot.toster.report.model.Screenshot
+import kotlinx.html.FlowOrInteractiveOrPhrasingContent
+import kotlinx.html.classes
 import kotlinx.html.div
 import kotlinx.html.h3
 import kotlinx.html.h4
@@ -43,9 +45,7 @@ internal class CollageHtmlReporter : BaseHtmlReporter() {
 
         device.userScreens().forEach { screen ->
             screen.screenshots.forEach { screenshot ->
-                reportOutput.builds.forEach { build ->
-                    collageContent += generateScreenshotHtml(build, screenshot)
-                }
+                collageContent += generateScreenshotHtml(reportOutput.builds, screenshot)
             }
         }
 
@@ -64,17 +64,53 @@ internal class CollageHtmlReporter : BaseHtmlReporter() {
 
     private fun ReportDevice.collageDir() = "${device.name.safeForPath()}/collage"
 
-    private fun generateScreenshotHtml(build: ReportBuild, screenshot: Screenshot) =
-        createHTML().div {
+    private fun generateScreenshotHtml(
+        builds: MutableList<ReportBuild>,
+        screenshot: Screenshot,
+    ): String {
+        return if (builds.size == 1) {
+            generateSingleScreenshotHtml(builds.first(), screenshot)
+        } else {
+            generateMultipleScreenshotHtml(builds, screenshot)
+        }
+    }
+
+    private fun generateSingleScreenshotHtml(build: ReportBuild, screenshot: Screenshot): String {
+        return createHTML().div {
             h3 {
                 text("${screenshot.name} ${screenshot.index}")
             }
             h4 {
                 text(build.name)
             }
-            img {
-                src = "../../../${build.name.safeForPath()}/${screenshot.localUrl}"
-                height = DEFAULT_SCREENSHOT_HEIGHT
+            toImageTag(build, screenshot)
+        }
+    }
+
+    private fun generateMultipleScreenshotHtml(
+        builds: MutableList<ReportBuild>,
+        screenshot: Screenshot,
+    ): String {
+        return createHTML().div {
+            classes = setOf("grid-header")
+            h3 {
+                text("${screenshot.name} ${screenshot.index}")
+            }
+        } + builds.joinToString(separator = "") { build ->
+            createHTML().div {
+                h4 {
+                    text(build.name)
+                }
+                toImageTag(build, screenshot)
             }
         }
+    }
+
+    private fun FlowOrInteractiveOrPhrasingContent.toImageTag(
+        build: ReportBuild,
+        screenshot: Screenshot,
+    ) = img {
+        src = "../../../${build.name.safeForPath()}/${screenshot.localUrl}"
+        height = DEFAULT_SCREENSHOT_HEIGHT
+    }
 }
