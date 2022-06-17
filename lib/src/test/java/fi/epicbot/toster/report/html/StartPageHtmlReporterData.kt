@@ -52,6 +52,9 @@ a:link, a:hover, a:visited {
   font-size: 30px;
   text-align: center;
 }
+.grid-header {
+  grid-column: 1 / -1;
+}
 """.trimIndent()
 
 internal val DEVICE_PAGE = """
