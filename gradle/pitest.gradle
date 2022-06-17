@@ -3,7 +3,7 @@ apply plugin: 'pl.droidsonroids.pitest'
 pitest {
     targetClasses = ['fi.epicbot.toster.**']
     targetTests = ['**Test**']
-    pitestVersion = '1.8.0'
+    pitestVersion = '1.8.1'
     avoidCallsTo = ['kotlin.jvm.internal']
     threads = Runtime.getRuntime().availableProcessors()
     outputFormats = ['XML', 'HTML']
