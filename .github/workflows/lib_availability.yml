@@ -12,8 +12,13 @@ jobs:
         lib-versions: [ "0.3.1", "0.3.0", "0.2.9", "0.2.8", "0.2.7" ]
         gradle-plugins: [ "7.4" ]
         gradle-tools: [ "7.1.1" ]
-        kotlin-version: [ "1.6.20" ]
+        kotlin-version: [ "1.6.21" ]
         include:
+
+          - gradle-plugins: "7.5"
+            gradle-tools: "7.1.1"
+            kotlin-version: "1.7.10"
+            lib-versions: "0.3.1"
 
           - gradle-plugins: "7.0.2"
             gradle-tools: "7.0.2"

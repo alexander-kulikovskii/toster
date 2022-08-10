@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("io.gitlab.arturbosch.detekt") version "1.20.0"
+    id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("kotlinx-serialization")
     id ("pl.droidsonroids.pitest")
     id("org.jetbrains.kotlinx.kover") version "0.5.1"
@@ -20,7 +20,7 @@ dependencies {
         exclude(group = "org.jetbrains.kotlin")
     }
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.20.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
 
     testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.1.0")
     testImplementation("io.mockk:mockk:1.12.4")
@@ -30,11 +30,11 @@ dependencies {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdkVersion(33)
 
     defaultConfig {
         minSdkVersion(21)
-        targetSdkVersion(31)
+        targetSdkVersion(33)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

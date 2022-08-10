@@ -97,7 +97,7 @@ internal abstract class BaseHtmlReporter : Reporter {
         internal const val MILLIS_IN_SECOND = 1000.0
 
         internal const val LIB_VERSION = "0.3.1"
-        internal const val CHART_VERSION = "3.7.1"
+        internal const val CHART_VERSION = "3.9.1"
 
         private const val COLOR_SIZE = 18
         private const val CHART_TRANSPARENT_VALUE = 0.8
