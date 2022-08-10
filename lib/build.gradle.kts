@@ -23,10 +23,10 @@ dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
 
     testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.1.0")
-    testImplementation("io.mockk:mockk:1.12.5")
-    testImplementation("io.mockk:mockk-agent-api:1.12.5")
-    testImplementation("io.mockk:mockk-agent-jvm:1.12.5")
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.7.10")
+    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk-agent-api:1.12.4")
+    testImplementation("io.mockk:mockk-agent-jvm:1.12.4")
+    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
 }
 
 android {
