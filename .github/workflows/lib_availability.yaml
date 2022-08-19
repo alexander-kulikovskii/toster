@@ -1,0 +1,91 @@
+# This file was generated using Kotlin DSL (.github/workflows/lib_availability.main.kts).
+# If you want to modify the workflow, please change the Kotlin file and regenerate this YAML file.
+# Generated with https://github.com/krzema12/github-actions-kotlin-dsl
+
+name: Library availability
+'on':
+  schedule:
+  - cron: 0 0 * * *
+jobs:
+  check_yaml_consistency:
+    runs-on: ubuntu-latest
+    steps:
+    - id: step-0
+      name: Check out
+      uses: actions/checkout@v3
+    - id: step-1
+      name: Execute script
+      run: rm '.github/workflows/lib_availability.yaml' && '.github/workflows/lib_availability.main.kts'
+    - id: step-2
+      name: Consistency check
+      run: git diff --exit-code '.github/workflows/lib_availability.yaml'
+  lib_availability:
+    name: lib-availability
+    runs-on: ubuntu-latest
+    needs:
+    - check_yaml_consistency
+    strategy:
+      matrix:
+        lib-versions:
+        - 0.3.1
+        - 0.3.0
+        - 0.2.9
+        - 0.2.8
+        - 0.2.7
+        gradle-plugins:
+        - 7.5.1
+        - '7.4'
+        - 7.0.2
+        gradle-tools:
+        - 7.1.1
+        - 7.0.2
+        kotlin-version:
+        - 1.7.10
+        - 1.6.21
+        - 1.5.31
+    steps:
+    - id: step-0
+      uses: actions/checkout@v3
+    - id: step-1
+      name: Setup Gradle Dependencies Cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts')
+          }}
+    - id: step-2
+      name: Setup Gradle Wrapper Cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties')
+          }}
+    - id: step-3
+      name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: adopt
+    - id: step-4
+      name: Prepare tmp project
+      run: python3 scripts/check_lib_availability.py -v=${{ matrix.lib-versions }}
+        -p=${{ matrix.gradle-plugins }} -t=${{ matrix.gradle-tools }} -k=${{ matrix.kotlin-version
+        }}
+    - id: step-5
+      name: Download deps
+      run: sh scripts/check_deps.sh
+    - id: step-6
+      name: Send message to telegram on fail
+      uses: appleboy/telegram-action@v0.1.1
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |-
+          Job: Library availability
+          lib-versions: ${{ matrix.lib-versions }}
+          gradle-plugins: ${{ matrix.gradle-plugins }}
+          gradle-tools: ${{ matrix.gradle-tools }}
+          kotlin-version: ${{ matrix.kotlin-version }}
+          Repository: ${{ github.repository }}
+          Status: Failure
+      if: failure()
