@@ -11,6 +11,16 @@ class SampleMultiApkTest : TosterTest(
         applicationPackageName("fi.epicbot.toster.samples")
         multiApk {
             apk {
+//                runGitBefore {
+//                    checkout("".hash)
+//                    // or
+//                    checkout("".tag)
+//                    submobule {
+//                        checkout(submoduleName1, "".hash)
+//                        checkout(submoduleName2, "".tag)
+//                        checkout(submoduleName3, "".hash)
+//                    }
+//                }
                 runShellsBefore("", "")
                 url("build/outputs/apk/debug/samples-debug.apk")
                 prefix("main")
