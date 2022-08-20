@@ -83,7 +83,7 @@ workflow(
         )
         publishResults(
             artifactName = "SampleTestOutput_api_\${{ matrix.api-level }}",
-            "lib/build/test-results/**/*.xml",
+            "samples/build/toster/",
         )
         sendToTelegramIfFail("Job: Test samples \${{ matrix.api-level }}\nRepository: ${expr { github.repository }}\nStatus: Failure")
     }

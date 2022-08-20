@@ -90,7 +90,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: SampleTestOutput_api_${{ matrix.api-level }}
-        path: lib/build/test-results/**/*.xml
+        path: samples/build/toster/
       if: always()
     - id: step-8
       name: Send message to telegram on fail
