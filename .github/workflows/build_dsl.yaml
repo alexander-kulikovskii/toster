@@ -126,3 +126,58 @@ jobs:
       uses: gradle/gradle-build-action@v2
       with:
         arguments: lib:assembleRelease
+  test-sample:
+    name: Test samples
+    runs-on: macos-latest
+    needs:
+    - static-analysis
+    - check_yaml_consistency
+    steps:
+    - id: step-0
+      uses: actions/checkout@v3
+    - id: step-1
+      name: Setup Gradle Dependencies Cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts')
+          }}
+    - id: step-2
+      name: Setup Gradle Wrapper Cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties')
+          }}
+    - id: step-3
+      name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: adopt
+    - id: step-4
+      name: Run tests for ${{ matrix.api-level }}
+      uses: ReactiveCircus/android-emulator-runner@v2
+      with:
+        api-level: ${{ matrix.api-level }}
+        arch: arm64-v8a
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio
+          -no-boot-anim -camera-back none
+        disable-animations: 'true'
+        script: |-
+          adb devices
+          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleDensityTest" --stacktrace
+          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest" --stacktrace
+    - id: step-5
+      name: Publish results
+      uses: actions/upload-artifact@v3
+      with:
+        name: SampleTestOutput_api_${{ matrix.api-level }}
+        path: lib/build/test-results/**/*.xml
+      if: always()
+    strategy:
+      fail-fast: false
+      matrix:
+        api-level:
+        - 26
+        - 31
