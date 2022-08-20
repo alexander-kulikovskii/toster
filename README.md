@@ -1,6 +1,6 @@
 [![](https://jitpack.io/v/by.epicbot/toster.svg)](https://jitpack.io/#by.epicbot/toster)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Build](https://github.com/alexander-kulikovskii/toster/actions/workflows/build_dsl.yml/badge.svg)](https://github.com/alexander-kulikovskii/toster/actions/workflows/build_dsl.yml)
+[![Build DSL](https://github.com/alexander-kulikovskii/toster/actions/workflows/build_dsl.yaml/badge.svg)](https://github.com/alexander-kulikovskii/toster/actions/workflows/build_dsl.yaml)
 [![Codecov](https://us-central1-epicbot-github-badges.cloudfunctions.net/metrics/-Mvxt-4O1Nilp135XA-d/coverage.svg?token=0NRBEq31QLrE4HdG6lBnSpluWp2lntip)]()
 [![Pitest](https://us-central1-epicbot-github-badges.cloudfunctions.net/metrics/-Mvxt-4O1Nilp135XA-d/pitest.svg?token=0NRBEq31QLrE4HdG6lBnSpluWp2lntip)](https://pitest.org/)
 
