@@ -27,8 +27,8 @@ workflow(
         runsOn = UbuntuLatest,
         strategyMatrix = mapOf(
             "lib-versions" to listOf("0.3.1", "0.3.0", "0.2.9", "0.2.8", "0.2.7"),
-            "gradle-plugins" to listOf("7.5.1", "7.4", "7.0.2"),
-            "gradle-tools" to listOf("7.1.1", "7.0.2"),
+            "gradle-plugins" to listOf("7.5.1", "7.4"),
+            "gradle-tools" to listOf("7.1.1"),
             "kotlin-version" to listOf("1.7.10", "1.6.21", "1.5.31"),
         ),
     ) {
