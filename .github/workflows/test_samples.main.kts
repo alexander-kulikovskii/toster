@@ -5,7 +5,7 @@
 import it.krzeminski.githubactions.actions.actions.CacheV3
 import it.krzeminski.githubactions.domain.RunnerType.UbuntuLatest
 import it.krzeminski.githubactions.actions.reactivecircus.AndroidEmulatorRunnerV2
-import it.krzeminski.githubactions.actions.reactivecircus.AndroidEmulatorRunnerV2.Arch.Arm64V8a
+import it.krzeminski.githubactions.actions.reactivecircus.AndroidEmulatorRunnerV2.Arch.X8664
 import it.krzeminski.githubactions.domain.triggers.Push
 import it.krzeminski.githubactions.dsl.workflow
 import it.krzeminski.githubactions.yaml.writeToFile
@@ -59,7 +59,7 @@ workflow(
                     "api-level" to "\${{ matrix.api-level }}"
                 ),
                 apiLevel = 0,
-                arch = Arm64V8a,
+                arch = X8664,
                 forceAvdCreation = false,
                 disableAnimations = false,
                 emulatorOptions = "-no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none",
@@ -73,7 +73,7 @@ workflow(
                     "api-level" to "\${{ matrix.api-level }}"
                 ),
                 apiLevel = 0,
-                arch = Arm64V8a,
+                arch = X8664,
                 forceAvdCreation = false,
                 disableAnimations = true,
                 emulatorOptions = "-no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none",
