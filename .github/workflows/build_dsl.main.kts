@@ -49,5 +49,4 @@ workflow(
         prepareEnvironment()
         runGradleTask("Run Debug Unit Tests", lib.gradle("assembleRelease"))
     }
-
 }.writeToFile()

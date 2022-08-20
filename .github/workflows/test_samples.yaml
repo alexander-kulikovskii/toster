@@ -1,0 +1,110 @@
+# This file was generated using Kotlin DSL (.github/workflows/test_samples.main.kts).
+# If you want to modify the workflow, please change the Kotlin file and regenerate this YAML file.
+# Generated with https://github.com/krzema12/github-actions-kotlin-dsl
+
+name: Test samples
+'on':
+  push:
+    branches:
+    - main
+jobs:
+  check_yaml_consistency:
+    runs-on: ubuntu-latest
+    steps:
+    - id: step-0
+      name: Check out
+      uses: actions/checkout@v3
+    - id: step-1
+      name: Execute script
+      run: rm '.github/workflows/test_samples.yaml' && '.github/workflows/test_samples.main.kts'
+    - id: step-2
+      name: Consistency check
+      run: git diff --exit-code '.github/workflows/test_samples.yaml'
+  test-sample:
+    name: Test samples
+    runs-on: macos-latest
+    needs:
+    - check_yaml_consistency
+    steps:
+    - id: step-0
+      uses: actions/checkout@v3
+    - id: step-1
+      name: Setup Gradle Dependencies Cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts')
+          }}
+    - id: step-2
+      name: Setup Gradle Wrapper Cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties')
+          }}
+    - id: step-3
+      name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: adopt
+    - id: step-4
+      name: AVD cache
+      uses: actions/cache@v3
+      with:
+        path: |-
+          ~/.android/avd/*
+          ~/.android/adb*
+        key: avd-${{ runner.os }}${{ matrix.api-level }}
+    - id: step-5
+      name: Create AVD and generate snapshot for caching ${{ matrix.api-level }}
+      uses: ReactiveCircus/android-emulator-runner@v2
+      with:
+        api-level: ${{ matrix.api-level }}
+        arch: arm64-v8a
+        force-avd-creation: 'false'
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          -camera-back none
+        disable-animations: 'true'
+        script: echo "Generated AVD snapshot for caching."
+    - id: step-6
+      name: Run tests for ${{ matrix.api-level }}
+      uses: ReactiveCircus/android-emulator-runner@v2
+      with:
+        api-level: ${{ matrix.api-level }}
+        arch: arm64-v8a
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio
+          -no-boot-anim -camera-back none
+        disable-animations: 'true'
+        script: |-
+          adb devices
+          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleDensityTest" --stacktrace
+          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest" --stacktrace
+          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest" --stacktrace
+          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest" --stacktrace
+          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest" --stacktrace
+          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleMultiApkTest" --stacktrace
+    - id: step-7
+      name: Publish results
+      uses: actions/upload-artifact@v3
+      with:
+        name: SampleTestOutput_api_${{ matrix.api-level }}
+        path: lib/build/test-results/**/*.xml
+      if: always()
+    - id: step-8
+      name: Send message to telegram on fail
+      uses: appleboy/telegram-action@v0.1.1
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: |-
+          Job: Test samples ${{ matrix.api-level }}
+          Repository: ${{ github.repository }}
+          Status: Failure
+      if: failure()
+    strategy:
+      fail-fast: false
+      matrix:
+        api-level:
+        - 26
+        - 31
