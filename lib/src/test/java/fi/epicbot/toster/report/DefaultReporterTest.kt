@@ -44,6 +44,39 @@ class DefaultReporterTest : BehaviorSpec({
             }
         }
     }
+
+    Given("Default reporter with huge report") {
+        val mockedReporter = mockk<ReportFormatter>(relaxed = true)
+        every { mockedReporter.format(reportOutput) } returns REPORT_OUTPUT.repeat(300)
+        val mockedShellLoggerConfig = mockk<ShellLoggerConfig>(relaxed = true)
+        every { mockedShellLoggerConfig.enable } returns true
+        every { mockedShellLoggerConfig.enableTimestamp } returns true
+        val defaultReporter = DefaultReporter(mockedReporter, mockedShellLoggerConfig)
+        val mockedShellExecutor = mockk<ShellExecutor>(relaxed = true)
+        val mockedShellLogger = mockk<ShellLogger>(relaxed = true)
+        When("make report") {
+
+            defaultReporter.makeReport(reportOutput, mockedShellExecutor, mockedShellLogger)
+            Then("formatter should be called") {
+                verify {
+                    mockedReporter.format(reportOutput)
+                }
+            }
+            Then("shell executor should be called") {
+                verify {
+                    mockedShellExecutor.runShellCommand(LOGGER_OUTPUT, false)
+                }
+                verify(exactly = 4) {
+                    mockedShellExecutor.runShellCommand(any(), false)
+                }
+            }
+            Then("shell logger should be called") {
+                verify {
+                    mockedShellLogger.getAllCommands(true)
+                }
+            }
+        }
+    }
 })
 
 private val reportOutput = ReportOutput(
@@ -62,5 +95,5 @@ private val REPORT_OUTPUT = """
 }
 """.trimIndent()
 
-private val COMMAND_OUTPUT = "echo '$REPORT_OUTPUT' > report.json"
+private val COMMAND_OUTPUT = "echo '$REPORT_OUTPUT' >> report.json"
 private const val LOGGER_OUTPUT = "echo '' > log.txt"
