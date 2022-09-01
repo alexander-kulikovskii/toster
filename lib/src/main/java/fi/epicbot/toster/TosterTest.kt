@@ -71,7 +71,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                         shellLogger,
                         index == 0,
                     )
-                shellExecutor.runShellsForApk(timeProvider = timeProvider, apk)
+                runShellsForApk(shellExecutor, timeProvider = timeProvider, apk)
 
                 config.devices.emulators.forEach { emulator ->
                     val actionExecutor = EmulatorExecutor(
@@ -82,7 +82,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                         parserProvider = parserProvider,
                         timeProvider = timeProvider,
                     )
-                    actionExecutor.runScreens(config, apk, screens, reportDevices)
+                    runScreens(actionExecutor, config, apk, screens, reportDevices)
                 }
                 config.devices.phones.forEach { phone ->
                     val actionExecutor = AndroidExecutor(
@@ -92,7 +92,7 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
                         parserProvider = parserProvider,
                         timeProvider = timeProvider,
                     )
-                    actionExecutor.runScreens(config, apk, screens, reportDevices)
+                    runScreens(actionExecutor, config, apk, screens, reportDevices)
                 }
                 reportBuilds.add(
                     ReportBuild(

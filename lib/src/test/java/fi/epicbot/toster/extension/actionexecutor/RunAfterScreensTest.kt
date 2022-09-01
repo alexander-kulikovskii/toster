@@ -27,7 +27,7 @@ private open class RunAfterScreensTestSpec(
 ) : DescribeSpec({
     describe("test") {
         reportScreen.add(
-            actionExecutor.runAfterScreens(config)
+            runAfterScreens(actionExecutor, config)
         )
     }
 })

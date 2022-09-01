@@ -64,9 +64,3 @@ kover {
     intellijEngineVersion.set("1.0.668")
     jacocoEngineVersion.set("0.8.8")
 }
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + listOf("-Xcontext-receivers")
-    }
-}

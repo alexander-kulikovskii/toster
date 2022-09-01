@@ -26,12 +26,14 @@ private open class ApplySizeTestSpec(
     DescribeSpec({
         describe("${size?.width} ${size?.height}") {
             if (executeCondition == null) {
-                size.apply(
+                apply(
+                    size,
                     actionExecutor,
                     reportScreen,
                 )
             } else {
-                size.apply(
+                apply(
+                    size,
                     actionExecutor,
                     reportScreen,
                     executeCondition,
@@ -47,7 +49,8 @@ private open class ResetSizeTestSpec(
 ) :
     DescribeSpec({
         describe("${size?.width} ${size?.height}") {
-            size.reset(
+            reset(
+                size,
                 actionExecutor,
                 reportScreen,
             )

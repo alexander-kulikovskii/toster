@@ -32,15 +32,14 @@ internal fun String.safeForPath(): String {
     return this.trim().replace("[.,;!@#$%^&*()+=>< ]".toRegex(), "_")
 }
 
-context(DescribeSpecContainerScope)
-internal suspend fun String.runShellAction(
+internal suspend fun DescribeSpecContainerScope.runShellAction(
+    command: String,
     timeProvider: TimeProvider,
     shellExecutor: ShellExecutor,
     reportScreen: ReportScreen,
     executeCondition: Boolean = true,
 ) {
     if (executeCondition) {
-        val command = this
         it("Run command <$command>") {
             val startTime = timeProvider.getTimeMillis()
             shellExecutor.runShellCommand(command, fromRootFolder = true)

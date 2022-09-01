@@ -6,16 +6,17 @@ import fi.epicbot.toster.report.model.ReportScreen
 import fi.epicbot.toster.time.TimeProvider
 import io.kotest.core.spec.style.scopes.DescribeSpecContainerScope
 
-context(DescribeSpecContainerScope)
-internal suspend fun ShellExecutor.runShellsForApk(
+internal suspend fun DescribeSpecContainerScope.runShellsForApk(
+    shellExecutor: ShellExecutor,
     timeProvider: TimeProvider,
     apk: Apk,
 ): ReportScreen {
     val apkReport = ReportScreen(name = "Before")
     apk.shellsBefore.forEach { shell ->
-        shell.runShellAction(
+        runShellAction(
+            shell,
             timeProvider,
-            this,
+            shellExecutor,
             apkReport,
             executeCondition = shell.isNotBlank(),
         )

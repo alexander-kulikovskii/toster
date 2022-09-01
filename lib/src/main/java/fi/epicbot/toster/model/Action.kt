@@ -113,14 +113,13 @@ internal fun Action.title(): String {
     }
 }
 
-context(DescribeSpecContainerScope)
-internal suspend fun Action.runAction(
+internal suspend fun DescribeSpecContainerScope.runAction(
+    action: Action,
     actionExecutor: ActionExecutor,
     reportScreen: ReportScreen,
     executeCondition: Boolean = true,
 ) {
     if (executeCondition) {
-        val action = this
         it(action.title()) {
             when (val reportAction = actionExecutor.execute(action)) {
                 is Common -> reportScreen.common.add(reportAction)
