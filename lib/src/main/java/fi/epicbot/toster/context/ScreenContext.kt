@@ -48,8 +48,16 @@ class ScreenContext {
         screen.shellsBefore = shell
     }
 
+    fun runBlockBefore(block: () -> Unit) {
+        screen.blockBefore = block
+    }
+
     fun runShellsAfter(vararg shell: String) {
         screen.shellsAfter = shell
+    }
+
+    fun runBlockAfter(block: () -> Unit) {
+        screen.blockAfter = block
     }
 
     fun clearDataBeforeRun() {
