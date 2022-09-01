@@ -35,7 +35,7 @@ private open class RunScreensTestSpec(
     reportDevices: MutableList<ReportDevice>,
 ) : DescribeSpec({
     describe("test") {
-        actionExecutor.runScreens(config, apk, screens, reportDevices)
+        runScreens(actionExecutor, config, apk, screens, reportDevices)
     }
 })
 

@@ -7,26 +7,26 @@ import fi.epicbot.toster.model.runAction
 import fi.epicbot.toster.report.model.ReportScreen
 import io.kotest.core.spec.style.scopes.DescribeSpecContainerScope
 
-context (DescribeSpecContainerScope)
-internal suspend fun ScreenSize?.apply(
+internal suspend fun DescribeSpecContainerScope.apply(
+    screenSize: ScreenSize?,
     actionExecutor: ActionExecutor,
     reportScreen: ReportScreen,
     executeCondition: Boolean = true,
 ) {
-    this?.let { screenSize ->
-        Action.SetScreenSize(screenSize)
-            .runAction(actionExecutor, reportScreen, executeCondition)
+    screenSize?.let { screenSize ->
+        runAction(Action.SetScreenSize(screenSize), actionExecutor, reportScreen, executeCondition)
     }
 }
 
-context (DescribeSpecContainerScope)
-internal suspend fun ScreenSize?.reset(
+internal suspend fun DescribeSpecContainerScope.reset(
+    screenSize: ScreenSize?,
     actionExecutor: ActionExecutor,
     reportScreen: ReportScreen,
 ) {
-    Action.ResetScreenSize.runAction(
+    runAction(
+        Action.ResetScreenSize,
         actionExecutor,
         reportScreen,
-        executeCondition = this != null
+        executeCondition = screenSize != null
     )
 }

@@ -30,7 +30,7 @@ private open class RunBeforeScreensTestSpec(
 ) : DescribeSpec({
     describe("test") {
         reportScreen.add(
-            actionExecutor.runBeforeScreens(config, apkUrl)
+            runBeforeScreens(actionExecutor, config, apkUrl)
         )
     }
 })

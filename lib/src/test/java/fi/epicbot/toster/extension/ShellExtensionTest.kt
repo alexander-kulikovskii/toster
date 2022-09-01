@@ -23,7 +23,8 @@ private open class RunShellsForApkTestSpec(
 ) : DescribeSpec({
     describe("test") {
         reportScreen.add(
-            shellExecutor.runShellsForApk(
+            runShellsForApk(
+                shellExecutor,
                 timeProvider,
                 apk,
             )

@@ -26,12 +26,14 @@ private open class ApplyDensityTestSpec(
     DescribeSpec({
         describe(density?.dpi.toString()) {
             if (executeCondition == null) {
-                density.apply(
+                apply(
+                    density,
                     actionExecutor,
                     reportScreen,
                 )
             } else {
-                density.apply(
+                apply(
+                    density,
                     actionExecutor,
                     reportScreen,
                     executeCondition,
@@ -47,7 +49,8 @@ private open class ResetDensityTestSpec(
 ) :
     DescribeSpec({
         describe(density?.dpi.toString()) {
-            density.reset(
+            reset(
+                density,
                 actionExecutor,
                 reportScreen,
             )

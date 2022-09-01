@@ -13,33 +13,35 @@ import fi.epicbot.toster.report.model.ReportDevice
 import fi.epicbot.toster.report.model.ReportScreen
 import io.kotest.core.spec.style.scopes.DescribeSpecContainerScope
 
-context(DescribeSpecContainerScope)
-internal suspend fun ActionExecutor.runBeforeScreens(
+internal suspend fun DescribeSpecContainerScope.runBeforeScreens(
+    actionExecutor: ActionExecutor,
     config: Config,
     apkUrl: String,
 ): ReportScreen {
     val beforeScreen = ReportScreen(name = "Before")
 
-    Action.RestartAdbService.runAction(
-        this,
+    runAction(
+        Action.RestartAdbService,
+        actionExecutor,
         beforeScreen,
         executeCondition = config.restartAdbServiceBeforeEachDevice,
     )
-    prepareEnvironment()
+    actionExecutor.prepareEnvironment()
     config.globalLogcatBufferSize?.let { logcatBufferSize ->
-        Action.SetLogcatBufferSize(logcatBufferSize).runAction(this, beforeScreen)
+        runAction(Action.SetLogcatBufferSize(logcatBufferSize), actionExecutor, beforeScreen)
     }
     config.shellsBeforeAllScreens.forEach { shellBeforeAllScreens ->
-        Action.ShellBeforeAllScreens(shellBeforeAllScreens).runAction(
-            this,
+        runAction(
+            Action.ShellBeforeAllScreens(shellBeforeAllScreens),
+            actionExecutor,
             beforeScreen,
             executeCondition = shellBeforeAllScreens.isNotBlank(),
         )
     }
-    config.globalScreenDensity.apply(this, beforeScreen)
+    apply(config.globalScreenDensity, actionExecutor, beforeScreen)
 
     config.globalScreenSize?.let { screenSize ->
-        Action.SetScreenSize(screenSize).runAction(this, beforeScreen)
+        runAction(Action.SetScreenSize(screenSize), actionExecutor, beforeScreen)
     }
 
     if (config.deleteAndInstallApk) {
@@ -48,72 +50,72 @@ internal suspend fun ActionExecutor.runBeforeScreens(
             Action.DeleteApk,
             Action.InstallApk(apkUrl)
         ).forEach { action ->
-            action.runAction(this, beforeScreen)
+            runAction(action, actionExecutor, beforeScreen)
         }
     }
 
-    Action.HideDemoMode.runAction(this, beforeScreen)
+    runAction(Action.HideDemoMode, actionExecutor, beforeScreen)
 
     if (config.useDemoMode) {
-        Action.SetDemoModeEnable.runAction(this, beforeScreen)
-        Action.ShowDemoMode(config.demoModeTime).runAction(this, beforeScreen)
+        runAction(Action.SetDemoModeEnable, actionExecutor, beforeScreen)
+        runAction(Action.ShowDemoMode(config.demoModeTime), actionExecutor, beforeScreen)
     }
 
-    Action.HideGpuOverdraw.runAction(this, beforeScreen)
+    runAction(Action.HideGpuOverdraw, actionExecutor, beforeScreen)
 
     return beforeScreen
 }
 
-context(DescribeSpecContainerScope)
-internal suspend fun ActionExecutor.runAfterScreens(
+internal suspend fun DescribeSpecContainerScope.runAfterScreens(
+    actionExecutor: ActionExecutor,
     config: Config,
 ): ReportScreen {
     val afterScreen = ReportScreen("After")
 
     if (config.useDemoMode) {
-        Action.HideDemoMode.runAction(this, afterScreen)
+        runAction(Action.HideDemoMode, actionExecutor, afterScreen)
     }
     config.shellsAfterAllScreens.forEach { shellAfterAllScreens ->
-        Action.ShellAfterAllScreens(shellAfterAllScreens).runAction(
-            this,
+        runAction(
+            Action.ShellAfterAllScreens(shellAfterAllScreens),
+            actionExecutor,
             afterScreen,
             executeCondition = shellAfterAllScreens.isNotBlank(),
         )
     }
-    resetScreenSizeAndDensity(config, afterScreen)
-    finishEnvironment()
+    resetScreenSizeAndDensity(actionExecutor, config, afterScreen)
+    actionExecutor.finishEnvironment()
 
     return afterScreen
 }
 
-context(DescribeSpecContainerScope)
-internal suspend fun ActionExecutor.runScreens(
+internal suspend fun DescribeSpecContainerScope.runScreens(
+    actionExecutor: ActionExecutor,
     config: Config,
     apk: Apk,
     screens: List<Screen>,
     reportDevices: MutableList<ReportDevice>,
 ) {
-    val actionExecutor = this
-    describe(this.executor().toString()) {
+    describe(actionExecutor.executor().toString()) {
 
         val reportScreens: MutableList<ReportScreen> = mutableListOf()
-        val beforeScreenReport = runBeforeScreens(config, apk.url)
+        val beforeScreenReport = runBeforeScreens(actionExecutor, config, apk.url)
 
         screens.forEach { screen ->
             val reportScreen = ReportScreen(name = screen.name)
             actionExecutor.imagePrefix = "normal"
-            runScreen(config, screen, reportScreen)
+            runScreen(actionExecutor, config, screen, reportScreen)
             if (config.checkOverdraw.check) {
                 actionExecutor.imagePrefix = "overdraw"
-                Action.ShowGpuOverdraw.runAction(actionExecutor, reportScreen)
-                runScreen(config, screen, reportScreen)
-                Action.HideGpuOverdraw.runAction(actionExecutor, reportScreen)
+                runAction(Action.ShowGpuOverdraw, actionExecutor, reportScreen)
+                runScreen(actionExecutor, config, screen, reportScreen)
+                runAction(Action.HideGpuOverdraw, actionExecutor, reportScreen)
                 // TODO run tests for getting overdraw info
             }
             // TODO compare screenshots
             reportScreens.add(reportScreen)
         }
-        val afterScreenReport = runAfterScreens(config)
+        val afterScreenReport = runAfterScreens(actionExecutor, config)
 
         reportDevices.add(
             ReportDevice(
@@ -127,40 +129,41 @@ internal suspend fun ActionExecutor.runScreens(
     }
 }
 
-context(DescribeSpecContainerScope)
 @Suppress("LongMethod")
-internal suspend fun ActionExecutor.runScreen(
+internal suspend fun DescribeSpecContainerScope.runScreen(
+    actionExecutor: ActionExecutor,
     config: Config,
     screen: Screen,
     reportScreen: ReportScreen,
 ) {
-    val actionExecutor = this
-    describe("Screen: ${screen.name}; $imagePrefix") {
+    describe("Screen: ${screen.name}; ${actionExecutor.imagePrefix}") {
 
         screen.shellsBefore.forEach { shellBefore ->
-            Action.ShellBeforeScreen(shellBefore).runAction(
+            runAction(
+                Action.ShellBeforeScreen(shellBefore),
                 actionExecutor,
                 reportScreen,
                 shellBefore.isNotBlank(),
             )
         }
-        Action.ClearLogcat.runAction(
+        runAction(
+            Action.ClearLogcat,
             actionExecutor,
             reportScreen,
             executeCondition = screen.clearLogcatBefore
         )
 
-        setScreenSizeAndDensity(screen, reportScreen)
+        setScreenSizeAndDensity(actionExecutor, screen, reportScreen)
 
         if (config.clearDataBeforeEachRun || screen.clearDataBeforeRun) {
-            Action.ClearAppData.runAction(actionExecutor, reportScreen)
+            runAction(Action.ClearAppData, actionExecutor, reportScreen)
         }
 
         (config.permissions.granted + screen.permissions.granted).forEach {
-            Action.GrantPermission(it).runAction(actionExecutor, reportScreen)
+            runAction(Action.GrantPermission(it), actionExecutor, reportScreen)
         }
         screen.permissions.revoked.forEach {
-            Action.RevokePermission(it).runAction(actionExecutor, reportScreen)
+            runAction(Action.RevokePermission(it), actionExecutor, reportScreen)
         }
 
         val fontScale = if (screen.fontScale != null && screen.fontScale != FontScale.DEFAULT) {
@@ -169,44 +172,48 @@ internal suspend fun ActionExecutor.runScreen(
             config.fontScale
         }
         fontScale?.let { fontScale ->
-            Action.SetFontScale(fontScale).runAction(actionExecutor, reportScreen)
+            runAction(Action.SetFontScale(fontScale), actionExecutor, reportScreen)
         }
 
-        Action.CloseAppsInTray.runAction(
+        runAction(
+            Action.CloseAppsInTray,
             actionExecutor,
             reportScreen,
             screen.closeAppsInTrayBeforeStart,
         )
-        Action.ResetGfxInfo.runAction(
+        runAction(
+            Action.ResetGfxInfo,
             actionExecutor,
             reportScreen,
             screen.resetGfxInfoBeforeStart,
         )
 
         val activityParamsAsString = screen.activityParams.toStringParams()
-        Action.OpenScreen(screen, activityParamsAsString).runAction(
+        runAction(
+            Action.OpenScreen(screen, activityParamsAsString),
             actionExecutor,
             reportScreen,
         )
 
         screen.actions.forEach { action ->
-            action.runAction(actionExecutor, reportScreen)
+            runAction(action, actionExecutor, reportScreen)
         }
 
         if (screen.screenshotAsLastAction && screen.actions.count { it is Action.TakeScreenshot } == 0) {
-            Action.TakeScreenshot("").runAction(actionExecutor, reportScreen)
+            runAction(Action.TakeScreenshot(""), actionExecutor, reportScreen)
         }
 
         fontScale?.let {
-            Action.SetFontScale(FontScale.DEFAULT).runAction(actionExecutor, reportScreen)
+            runAction(Action.SetFontScale(FontScale.DEFAULT), actionExecutor, reportScreen)
         }
 
-        Action.CloseApp.runAction(actionExecutor, reportScreen)
+        runAction(Action.CloseApp, actionExecutor, reportScreen)
 
-        resetScreenSizeAndDensity(config, screen, reportScreen)
+        resetScreenSizeAndDensity(actionExecutor, config, screen, reportScreen)
 
         screen.shellsAfter.forEach { shellAfter ->
-            Action.ShellAfterScreen(shellAfter).runAction(
+            runAction(
+                Action.ShellAfterScreen(shellAfter),
                 actionExecutor,
                 reportScreen,
                 shellAfter.isNotBlank(),
@@ -215,46 +222,50 @@ internal suspend fun ActionExecutor.runScreen(
     }
 }
 
-context(DescribeSpecContainerScope)
-internal suspend fun ActionExecutor.resetScreenSizeAndDensity(
+internal suspend fun DescribeSpecContainerScope.resetScreenSizeAndDensity(
+    actionExecutor: ActionExecutor,
     config: Config,
     afterScreen: ReportScreen,
 ) {
-    config.globalScreenSize.reset(this, afterScreen)
-    config.globalScreenDensity.reset(this, afterScreen)
+    reset(config.globalScreenSize, actionExecutor, afterScreen)
+    reset(config.globalScreenDensity, actionExecutor, afterScreen)
 }
 
-context(DescribeSpecContainerScope)
-internal suspend fun ActionExecutor.setScreenSizeAndDensity(
+internal suspend fun DescribeSpecContainerScope.setScreenSizeAndDensity(
+    actionExecutor: ActionExecutor,
     screen: Screen,
     reportScreen: ReportScreen,
 ) {
-    screen.screenDensity.apply(
-        this,
+    apply(
+        screen.screenDensity,
+        actionExecutor,
         reportScreen,
     )
-    screen.screenSize.apply(
-        this,
+    apply(
+        screen.screenSize,
+        actionExecutor,
         reportScreen,
     )
 }
 
-context(DescribeSpecContainerScope)
-internal suspend fun ActionExecutor.resetScreenSizeAndDensity(
+internal suspend fun DescribeSpecContainerScope.resetScreenSizeAndDensity(
+    actionExecutor: ActionExecutor,
     config: Config,
     screen: Screen,
     reportScreen: ReportScreen,
 ) {
-    screen.screenSize.reset(this, reportScreen)
-    screen.screenDensity.reset(this, reportScreen)
+    reset(screen.screenSize, actionExecutor, reportScreen)
+    reset(screen.screenDensity, actionExecutor, reportScreen)
 
-    config.globalScreenDensity.apply(
-        this,
+    apply(
+        config.globalScreenDensity,
+        actionExecutor,
         reportScreen,
         screen.screenDensity != null,
     )
-    config.globalScreenSize.apply(
-        this,
+    apply(
+        config.globalScreenSize,
+        actionExecutor,
         reportScreen,
         screen.screenSize != null,
     )
