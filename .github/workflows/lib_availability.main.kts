@@ -11,7 +11,7 @@ import it.krzeminski.githubactions.yaml.writeToFile
 import it.krzeminski.githubactions.dsl.expressions.expr
 import java.nio.file.Paths
 
-private val LAST_LIB_VERSION = "0.3.1"
+private val LAST_LIB_VERSION = "0.3.2"
 
 workflow(
     name = "Library availability",
@@ -31,7 +31,7 @@ workflow(
             "strategy" to mapOf(
                 "fail-fast" to false,
                 "matrix" to mapOf(
-                    "lib-versions" to listOf(LAST_LIB_VERSION, "0.3.0", "0.2.9", "0.2.8", "0.2.7"),
+                    "lib-versions" to listOf(LAST_LIB_VERSION, "0.3.1", "0.3.0", "0.2.9", "0.2.8", "0.2.7"),
                     "gradle-plugins" to listOf("7.5.1"),
                     "gradle-tools" to listOf("7.1.3"),
                     "kotlin-version" to listOf("1.7.10"),
