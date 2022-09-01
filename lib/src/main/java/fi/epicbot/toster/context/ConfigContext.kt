@@ -72,8 +72,16 @@ class ConfigContext {
         config.shellsBeforeAllScreens = shell
     }
 
+    fun runBlockBeforeAllScreens(block: () -> Unit) {
+        config.blockBeforeAllScreens = block
+    }
+
     fun runShellsAfterAllScreens(vararg shell: String) {
         config.shellsAfterAllScreens = shell
+    }
+
+    fun runBlockAfterAllScreens(block: () -> Unit) {
+        config.blockAfterAllScreens = block
     }
 
     fun clearDataBeforeEachRun() {

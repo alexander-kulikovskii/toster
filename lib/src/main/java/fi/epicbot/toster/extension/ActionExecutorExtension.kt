@@ -27,6 +27,7 @@ internal suspend fun DescribeSpecContainerScope.runBeforeScreens(
         executeCondition = config.restartAdbServiceBeforeEachDevice,
     )
     actionExecutor.prepareEnvironment()
+    config.blockBeforeAllScreens.invoke()
     config.globalLogcatBufferSize?.let { logcatBufferSize ->
         runAction(Action.SetLogcatBufferSize(logcatBufferSize), actionExecutor, beforeScreen)
     }
@@ -84,6 +85,7 @@ internal suspend fun DescribeSpecContainerScope.runAfterScreens(
         )
     }
     resetScreenSizeAndDensity(actionExecutor, config, afterScreen)
+    config.blockAfterAllScreens.invoke()
     actionExecutor.finishEnvironment()
 
     return afterScreen
@@ -138,6 +140,7 @@ internal suspend fun DescribeSpecContainerScope.runScreen(
 ) {
     describe("Screen: ${screen.name}; ${actionExecutor.imagePrefix}") {
 
+        screen.blockBefore.invoke()
         screen.shellsBefore.forEach { shellBefore ->
             runAction(
                 Action.ShellBeforeScreen(shellBefore),
@@ -219,6 +222,7 @@ internal suspend fun DescribeSpecContainerScope.runScreen(
                 shellAfter.isNotBlank(),
             )
         }
+        screen.blockAfter.invoke()
     }
 }
 
