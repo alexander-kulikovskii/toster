@@ -1,0 +1,11 @@
+[versions]
+androidx-core = "1.8.0"
+appcompat = "1.4.2"
+materail = "1.6.1"
+constraintlayout = "2.1.4"
+
+[libraries]
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+material = { module = "com.google.android.material:material", version.ref = "materail" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }

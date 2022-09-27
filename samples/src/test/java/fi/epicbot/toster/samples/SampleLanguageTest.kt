@@ -1,8 +1,8 @@
 package fi.epicbot.toster.samples
 
-import fi.epicbot.toster.TosterTest
 import fi.epicbot.toster.Config
 import fi.epicbot.toster.Screens
+import fi.epicbot.toster.TosterTest
 
 class SampleLanguageTest : TosterTest(
     Config {

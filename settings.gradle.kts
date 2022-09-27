@@ -1,3 +1,5 @@
+enableFeaturePreview("VERSION_CATALOGS")
+
 pluginManagement {
     repositories {
         google()
@@ -5,6 +7,8 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+apply(from = "gradle/dependency-catalogs.settings.gradle.kts")
 
 rootProject.name = "Toster"
 include(":lib")

@@ -1,32 +1,31 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("io.gitlab.arturbosch.detekt") version "1.21.0"
-    id("kotlinx-serialization")
-    id ("pl.droidsonroids.pitest")
-    id("org.jetbrains.kotlinx.kover") version "0.5.1"
-    id("com.getkeepsafe.dexcount")
+    id(coreLibs.plugins.kotlin.lib.get().pluginId)
+    id(coreLibs.plugins.kotlin.android.get().pluginId)
+    id(coreLibs.plugins.kotlin.serialization.get().pluginId)
+    id(coreLibs.plugins.pitest.get().pluginId)
+    id(coreLibs.plugins.dexcount.get().pluginId)
+    alias(coreLibs.plugins.kover)
+    alias(coreLibs.plugins.detekt)
 }
 apply {
     from("${rootDir}/gradle/dependency-updates.gradle")
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-    api("io.kotest:kotest-runner-junit5:5.3.0")
-    implementation("com.lordcodes.turtle:turtle:0.7.0")
-    implementation("io.kotlintest:kotlintest-runner-junit4:3.4.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.5") {
-        exclude(group = "org.jetbrains.kotlin")
-    }
+    implementation(coreLibs.kotlinx.serialization)
+    api(coreLibs.kotest.runner)
+    implementation(coreLibs.turtle)
+    implementation(coreLibs.kotlinx.html)
+//    {
+//        exclude(group = "org.jetbrains.kotlin")
+//    }
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.21.0")
+    detektPlugins(coreLibs.detekt.formatting)
 
-    testImplementation("io.kotest.extensions:kotest-extensions-pitest:1.1.0")
-    testImplementation("io.mockk:mockk:1.12.4")
-    testImplementation("io.mockk:mockk-agent-api:1.12.4")
-    testImplementation("io.mockk:mockk-agent-jvm:1.12.4")
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
+    testImplementation(testLibs.kotest.pitest.extension)
+    testImplementation(testLibs.bundles.mockk)
+    testImplementation(coreLibs.kotlin.reflect)
 }
 
 android {
@@ -36,6 +35,9 @@ android {
         minSdkVersion(21)
         targetSdkVersion(33)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "TOSTER_VERSION", "\"${coreLibs.versions.toster.get()}\"")
+        buildConfigField("String", "CHART_VERSION", "\"${coreLibs.versions.chart.get()}\"")
     }
 
     compileOptions {
@@ -61,6 +63,6 @@ configure<pl.droidsonroids.gradle.pitest.PitestPluginExtension> {
 
 kover {
     coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
-    intellijEngineVersion.set("1.0.668")
-    jacocoEngineVersion.set("0.8.8")
+    intellijEngineVersion.set(coreLibs.versions.kover.intellij.engine.get())
+    jacocoEngineVersion.set(coreLibs.versions.kover.jacoco.engine.get())
 }

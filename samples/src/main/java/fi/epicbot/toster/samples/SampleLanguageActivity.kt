@@ -2,8 +2,8 @@ package fi.epicbot.toster.samples
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import java.util.Locale
 
 class SampleLanguageActivity : AppCompatActivity() {

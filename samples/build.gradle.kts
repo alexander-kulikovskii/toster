@@ -1,18 +1,20 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("io.gitlab.arturbosch.detekt") version "1.21.0"
-    id("kotlinx-serialization")
+    id(coreLibs.plugins.kotlin.application.get().pluginId)
+    id(coreLibs.plugins.kotlin.android.get().pluginId)
+    id(coreLibs.plugins.kotlin.serialization.get().pluginId)
+    alias(coreLibs.plugins.detekt)
 }
 apply {
     from("${rootDir}/gradle/dependency-updates.gradle")
 }
 
 dependencies {
-    implementation ("androidx.core:core-ktx:1.8.0")
-    implementation ("androidx.appcompat:appcompat:1.4.2")
-    implementation ("com.google.android.material:material:1.6.1")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(androidLibs.androidx.core)
+    implementation(androidLibs.appcompat)
+    implementation(androidLibs.material)
+    implementation(androidLibs.constraintlayout)
+    detektPlugins(coreLibs.detekt.formatting)
     testImplementation(project(":lib"))
 }
 
