@@ -160,7 +160,11 @@ internal open class AndroidExecutor(
 
     private fun getPid(): String {
         val psInfo = "ps | grep $apkPackage".adbShell()
-        return psInfo.split("\\s+".toRegex())[1]
+        return try {
+            psInfo.split("\\s+".toRegex())[1]
+        } catch (_: Exception) {
+            ""
+        }
     }
 
     private fun getCoreNumber(): Int {
@@ -176,10 +180,14 @@ internal open class AndroidExecutor(
 
         val pid = getPid()
         val coreNumber = getCoreNumber() // TODO make call only once
-        val rawCpuInfo = try {
-            "top -p $pid -d 0.1 -n $SAMPLE_NUMBER".adbShell()
-        } catch (_: Exception) {
-            "top -p $pid -d 1 -n $SAMPLE_NUMBER".adbShell()
+        val rawCpuInfo = if (pid.isEmpty()) {
+            ""
+        } else {
+            try {
+                "top -p $pid -d 0.1 -n $SAMPLE_NUMBER".adbShell()
+            } catch (_: Exception) {
+                "top -p $pid -d 1 -n $SAMPLE_NUMBER".adbShell()
+            }
         }
 
         val measurement = parserProvider.cpuUsageParser.parse(
