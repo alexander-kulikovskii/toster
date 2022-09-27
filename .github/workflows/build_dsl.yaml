@@ -31,8 +31,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', '**/*.toml') }}
-          }}
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts',
+          '**/*.toml') }}
     - id: step-2
       name: Setup Gradle Wrapper Cache
       uses: actions/cache@v3
@@ -65,8 +65,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', '**/*.toml') }}
-          }}
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts',
+          '**/*.toml') }}
     - id: step-2
       name: Setup Gradle Wrapper Cache
       uses: actions/cache@v3
@@ -106,8 +106,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', '**/*.toml') }}
-          }}
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts',
+          '**/*.toml') }}
     - id: step-2
       name: Setup Gradle Wrapper Cache
       uses: actions/cache@v3
