@@ -1,0 +1,22 @@
+[versions]
+# libs
+mockk = "1.12.4"
+kotest-pitest-extension = "1.1.0"
+pitest = "1.8.1"
+# plugins
+plugin-android-junit5 = "1.6.2.0"
+plugin-gradle-pitest = "0.2.9"
+
+[libraries]
+# libs
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-agent-api = { module = "io.mockk:mockk-agent-api", version.ref = "mockk" }
+mockk-agent-jvm = { module = "io.mockk:mockk-agent-api", version.ref = "mockk" }
+kotest-pitest-extension = { module = "io.kotest.extensions:kotest-extensions-pitest", version.ref = "kotest-pitest-extension" }
+
+# plugins
+plugin-android-junit5 = { module = "de.mannodermaus.gradle.plugins:android-junit5", version.ref = "plugin-android-junit5" }
+plugin-pitest = { module = "pl.droidsonroids.gradle:gradle-pitest-plugin", version.ref = "plugin-gradle-pitest" }
+
+[bundles]
+mockk = ["mockk", "mockk-agent-api", "mockk-agent-jvm"]

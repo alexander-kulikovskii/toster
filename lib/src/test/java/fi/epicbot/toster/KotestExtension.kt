@@ -4,8 +4,8 @@ import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.scopes.BehaviorSpecGivenContainerContext
 import io.kotest.core.spec.style.scopes.BehaviorSpecWhenContainerContext
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import io.kotlintest.shouldBe
 import io.mockk.MockKVerificationScope
 import io.mockk.Ordering
 import io.mockk.coVerify
