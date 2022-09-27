@@ -41,7 +41,7 @@ fun JobBuilder.cacheGradle(
             path = listOf("~/.gradle/caches"),
             key = expr { runner.os } +
                     "-gradle-caches-" +
-                    expr { hashFiles("'**/*.gradle'", "'**/*.gradle.kts'") }
+                    expr { hashFiles("'**/*.gradle'", "'**/*.gradle.kts'", "'**/*.toml'") }
         )
     )
     uses(
