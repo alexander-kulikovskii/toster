@@ -51,7 +51,7 @@ tasks.withType<Test> {
     useJUnitPlatform()
     systemProperties["junit.jupiter.execution.parallel.enabled"] = true
     systemProperties["junit.jupiter.execution.parallel.mode.default"] = "concurrent"
-    maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1).also {
+    maxParallelForks = (Runtime.getRuntime().availableProcessors()).coerceAtLeast(1).also {
         println("Setting maxParallelForks to $it")
     }
 }
