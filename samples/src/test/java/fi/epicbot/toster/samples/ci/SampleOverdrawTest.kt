@@ -1,4 +1,4 @@
-package fi.epicbot.toster.samples
+package fi.epicbot.toster.samples.ci
 
 import fi.epicbot.toster.Config
 import fi.epicbot.toster.Screens

@@ -1,14 +1,13 @@
-package fi.epicbot.toster.samples
+package fi.epicbot.toster.samples.ci
 
 import fi.epicbot.toster.Config
 import fi.epicbot.toster.Screens
 import fi.epicbot.toster.TosterTest
-import fi.epicbot.toster.model.FontScale
 
-class SampleFontSizeTest : TosterTest(
+class SampleParamsTest : TosterTest(
     Config {
         runShellsBeforeAllScreens("../gradlew :samples:assembleDebug")
-        applicationName("SampleFontSize")
+        applicationName("SampleParams")
         applicationPackageName("fi.epicbot.toster.samples")
         apk {
             url("build/outputs/apk/debug/samples-debug.apk")
@@ -22,20 +21,14 @@ class SampleFontSizeTest : TosterTest(
     },
     Screens {
         screen {
-            name("Small size")
-            url("fi.epicbot.toster.samples.SampleFontSizeActivity")
-            fontScale(FontScale.SMALL)
-            actions {
-                delay(1000L)
-                takeScreenshot()
+            name("Set Params")
+            url("fi.epicbot.toster.samples.SampleParamsActivity")
+            activityParams {
+                integer("int_value", 42)
             }
-        }
-        screen {
-            name("Large size")
-            url("fi.epicbot.toster.samples.SampleFontSizeActivity")
-            fontScale(FontScale.LARGE)
             actions {
                 delay(1000L)
+                takeMemoryAllocation()
                 takeScreenshot()
             }
         }

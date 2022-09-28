@@ -1,16 +1,25 @@
-package fi.epicbot.toster.samples
+package fi.epicbot.toster.samples.ci
 
 import fi.epicbot.toster.Config
 import fi.epicbot.toster.Screens
 import fi.epicbot.toster.TosterTest
 
-class SampleLanguageTest : TosterTest(
+class SampleMultiApkTest : TosterTest(
     Config {
         runShellsBeforeAllScreens("../gradlew :samples:assembleDebug")
-        applicationName("SampleLanguage")
+        applicationName("SampleMultiApk")
         applicationPackageName("fi.epicbot.toster.samples")
-        apk {
-            url("build/outputs/apk/debug/samples-debug.apk")
+        multiApk {
+            apk {
+                runShellsBefore("", "")
+                url("build/outputs/apk/debug/samples-debug.apk")
+                prefix("main")
+            }
+            apk {
+                runShellsBefore("", "")
+                url("build/outputs/apk/debug/samples-debug.apk")
+                prefix("dev")
+            }
         }
         report {
         }
@@ -24,7 +33,11 @@ class SampleLanguageTest : TosterTest(
             name("Default locale")
             url("fi.epicbot.toster.samples.SampleLanguageActivity")
             actions {
-                delay(1000L)
+                repeat(5) {
+                    takeCpuUsage()
+                    takeMemoryAllocation()
+                    delay(100L)
+                }
                 takeScreenshot()
             }
         }
@@ -35,18 +48,11 @@ class SampleLanguageTest : TosterTest(
                 string("locale", "fi")
             }
             actions {
-                delay(1000L)
-                takeScreenshot()
-            }
-        }
-        screen {
-            name("Russian locale")
-            url("fi.epicbot.toster.samples.SampleLanguageActivity")
-            activityParams {
-                string("locale", "ru")
-            }
-            actions {
-                delay(1000L)
+                repeat(8) {
+                    takeCpuUsage()
+                    takeMemoryAllocation()
+                    delay(100L)
+                }
                 takeScreenshot()
             }
         }

@@ -1,25 +1,16 @@
-package fi.epicbot.toster.samples
+package fi.epicbot.toster.samples.ci
 
 import fi.epicbot.toster.Config
 import fi.epicbot.toster.Screens
 import fi.epicbot.toster.TosterTest
 
-class SampleMultiApkTest : TosterTest(
+class SampleLanguageTest : TosterTest(
     Config {
         runShellsBeforeAllScreens("../gradlew :samples:assembleDebug")
-        applicationName("SampleMultiApk")
+        applicationName("SampleLanguage")
         applicationPackageName("fi.epicbot.toster.samples")
-        multiApk {
-            apk {
-                runShellsBefore("", "")
-                url("build/outputs/apk/debug/samples-debug.apk")
-                prefix("main")
-            }
-            apk {
-                runShellsBefore("", "")
-                url("build/outputs/apk/debug/samples-debug.apk")
-                prefix("dev")
-            }
+        apk {
+            url("build/outputs/apk/debug/samples-debug.apk")
         }
         report {
         }
@@ -33,11 +24,7 @@ class SampleMultiApkTest : TosterTest(
             name("Default locale")
             url("fi.epicbot.toster.samples.SampleLanguageActivity")
             actions {
-                repeat(5) {
-                    takeCpuUsage()
-                    takeMemoryAllocation()
-                    delay(100L)
-                }
+                delay(1000L)
                 takeScreenshot()
             }
         }
@@ -48,11 +35,18 @@ class SampleMultiApkTest : TosterTest(
                 string("locale", "fi")
             }
             actions {
-                repeat(8) {
-                    takeCpuUsage()
-                    takeMemoryAllocation()
-                    delay(100L)
-                }
+                delay(1000L)
+                takeScreenshot()
+            }
+        }
+        screen {
+            name("Russian locale")
+            url("fi.epicbot.toster.samples.SampleLanguageActivity")
+            activityParams {
+                string("locale", "ru")
+            }
+            actions {
+                delay(1000L)
                 takeScreenshot()
             }
         }

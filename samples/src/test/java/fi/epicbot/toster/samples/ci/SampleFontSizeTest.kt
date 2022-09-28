@@ -1,19 +1,18 @@
-package fi.epicbot.toster.samples
+package fi.epicbot.toster.samples.ci
 
 import fi.epicbot.toster.Config
 import fi.epicbot.toster.Screens
 import fi.epicbot.toster.TosterTest
-import fi.epicbot.toster.model.Density
+import fi.epicbot.toster.model.FontScale
 
-class SampleDensityTest : TosterTest(
+class SampleFontSizeTest : TosterTest(
     Config {
         runShellsBeforeAllScreens("../gradlew :samples:assembleDebug")
-        applicationName("SampleDensity")
+        applicationName("SampleFontSize")
         applicationPackageName("fi.epicbot.toster.samples")
         apk {
             url("build/outputs/apk/debug/samples-debug.apk")
         }
-        setScreenDensity(Density.HDPI)
         report {
         }
 
@@ -23,17 +22,18 @@ class SampleDensityTest : TosterTest(
     },
     Screens {
         screen {
-            name("Default HDPI density")
+            name("Small size")
             url("fi.epicbot.toster.samples.SampleFontSizeActivity")
+            fontScale(FontScale.SMALL)
             actions {
                 delay(1000L)
                 takeScreenshot()
             }
         }
         screen {
-            name("LDPI density")
+            name("Large size")
             url("fi.epicbot.toster.samples.SampleFontSizeActivity")
-            setScreenDensity(Density.LDPI)
+            fontScale(FontScale.LARGE)
             actions {
                 delay(1000L)
                 takeScreenshot()
