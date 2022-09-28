@@ -71,7 +71,7 @@ private val correctData = listOf(
 )
 
 private val exceptionData = mapOf(
-    listOf<Apk>() to EMPTY_APK_LIST,
+//    listOf<Apk>() to EMPTY_APK_LIST,
     listOf(
         Apk()
     ) to EMPTY_APK_URL,
