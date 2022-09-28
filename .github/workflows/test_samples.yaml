@@ -80,12 +80,7 @@ jobs:
         disable-animations: 'true'
         script: |-
           adb devices
-          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleDensityTest" --stacktrace
-          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleFontSizeTest" --stacktrace
-          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleLanguageTest" --stacktrace
-          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleOverdrawTest" --stacktrace
-          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleParamsTest" --stacktrace
-          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.SampleMultiApkTest" --stacktrace
+          ./gradlew :samples:testDebug --tests "fi.epicbot.toster.samples.ci.*" --stacktrace
     - id: step-7
       name: Publish results
       uses: actions/upload-artifact@v3

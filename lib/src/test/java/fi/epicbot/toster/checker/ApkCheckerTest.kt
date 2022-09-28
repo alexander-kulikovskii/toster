@@ -31,7 +31,6 @@ class ApkCheckerNegativeTest : BehaviorSpec({
 })
 
 private const val NOT_EMPTY_FIELD = "Test"
-private const val EMPTY_APK_LIST = "Apk list shouldn't be empty"
 private const val EMPTY_APK_URL = "Apk url shouldn't be empty"
 private const val EMPTY_APK_PREFIX = "Apk prefix shouldn't be empty"
 private const val NOT_UNIQUE_PREFIXES = "All prefixes should be unique: <Test> - 2 times"
@@ -71,7 +70,6 @@ private val correctData = listOf(
 )
 
 private val exceptionData = mapOf(
-    listOf<Apk>() to EMPTY_APK_LIST,
     listOf(
         Apk()
     ) to EMPTY_APK_URL,
