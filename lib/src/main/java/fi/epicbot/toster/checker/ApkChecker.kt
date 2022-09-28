@@ -29,7 +29,6 @@ internal class ApkChecker(private val apks: List<Apk>) : Checker {
     }
 
     private companion object {
-        private const val EMPTY_APK_LIST = "Apk list shouldn't be empty"
         private const val EMPTY_APK_URL = "Apk url shouldn't be empty"
         private const val EMPTY_APK_PREFIX = "Apk prefix shouldn't be empty"
         private const val NOT_UNIQUE_PREFIXES = "All prefixes should be unique"
