@@ -39,13 +39,13 @@ workflow(
             "strategy" to mapOf(
                 "fail-fast" to false,
                 "matrix" to mapOf(
-                    "api-level" to listOf(26, 31),
+                    "api-level" to listOf(26, 31, 33),
                 )
             )
         ),
     ) {
         prepareEnvironment()
-        uses(
+        val avdCache = uses(
             name = "AVD cache",
             action = CacheV3(
                 path = listOf("~/.android/avd/*", "~/.android/adb*"),
@@ -54,6 +54,7 @@ workflow(
         )
         uses(
             name = "Create AVD and generate snapshot for caching \${{ matrix.api-level }}",
+            condition = "(steps.${avdCache.id}.outputs.cache-hit != 'true')",
             action = AndroidEmulatorRunnerV2(
                 _customInputs = mapOf(
                     "api-level" to "\${{ matrix.api-level }}"
