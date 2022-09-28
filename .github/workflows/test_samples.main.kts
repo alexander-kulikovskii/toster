@@ -13,12 +13,7 @@ import it.krzeminski.githubactions.dsl.expressions.expr
 import java.nio.file.Paths
 
 private val testNameList = listOf(
-    "SampleDensityTest",
-    "SampleFontSizeTest",
-    "SampleLanguageTest",
-    "SampleOverdrawTest",
-    "SampleParamsTest",
-    "SampleMultiApkTest"
+    "*",
 )
 
 workflow(
@@ -78,7 +73,7 @@ workflow(
                 forceAvdCreation = false,
                 disableAnimations = true,
                 emulatorOptions = "-no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none",
-                script = "adb devices\n" + testNameList.map { name -> "./gradlew :samples:testDebug --tests \"fi.epicbot.toster.samples.${name}\" --stacktrace" }
+                script = "adb devices\n" + testNameList.map { name -> "./gradlew :samples:testDebug --tests \"fi.epicbot.toster.samples.ci.${name}\" --stacktrace" }
                     .joinToString("\n")
             )
         )
