@@ -39,7 +39,7 @@ workflow(
             "strategy" to mapOf(
                 "fail-fast" to false,
                 "matrix" to mapOf(
-                    "api-level" to listOf(26, 31, 33),
+                    "api-level" to listOf(26, 31),
                 )
             )
         ),
