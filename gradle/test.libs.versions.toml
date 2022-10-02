@@ -1,6 +1,6 @@
 [versions]
 # libs
-mockk = "1.12.4"
+mockk = "1.13.2"
 kotest-pitest-extension = "1.1.0"
 pitest = "1.8.1"
 # plugins

@@ -62,7 +62,6 @@ project.apply{
 }
 
 configure<pl.droidsonroids.gradle.pitest.PitestPluginExtension> {
-    testPlugin.set("Kotest")
     targetClasses.set(listOf("fi.epicbot.toster.*"))
 }
 
