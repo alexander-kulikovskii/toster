@@ -34,9 +34,15 @@ workflow(
                     "lib-versions" to listOf(LAST_LIB_VERSION, "0.3.1", "0.3.0", "0.2.9", "0.2.8", "0.2.7"),
                     "gradle-plugins" to listOf("7.5.1"),
                     "gradle-tools" to listOf("7.1.3"),
-                    "kotlin-version" to listOf("1.7.10"),
+                    "kotlin-version" to listOf("1.7.20"),
 
                     "include" to listOf(
+                        mapOf(
+                            "lib-versions" to LAST_LIB_VERSION,
+                            "gradle-plugins" to "7.4.2",
+                            "gradle-tools" to "7.0.2",
+                            "kotlin-version" to "1.6.21",
+                        ),
                         mapOf(
                             "lib-versions" to LAST_LIB_VERSION,
                             "gradle-plugins" to "7.0.2",

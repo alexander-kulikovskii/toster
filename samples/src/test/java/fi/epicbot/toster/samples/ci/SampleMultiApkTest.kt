@@ -33,7 +33,7 @@ class SampleMultiApkTest : TosterTest(
             name("Default locale")
             url("fi.epicbot.toster.samples.SampleLanguageActivity")
             actions {
-                repeat(5) {
+                repeat(50) {
                     takeCpuUsage()
                     takeMemoryAllocation()
                     delay(100L)
@@ -48,7 +48,7 @@ class SampleMultiApkTest : TosterTest(
                 string("locale", "fi")
             }
             actions {
-                repeat(8) {
+                repeat(40) {
                     takeCpuUsage()
                     takeMemoryAllocation()
                     delay(100L)
