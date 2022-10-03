@@ -3,7 +3,7 @@
 @file:Import("Common.main.kts")
 
 import it.krzeminski.githubactions.actions.actions.CacheV3
-import it.krzeminski.githubactions.domain.RunnerType.UbuntuLatest
+import it.krzeminski.githubactions.domain.RunnerType.MacOSLatest
 import it.krzeminski.githubactions.actions.reactivecircus.AndroidEmulatorRunnerV2
 import it.krzeminski.githubactions.actions.reactivecircus.AndroidEmulatorRunnerV2.Arch.X8664
 import it.krzeminski.githubactions.domain.triggers.Push
@@ -29,12 +29,12 @@ workflow(
     job(
         id = "test-sample",
         name = "Test samples",
-        runsOn = UbuntuLatest,
+        runsOn = MacOSLatest,
         _customArguments = mapOf(
             "strategy" to mapOf(
                 "fail-fast" to false,
                 "matrix" to mapOf(
-                    "api-level" to listOf(26, 31),
+                    "api-level" to listOf(26, 30, 31),
                 )
             )
         ),
@@ -72,6 +72,9 @@ workflow(
                 arch = X8664,
                 forceAvdCreation = false,
                 disableAnimations = true,
+                ramSize = "4096M",
+                heapSize = "2048M",
+                diskSize = "4096M",
                 emulatorOptions = "-no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none",
                 script = "adb devices\n" + testNameList.map { name -> "./gradlew :samples:testDebug --tests \"fi.epicbot.toster.samples.ci.${name}\" --stacktrace" }
                     .joinToString("\n")

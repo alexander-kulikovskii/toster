@@ -22,7 +22,7 @@ jobs:
       run: git diff --exit-code '.github/workflows/test_samples.yaml'
   test-sample:
     name: Test samples
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs:
     - check_yaml_consistency
     steps:
@@ -74,6 +74,9 @@ jobs:
       with:
         api-level: ${{ matrix.api-level }}
         arch: x86_64
+        ram-size: 4096M
+        heap-size: 2048M
+        disk-size: 4096M
         force-avd-creation: 'false'
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio
           -no-boot-anim -camera-back none
@@ -104,4 +107,5 @@ jobs:
       matrix:
         api-level:
         - 26
+        - 30
         - 31
