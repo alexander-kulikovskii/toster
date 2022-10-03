@@ -23,7 +23,7 @@ class SampleMultiApkTest : TosterTest(
         }
         report {
         }
-        testTimeout(1_000_000L)
+        testTimeout(100_000_000L)
         devices {
             phone("UUID") // get from `adb devices`
         }
