@@ -90,7 +90,8 @@ class ActionContext {
     }
 
     /**
-     * Closest action to make zoom in. First "finger" will be set to [centerX]; [centerY], second one will make swipe [centerX]; [centerY] to [moveToX]; [moveToY]
+     * Closest action to make zoom in. First "finger" will be set to [centerX]; [centerY],
+     * second one will make swipe from [centerX]; [centerY] to [moveToX]; [moveToY]
      * For example 500,500; 1000,1000
      *
      * @param zoomDelayMillis zoom action duration in milliseconds
@@ -120,7 +121,8 @@ class ActionContext {
     }
 
     /**
-     * Closest action to make zoom out. First "finger" will be set to [centerX]; [centerY], second one will make swipe [centerX]; [centerY] to [moveToX]; [moveToY]
+     * Closest action to make zoom out. First "finger" will be set to [centerX]; [centerY],
+     * second one will make swipe from [centerX]; [centerY] to [moveToX]; [moveToY]
      * For example 1000,1000; 500,500
      *
      * @param zoomDelayMillis zoom action duration in milliseconds
