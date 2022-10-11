@@ -134,11 +134,21 @@ internal open class AndroidExecutor(
             Action.ResetScreenDensity -> "wm density reset".adbShell()
             Action.ClearLogcat -> "logcat -c".adbShell()
             is Action.SetLogcatBufferSize -> "logcat -G ${action.bufferSize}".adbShell()
+            is Action.Zoom -> zoom(action)
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
         val endTime = timeProvider.getTimeMillis()
 
         return Common(actionIndex++, action.title(), startTime, endTime)
+    }
+
+    @Suppress("MaxLineLength")
+    private fun zoom(action: Action.Zoom) {
+        """adb shell input tap ${action.centerX} ${action.centerY} & PIDTAP=$!
+        sleep 0.1
+        adb shell input swipe ${action.fromX} ${action.fromY} ${action.toX} ${action.toY} ${action.zoomDelayMillis} & PIDSWIPE=$!
+        wait ${'$'}PIDTAP
+        wait ${'$'}PIDSWIPE""".shell()
     }
 
     private fun swipe(swipeMove: SwipeMove) {
