@@ -4,6 +4,7 @@ import fi.epicbot.toster.TosterDslMarker
 import fi.epicbot.toster.model.Action
 import fi.epicbot.toster.model.Buffer
 import fi.epicbot.toster.model.Move
+import fi.epicbot.toster.model.Rotation
 import fi.epicbot.toster.model.SwipeMove
 import fi.epicbot.toster.model.TrimMemoryLevel
 
@@ -149,5 +150,17 @@ class ActionContext {
             )
         )
         delay(delayMillis)
+    }
+
+    fun rotateToPortrait() {
+        rotate(Rotation.PORTRAIT)
+    }
+
+    fun rotateToLandscape() {
+        rotate(Rotation.LANDSCAPE)
+    }
+
+    fun rotate(rotation: Rotation) {
+        actions.add(Action.Rotate(rotation))
     }
 }

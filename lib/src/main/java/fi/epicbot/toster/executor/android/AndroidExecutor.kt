@@ -135,6 +135,8 @@ internal open class AndroidExecutor(
             Action.ClearLogcat -> "logcat -c".adbShell()
             is Action.SetLogcatBufferSize -> "logcat -G ${action.bufferSize}".adbShell()
             is Action.Zoom -> zoom(action)
+            is Action.Rotate -> "settings put system user_rotation ${action.rotation.value}".adbShell()
+            is Action.TurnOffAutoRotation -> "settings put system accelerometer_rotation 0".adbShell()
             else -> throw UnsupportedOperationException("Unsupported type of action $action")
         }
         val endTime = timeProvider.getTimeMillis()
