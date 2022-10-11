@@ -14,6 +14,7 @@ import fi.epicbot.toster.extension.safeForPath
 import fi.epicbot.toster.logger.DefaultLogger
 import fi.epicbot.toster.logger.ShellLogger
 import fi.epicbot.toster.model.Config
+import fi.epicbot.toster.model.EMPTY_APK
 import fi.epicbot.toster.model.Screen
 import fi.epicbot.toster.model.makeReport
 import fi.epicbot.toster.model.projectDir
@@ -60,6 +61,10 @@ abstract class TosterTest(config: Config, screens: List<Screen>) : DescribeSpec(
         val shellLogger = DefaultLogger(timeProvider)
         val reportBuilds = mutableListOf<ReportBuild>()
         val parserProvider = ParserProvider()
+
+        if (config.deleteAndInstallApk.not()) {
+            config.multiApk.apks.add(EMPTY_APK)
+        }
 
         config.multiApk.apks.forEachIndexed { index, apk ->
             describe(apk.prefix) {
