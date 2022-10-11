@@ -69,6 +69,8 @@ sealed class Action {
         val zoomDelayMillis: Long,
         val delayMillis: Long,
     ) : Action()
+    class Rotate(val rotation: Rotation) : Action()
+    object TurnOffAutoRotation : Action()
 }
 
 @Suppress("ComplexMethod")
@@ -122,6 +124,8 @@ internal fun Action.title(): String {
         is Action.TrimMemory -> "Send trim memory <${trimMemoryLevel.level}>"
         is Action.TypeText -> "Type text <$text>"
         is Action.Zoom -> "Zoom from ($centerX;$centerY) to ($toX;$toY)"
+        is Action.Rotate -> "Rotate to ${rotation.value}"
+        is Action.TurnOffAutoRotation -> "Turn off auto-rotation"
     }
 }
 

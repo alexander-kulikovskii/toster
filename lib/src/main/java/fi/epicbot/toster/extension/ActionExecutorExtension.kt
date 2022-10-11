@@ -131,7 +131,7 @@ internal suspend fun DescribeSpecContainerScope.runScreens(
     }
 }
 
-@Suppress("LongMethod")
+@Suppress("ComplexMethod", "LongMethod")
 internal suspend fun DescribeSpecContainerScope.runScreen(
     actionExecutor: ActionExecutor,
     config: Config,
@@ -197,6 +197,9 @@ internal suspend fun DescribeSpecContainerScope.runScreen(
             actionExecutor,
             reportScreen,
         )
+        if (screen.actions.filterIsInstance<Action.Rotate>().isNotEmpty()) {
+            runAction(Action.TurnOffAutoRotation, actionExecutor, reportScreen)
+        }
 
         screen.actions.forEach { action ->
             runAction(action, actionExecutor, reportScreen)
