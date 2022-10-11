@@ -88,4 +88,66 @@ class ActionContext {
     fun takeLogcat(buffer: Buffer = Buffer.DEFAULT) {
         actions.add(Action.TakeLogcat(buffer))
     }
+
+    /**
+     * Closest action to make zoom in. First "finger" will be set to [centerX]; [centerY],
+     * second one will make swipe from [centerX]; [centerY] to [moveToX]; [moveToY]
+     * For example 500,500; 1000,1000
+     *
+     * @param zoomDelayMillis zoom action duration in milliseconds
+     */
+    @Suppress("LongParameterList")
+    fun zoomIn(
+        centerX: Int,
+        centerY: Int,
+        moveToX: Int,
+        moveToY: Int,
+        zoomDelayMillis: Long = 1000L,
+        delayMillis: Long = 0,
+    ) {
+        actions.add(
+            Action.Zoom(
+                centerX = centerX,
+                centerY = centerY,
+                fromX = centerX,
+                fromY = centerY,
+                toX = moveToX,
+                toY = moveToY,
+                zoomDelayMillis = zoomDelayMillis,
+                delayMillis = delayMillis
+            )
+        )
+        delay(delayMillis)
+    }
+
+    /**
+     * Closest action to make zoom out. First "finger" will be set to [centerX]; [centerY],
+     * second one will make swipe from [centerX]; [centerY] to [moveToX]; [moveToY]
+     * For example 1000,1000; 500,500
+     *
+     * @param zoomDelayMillis zoom action duration in milliseconds
+     */
+    @Suppress("LongParameterList")
+    fun zoomOut(
+        centerX: Int,
+        centerY: Int,
+        moveToX: Int,
+        moveToY: Int,
+        zoomDelayMillis: Long = 1000L,
+        delayMillis: Long = 0,
+    ) {
+        actions.add(
+            Action.Zoom(
+                centerX = centerX,
+                centerY = centerY,
+                fromX = moveToX,
+                fromY = moveToY,
+                toX = centerX,
+                toY = centerY,
+                zoomDelayMillis = zoomDelayMillis,
+                delayMillis = delayMillis
+            )
+        )
+        delay(delayMillis)
+    }
 }

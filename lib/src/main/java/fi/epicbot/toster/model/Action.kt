@@ -58,6 +58,17 @@ sealed class Action {
     class TakeScreenshot(val name: String) : Action()
     class TrimMemory(val trimMemoryLevel: TrimMemoryLevel) : Action()
     class TypeText(val text: String) : Action()
+    @Suppress("LongParameterList")
+    class Zoom(
+        val centerX: Int,
+        val centerY: Int,
+        val fromX: Int,
+        val fromY: Int,
+        val toX: Int,
+        val toY: Int,
+        val zoomDelayMillis: Long,
+        val delayMillis: Long,
+    ) : Action()
 }
 
 @Suppress("ComplexMethod")
@@ -110,6 +121,7 @@ internal fun Action.title(): String {
         is Action.TakeScreenshot -> "Take screenshot"
         is Action.TrimMemory -> "Send trim memory <${trimMemoryLevel.level}>"
         is Action.TypeText -> "Type text <$text>"
+        is Action.Zoom -> "Zoom from ($centerX;$centerY) to ($toX;$toY)"
     }
 }
 
